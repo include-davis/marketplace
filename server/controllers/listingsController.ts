@@ -5,7 +5,7 @@ import {
     getAllListings,
     getListing,
     updateListing,
-} from '../services/listingService.ts';
+} from '../services/listingsService.ts';
 
 /**
  *
@@ -79,14 +79,8 @@ export const createListingController = async (req: Request, res: Response) => {
         const category: string = req.body.category;
         const stock: number = req.body.stock;
 
-        const record = await createListing(client, {
-            userId,
-            title,
-            desc,
-            price,
-            category,
-            stock,
-        });
+        const record = await createListing(client, title,
+            desc, price, category, stock);
 
         res.status(200).json({
             success: true,
@@ -123,14 +117,8 @@ export const updateListingController = async (req: Request, res: Response) => {
         const category: string = req.body.category;
         const stock: number = req.body.stock;
 
-        const record = await updateListing(client, id, {
-            userId,
-            title,
-            desc,
-            price,
-            category,
-            stock,
-        });
+        const record = await updateListing(client, id, 
+            title, desc, price, category, stock);
 
         res.status(200).json({
             success: true,

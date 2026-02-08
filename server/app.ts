@@ -3,6 +3,7 @@ import cors from "cors"
 import type { Application } from "express"
 import { startMongoClient } from "./services/mongoService.ts"
 import { loadEnvFile } from "process"
+import listingsRouter from "./routes/listingsRouter.ts"
 
 loadEnvFile(".env") //load env file
 
@@ -16,6 +17,8 @@ async function setupClient() { //connect to mongo client
 }
 
 setupClient()
+
+app.use("/listings", listingsRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
