@@ -16,7 +16,7 @@ export async function getAllListings(client: MongoClient) {
  * @param id ID of the listing to get.
  * @returns An object representing the listing.
  */
-export async function getListing(client: MongoClient, id) {
+export async function getListing(client: MongoClient, id: string) {
     const listing = await client.db("MarketPlace").collection("Listings").findOne({ _id: new ObjectId(id)});
     return listing;
 }

@@ -5,7 +5,7 @@ import {
     getAllListings,
     getListing,
     updateListing,
-} from '../services/listingsService.ts';
+} from '../services/listingService.ts';
 
 /**
  *
