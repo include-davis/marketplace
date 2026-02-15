@@ -43,7 +43,7 @@ export const getAllListingsController = async (req: Request, res: Response) => {
 export const getListingController = async (req: Request, res: Response) => {
     const client = req.app.locals.client;
     try {
-        const id: string = req.params.id;
+        const id: string = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
         const record = await getListing(client, id);
         res.status(200).send({
             success: true,
@@ -109,7 +109,7 @@ export const createListingController = async (req: Request, res: Response) => {
 export const updateListingController = async (req: Request, res: Response) => {
     const client = req.app.locals.client;
     try {
-        const id: string = req.params.id;
+        const id: string = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
         const userId: string = req.body.userId;
         const title: string = req.body.title;
         const desc: string = req.body.desc;
@@ -147,7 +147,7 @@ export const updateListingController = async (req: Request, res: Response) => {
 export const deleteListingController = async (req: Request, res: Response) => {
     const client = req.app.locals.client;
     try {
-        const id: string = req.params.id;
+        const id: string = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
         await deleteListing(client, id);
         res.status(200).json({
             success: true,

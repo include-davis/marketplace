@@ -13,6 +13,9 @@ export interface UserDoc {
     google: GoogleProvider | null;
     
     isEmailVerified: boolean;
+
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 const googleSchema = new Schema<GoogleProvider>(
@@ -46,9 +49,11 @@ const userSchema = new Schema<UserDoc>({
     },
     
     isEmailVerified: { type: Boolean, default: false },
+    }, { timestamps: true,
 });
 
-// create email indices starting from A in ascending order
+/* create email indices starting from A in ascending order
 userSchema.index({ email: 1 }, { unique: true });
+*/
 
 export const User: Model<UserDoc> = mongoose.models.User || mongoose.model<UserDoc>("User", userSchema);

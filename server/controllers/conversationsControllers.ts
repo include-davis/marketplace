@@ -6,7 +6,7 @@ export const getConversationController = async (req: Request, res: Response) => 
     const client = req.app.locals.client 
 
     try {
-        const record = await getConversation(client, req.params.user1id, req.params.user2id)
+        const record = await getConversation(client, req.params.user1id as string, req.params.user2id as string)
         res.status(200).json({
             success: true,
             data: record,

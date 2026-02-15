@@ -18,7 +18,7 @@ export class MessagesController {
       const { conversationId } = req.params;
 
       // Validate conversationId
-      if (!conversationId) {
+      if (!conversationId || typeof conversationId !== "string") {
         res.status(400).json({ error: "conversationId is required" });
         return;
       }
