@@ -8,6 +8,7 @@ const GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo";
 
 export async function googleCallback(req: Request, res: Response) {
   try {
+    //Google sends code 
     const code = req.query.code as string;
     if (!code) return res.status(400).json({ message: "Missing code" });
 
@@ -46,17 +47,11 @@ export async function googleCallback(req: Request, res: Response) {
     const jwt = signJWT(user.id);
 
     const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
-    res.redirect(`${frontendUrl}/auth/callback?token=${jwt}`);
-  } catch (err: unknown) {
-    console.error("Google login error:", err);
-    if (err && typeof err === "object" && "response" in err) {
-      const axiosErr = err as { response?: { data?: unknown; status?: number } };
-      console.error("Google API response:", axiosErr.response?.data);
-      console.error("Status:", axiosErr.response?.status);
-    }
-    res.status(500).json({
-      message: "Google login failed",
-      hint: err instanceof Error ? err.message : String(err),
-    });
+    res.redirect(frontendUrl + "/auth/callback?token=" + jwt);
+
+  } catch (err) {
+  console.log("Google login failed:", err);
+  res.status(500).json({ message: "Google login failed" });
   }
+
 }

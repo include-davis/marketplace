@@ -16,8 +16,9 @@ console.log("JWT_SECRET loaded:", !!process.env.JWT_SECRET);
 
 const app: Application = express()
 
-//app.use(cors())
+app.use(cors())
 
+/*
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 app.use(
   cors({
@@ -25,6 +26,8 @@ app.use(
     credentials: true,
   })
 );
+*/
+
 
 app.use(express.json())
 
