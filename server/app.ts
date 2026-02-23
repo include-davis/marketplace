@@ -10,7 +10,6 @@ import { createServer} from "http"
 import { Server } from "socket.io"
 
 
-
 loadEnvFile(".env") //load env file
 
 const app: Application = express()
@@ -22,9 +21,15 @@ const io = new Server(server)
 
 io.on('connection', (socket) => {
     console.log('a user connected')
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected')
+    })
+
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', (msg))
+    });
 })
-
-
 
 async function setupClient() { //connect to mongo client
     const client = await startMongoClient();
@@ -41,7 +46,7 @@ app.use("/conversations", conversationsRouter)
 
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
 
 
