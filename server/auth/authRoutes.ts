@@ -1,7 +1,14 @@
 import { Router } from "express";
 import { googleCallback } from "./googleController";
+import { register, login } from "./authController";
+import { requireAuth } from "./middleware";
 
 const router = Router();
+
+router.post("/register", register);
+router.post("/login", login);
+
+router.use(requireAuth);
 
 //When browser hits GET auth/google, build the url to Google's OAuth 2.0 server and redirect there
 router.get("/google", (req, res) => {
