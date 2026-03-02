@@ -20,7 +20,7 @@ export interface CreateMessageData {
 
 export class MessagesService {
   private client: MongoClient;
-  private dbName: string = "marketplace";
+  private dbName: string = "MarketPlace";
   private collectionName: string = "messages";
 
   constructor(client: MongoClient) {

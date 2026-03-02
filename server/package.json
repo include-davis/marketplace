@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "node --experimental-strip-types app.ts",
+    "dev": "tsx watch app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,8 +18,12 @@
     "express": "^5.2.1",
     "mongodb": "^7.0.0",
     "node-path": "^0.0.3",
+    "socket.io": "^4.8.3",
     "typescript": "^5.9.3",
     "ws": "^8.19.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "socket.io-client": "^4.8.3"
+  }
 }

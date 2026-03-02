@@ -2,24 +2,47 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Socket.IO chat</title>
+    <title>Socket.IO chat — Live Messaging Test</title>
     <style>
-      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      body { margin: 0; padding-bottom: 4rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
-      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
-      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #setup { background: #f0f0f0; padding: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; border-bottom: 1px solid #ccc; }
+      #setup input { border: 1px solid #ccc; padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.85rem; width: 220px; }
+      #setup button { background: #333; border: none; padding: 0.4rem 1rem; border-radius: 4px; color: #fff; cursor: pointer; font-size: 0.85rem; }
+      #status { font-size: 0.8rem; color: #888; margin-left: 0.5rem; }
+
+      #messages { list-style-type: none; margin: 0; padding: 0.5rem 0; }
+      #messages > li { padding: 0.4rem 1rem; font-size: 0.9rem; }
+      #messages > li:nth-child(odd) { background: #f7f7f7; }
+      #messages > li.system { color: #999; font-style: italic; }
+
+      #form { background: rgba(0, 0, 0, 0.1); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; font-size: 1rem; }
       #input:focus { outline: none; }
-      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-
-      #messages { list-style-type: none; margin: 0; padding: 0; }
-      #messages > li { padding: 0.5rem 1rem; }
-      #messages > li:nth-child(odd) { background: #efefef; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; color: #fff; cursor: pointer; }
     </style>
   </head>
   <body>
+    <!-- Setup panel: enter IDs and join a room before chatting -->
+    <div id="setup">
+      <label><strong>Conversation ID:</strong>
+        <input id="convId" placeholder="MongoDB ObjectId" />
+      </label>
+      <label><strong>Sender ID:</strong>
+        <input id="senderId" placeholder="Your user ObjectId" />
+      </label>
+      <label><strong>Receiver ID:</strong>
+        <input id="receiverId" placeholder="Other user ObjectId" />
+      </label>
+      <button id="joinBtn">Join Room</button>
+      <span id="status">Not connected</span>
+    </div>
+
     <ul id="messages"></ul>
+
     <form id="form" action="">
-      <input id="input" autocomplete="off" /><button>Send</button>
+      <input id="input" autocomplete="off" placeholder="Type a message…" disabled />
+      <button disabled>Send</button>
     </form>
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -28,20 +51,82 @@
   const form = document.getElementById('form');
   const input = document.getElementById('input');
   const messages = document.getElementById('messages');
+  const joinBtn = document.getElementById('joinBtn');
+  const statusEl = document.getElementById('status');
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (input.value) {
-      socket.emit('chat message', input.value);
-      input.value = '';
-    }
+  let currentRoom = null;
+  let currentSender = null;
+  let currentReceiver = null;
+
+  // ── Helpers ────────────────────────────────────────────────────
+  function addMessage(text, isSystem = false) {
+    const li = document.createElement('li');
+    if (isSystem) li.className = 'system';
+    li.textContent = text;
+    messages.appendChild(li);
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  // ── Connection events ──────────────────────────────────────────
+  socket.on('connect', () => {
+    statusEl.textContent = `Connected (id: ${socket.id})`;
+    addMessage('✓ Connected to server', true);
   });
 
-  socket.on('chat message', (msg) => {
-    const item = document.createElement('li');
-    item.textContent = msg;
-    messages.appendChild(item);
-    window.scrollTo(0, document.body.scrollHeight);
+  socket.on('disconnect', () => {
+    statusEl.textContent = 'Disconnected';
+    addMessage('✗ Disconnected from server', true);
+  });
+
+  socket.on('error', (err) => {
+    addMessage(`⚠ Server error: ${err.message}`, true);
+  });
+
+  // ── Join a conversation room ───────────────────────────────────
+  joinBtn.addEventListener('click', () => {
+    const convId   = document.getElementById('convId').value.trim();
+    const senderId = document.getElementById('senderId').value.trim();
+    const recvId   = document.getElementById('receiverId').value.trim();
+
+    if (!convId || !senderId || !recvId) {
+      alert('Please fill in all three IDs before joining.');
+      return;
+    }
+
+    currentRoom     = convId;
+    currentSender   = senderId;
+    currentReceiver = recvId;
+
+    socket.emit('join_room', convId);
+    addMessage(`Joined room: ${convId}`, true);
+
+    // Enable the message input
+    input.disabled  = false;
+    form.querySelector('button').disabled = false;
+    input.focus();
+  });
+
+  // ── Receive a message from the server ──────────────────────────
+  socket.on('receive_message', (msg) => {
+    const time = new Date(msg.createdAt).toLocaleTimeString();
+    addMessage(`[${time}] ${msg.senderId}: ${msg.message}`);
+  });
+
+  // ── Send a message ────────────────────────────────────────────
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text || !currentRoom) return;
+
+    socket.emit('send_message', {
+      conversationId: currentRoom,
+      senderId:       currentSender,
+      receiverId:     currentReceiver,
+      message:        text,
+      image:          null,
+    });
+
+    input.value = '';
   });
 </script>
   </body>
