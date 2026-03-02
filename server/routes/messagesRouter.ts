@@ -14,8 +14,10 @@ export function createMessagesRouter(app: Application): Router {
   const messagesController = new MessagesController(messagesService);
 
   // Define routes
+  router.get("/test/feature", messagesController.Testing)
   router.get("/:conversationId", messagesController.getMessages);
   router.post("/", messagesController.createMessage);
+
 
   return router;
 }

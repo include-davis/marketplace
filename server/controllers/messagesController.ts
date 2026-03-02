@@ -1,6 +1,10 @@
-import type { Request, Response } from "express";
+import type { Application, Request, Response } from "express";
 import { MessagesService } from "../services/messagesService.ts";
 import { ObjectId } from "mongodb";
+import { fileURLToPath } from 'url';
+
+import path from 'path';
+import { dirname } from 'path';
 
 export class MessagesController {
   private messagesService: MessagesService;
@@ -43,6 +47,7 @@ export class MessagesController {
    */
   createMessage = async (req: Request, res: Response): Promise<void> => {
     try {
+ 
       const { conversationId, senderId, receiverId, message, image } = req.body;
 
       // Validate required fields
@@ -91,10 +96,23 @@ export class MessagesController {
         image: image || null,
       });
 
+    
       res.status(201).json({ message: newMessage });
     } catch (error) {
       console.error("Error in createMessage controller:", error);
       res.status(500).json({ error: "Failed to create message" });
     }
   };
+  
+    //endpoint renders the test html
+    Testing = async (req: Request, res: Response) => {
+
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = dirname(__filename);
+    
+      res.sendFile(path.join(__dirname, 'testfile.html'))
+  
 }
+}
+
+
