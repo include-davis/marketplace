@@ -6,7 +6,7 @@ import { loadEnvFile } from "process"
 import { createMessagesRouter } from "./routes/messagesRouter.ts"
 import listingsRouter from "./routes/listingsRouter.ts"
 import conversationsRouter from "./routes/conversationsRoutes.ts"
-
+import intializeSocket from "./socket.ts"
 
 loadEnvFile(".env") //load env file
 
@@ -24,11 +24,13 @@ async function setupClient() { //connect to mongo client
 }
 
 setupClient()
+intializeSocket(app)
 
 app.use("/listings", listingsRouter);
 app.use("/conversations", conversationsRouter)
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.locals.server.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
 })
+
