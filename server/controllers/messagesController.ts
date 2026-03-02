@@ -103,13 +103,15 @@ export class MessagesController {
       res.status(500).json({ error: "Failed to create message" });
     }
   };
+  
+    //endpoint renders the test html
+    Testing = async (req: Request, res: Response) => {
 
-  Testing = async (req: Request, res: Response) => {
-
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = dirname(__filename);
     
-  res.sendFile(path.join(__dirname, 'testfile.html'))
+      res.sendFile(path.join(__dirname, 'testfile.html'))
+  
 }
 }
 

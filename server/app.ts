@@ -6,9 +6,7 @@ import { loadEnvFile } from "process"
 import { createMessagesRouter } from "./routes/messagesRouter.ts"
 import listingsRouter from "./routes/listingsRouter.ts"
 import conversationsRouter from "./routes/conversationsRoutes.ts"
-import { createServer} from "http"
-import { Server } from "socket.io"
-
+import intializeSocket from "./socket.ts"
 
 loadEnvFile(".env") //load env file
 
@@ -16,20 +14,6 @@ const app: Application = express()
 app.use(cors())
 app.use(express.json())
 
-const server = createServer(app)
-const io = new Server(server)
-
-io.on('connection', (socket) => {
-    console.log('a user connected')
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected')
-    })
-
-    socket.on('chat message', (msg) => {
-        io.emit('chat message', (msg))
-    });
-})
 
 async function setupClient() { //connect to mongo client
     const client = await startMongoClient();
@@ -40,14 +24,13 @@ async function setupClient() { //connect to mongo client
 }
 
 setupClient()
+intializeSocket(app)
 
 app.use("/listings", listingsRouter);
 app.use("/conversations", conversationsRouter)
 
-
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
+app.locals.server.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
-
-
 })
+
