@@ -4,7 +4,7 @@ export interface Message {
   _id?: ObjectId;
   conversationId: ObjectId;
   senderId: ObjectId;
-  receiverId: ObjectId;
+  receiverIds: ObjectId[];  // Changed to array for group chat support
   message: string;
   image: string | null;
   createdAt: Date;
@@ -13,7 +13,7 @@ export interface Message {
 export interface CreateMessageData {
   conversationId: string;
   senderId: string;
-  receiverId: string;
+  receiverIds: string[];  // Changed to array for group chat support
   message: string;
   image?: string | null;
 }
@@ -58,7 +58,7 @@ export class MessagesService {
       const newMessage: Message = {
         conversationId: new ObjectId(messageData.conversationId),
         senderId: new ObjectId(messageData.senderId),
-        receiverId: new ObjectId(messageData.receiverId),
+        receiverIds: messageData.receiverIds.map(id => new ObjectId(id)),
         message: messageData.message,
         image: messageData.image || null,
         createdAt: new Date(),

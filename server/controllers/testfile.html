@@ -23,19 +23,25 @@
     </style>
   </head>
   <body>
-    <!-- Setup panel: enter IDs and join a room before chatting -->
+    <!-- Setup panel: enter short keys and join a room before chatting -->
     <div id="setup">
-      <label><strong>Conversation ID:</strong>
-        <input id="convId" placeholder="MongoDB ObjectId" />
+      <label><strong>Conversation Key:</strong>
+        <input id="convKey" placeholder="4 chars (e.g., room)" maxlength="4" />
       </label>
-      <label><strong>Sender ID:</strong>
-        <input id="senderId" placeholder="Your user ObjectId" />
+      <label><strong>Sender Key:</strong>
+        <input id="senderKey" placeholder="4 chars (e.g., usr1)" maxlength="4" />
       </label>
-      <label><strong>Receiver ID:</strong>
-        <input id="receiverId" placeholder="Other user ObjectId" />
+      <label><strong>Receiver Keys:</strong>
+        <input id="receiverKeys" placeholder="Comma-separated 4-char keys (e.g., usr2,usr3)" style="width: 350px;" />
       </label>
       <button id="joinBtn">Join Room</button>
+      <button id="generateBtn" type="button" style="background: #0066cc;">Fill Sample Keys</button>
       <span id="status">Not connected</span>
+    </div>
+
+    <div id="idMapPanel" style="padding: 0.75rem 1rem; border-bottom: 1px solid #ddd; background: #fafafa;">
+      <strong style="font-size: 0.9rem;">Key -> Mongo ID Mapping</strong>
+      <ul id="idMapList" style="margin: 0.5rem 0 0; padding-left: 1rem; font-family: Consolas, monospace; font-size: 0.8rem;"></ul>
     </div>
 
     <ul id="messages"></ul>
@@ -52,13 +58,19 @@
   const input = document.getElementById('input');
   const messages = document.getElementById('messages');
   const joinBtn = document.getElementById('joinBtn');
+  const generateBtn = document.getElementById('generateBtn');
   const statusEl = document.getElementById('status');
+  const idMapList = document.getElementById('idMapList');
+
+  const keyRegex = /^[a-zA-Z0-9]{4}$/;
+
+  // Persisted key/value map: short key -> 24-char ObjectId-like hex string
+  const keyToMongoIdMap = JSON.parse(localStorage.getItem('chatKeyMap') || '{}');
 
   let currentRoom = null;
   let currentSender = null;
-  let currentReceiver = null;
+  let currentReceivers = [];
 
-  // ── Helpers ────────────────────────────────────────────────────
   function addMessage(text, isSystem = false) {
     const li = document.createElement('li');
     if (isSystem) li.className = 'system';
@@ -67,52 +79,120 @@
     window.scrollTo(0, document.body.scrollHeight);
   }
 
-  // ── Connection events ──────────────────────────────────────────
+  function persistKeyMap() {
+    localStorage.setItem('chatKeyMap', JSON.stringify(keyToMongoIdMap));
+  }
+
+  function renderKeyMap() {
+    idMapList.innerHTML = '';
+    Object.keys(keyToMongoIdMap).sort().forEach((key) => {
+      const item = document.createElement('li');
+      item.textContent = `${key} => ${keyToMongoIdMap[key]}`;
+      idMapList.appendChild(item);
+    });
+  }
+
+  // Deterministically maps a short key to a valid 24-char hex string.
+  function keyToObjectIdLike(key) {
+    let hash = 2166136261;
+    for (let i = 0; i < key.length; i++) {
+      hash ^= key.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+
+    let out = '';
+    let x = hash >>> 0;
+    for (let i = 0; i < 6; i++) {
+      x ^= x << 13;
+      x ^= x >>> 17;
+      x ^= x << 5;
+      out += (x >>> 0).toString(16).padStart(8, '0').slice(0, 4);
+    }
+    return out.slice(0, 24);
+  }
+
+  function getMongoIdForKey(rawKey) {
+    const key = rawKey.trim().toLowerCase();
+    if (!keyRegex.test(key)) return null;
+    if (!keyToMongoIdMap[key]) {
+      keyToMongoIdMap[key] = keyToObjectIdLike(key);
+      persistKeyMap();
+      renderKeyMap();
+    }
+    return keyToMongoIdMap[key];
+  }
+
+  function reverseLookupKey(value) {
+    const str = String(value);
+    for (const key of Object.keys(keyToMongoIdMap)) {
+      if (keyToMongoIdMap[key] === str) return key;
+    }
+    return str.slice(0, 8);
+  }
+
+  renderKeyMap();
+
   socket.on('connect', () => {
     statusEl.textContent = `Connected (id: ${socket.id})`;
-    addMessage('✓ Connected to server', true);
+    addMessage('Connected to server', true);
   });
 
   socket.on('disconnect', () => {
     statusEl.textContent = 'Disconnected';
-    addMessage('✗ Disconnected from server', true);
+    addMessage('Disconnected from server', true);
   });
 
   socket.on('error', (err) => {
-    addMessage(`⚠ Server error: ${err.message}`, true);
+    addMessage(`Server error: ${err.message}`, true);
+    alert(`Error: ${err.message}`);
   });
 
-  // ── Join a conversation room ───────────────────────────────────
-  joinBtn.addEventListener('click', () => {
-    const convId   = document.getElementById('convId').value.trim();
-    const senderId = document.getElementById('senderId').value.trim();
-    const recvId   = document.getElementById('receiverId').value.trim();
+  generateBtn.addEventListener('click', () => {
+    document.getElementById('convKey').value = 'room';
+    document.getElementById('senderKey').value = 'usr1';
+    document.getElementById('receiverKeys').value = 'usr2,usr3';
+    addMessage('Filled sample 4-char keys', true);
+  });
 
-    if (!convId || !senderId || !recvId) {
-      alert('Please fill in all three IDs before joining.');
+  joinBtn.addEventListener('click', () => {
+    const convKey = document.getElementById('convKey').value.trim().toLowerCase();
+    const senderKey = document.getElementById('senderKey').value.trim().toLowerCase();
+    const receiverKeyInput = document.getElementById('receiverKeys').value.trim().toLowerCase();
+
+    if (!convKey || !senderKey || !receiverKeyInput) {
+      alert('Please fill in all key fields before joining.');
       return;
     }
 
-    currentRoom     = convId;
-    currentSender   = senderId;
-    currentReceiver = recvId;
+    if (!keyRegex.test(convKey) || !keyRegex.test(senderKey)) {
+      alert('Conversation and sender keys must be exactly 4 letters/numbers.');
+      return;
+    }
 
-    socket.emit('join_room', convId);
-    addMessage(`Joined room: ${convId}`, true);
+    const receiverKeys = receiverKeyInput.split(',').map(k => k.trim()).filter(Boolean);
+    if (receiverKeys.length === 0 || receiverKeys.some(k => !keyRegex.test(k))) {
+      alert('Receiver keys must be comma-separated 4-letter/number keys.');
+      return;
+    }
 
-    // Enable the message input
-    input.disabled  = false;
+    currentRoom = getMongoIdForKey(convKey);
+    currentSender = getMongoIdForKey(senderKey);
+    currentReceivers = receiverKeys.map(getMongoIdForKey);
+
+    socket.emit('join_room', currentRoom);
+    addMessage(`Joined room key '${convKey}' with ${receiverKeys.length} receiver(s)`, true);
+
+    input.disabled = false;
     form.querySelector('button').disabled = false;
     input.focus();
   });
 
-  // ── Receive a message from the server ──────────────────────────
   socket.on('receive_message', (msg) => {
     const time = new Date(msg.createdAt).toLocaleTimeString();
-    addMessage(`[${time}] ${msg.senderId}: ${msg.message}`);
+    const senderKey = reverseLookupKey(msg.senderId);
+    addMessage(`[${time}] ${senderKey}: ${msg.message}`);
   });
 
-  // ── Send a message ────────────────────────────────────────────
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const text = input.value.trim();
@@ -120,10 +200,10 @@
 
     socket.emit('send_message', {
       conversationId: currentRoom,
-      senderId:       currentSender,
-      receiverId:     currentReceiver,
-      message:        text,
-      image:          null,
+      senderId: currentSender,
+      receiverIds: currentReceivers,
+      message: text,
+      image: null,
     });
 
     input.value = '';
