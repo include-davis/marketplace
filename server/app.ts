@@ -4,7 +4,6 @@ import cors from "cors"
 import mongoose from "mongoose";
 import type { Application } from "express"
 import { startMongoClient } from "./services/mongoService.ts"
-import { loadEnvFile } from "process"
 import { createMessagesRouter } from "./routes/messagesRouter.ts"
 import listingsRouter from "./routes/listingsRouter.ts"
 import conversationsRouter from "./routes/conversationsRoutes.ts"
@@ -12,7 +11,6 @@ import authRouter from "./auth/authRoutes.ts"
 import { requireAuth } from "./auth/middleware.ts";
 import usersRouter from "./auth/usersRoutes";
 
-//loadEnvFile(".env") //load env file
 dotenv.config()
 console.log("JWT_SECRET loaded:", !!process.env.JWT_SECRET);
 
@@ -33,14 +31,12 @@ app.use(
 
 app.use(express.json())
 
-
 async function setupClient() { //connect to mongo client
-    ///////
     const mongoUri = process.env.MONGO_CONNECTION_STRING || "";
 
     await mongoose.connect(mongoUri, { dbName: "MarketPlace" });
     console.log("Mongoose connected to MongoDB");
-    ///////
+
     const client = await startMongoClient();
     app.locals.client = client;
     
@@ -49,17 +45,11 @@ async function setupClient() { //connect to mongo client
 }
 
 app.use("/listings", requireAuth, listingsRouter);
-app.use("/conversations", requireAuth, conversationsRouter)
+app.use("/conversations", conversationsRouter)
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 
 const PORT = process.env.PORT || 3000;
-
-/*
-app.listen(PORT, () => {
-    console.log(`listening on port ${PORT}`)
-})
-*/
 
 setupClient().then(() => {
     app.listen(PORT, () => {
