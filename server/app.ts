@@ -10,6 +10,7 @@ import listingsRouter from "./routes/listingsRouter.ts"
 import conversationsRouter from "./routes/conversationsRoutes.ts"
 import authRouter from "./auth/authRoutes.ts"
 import { requireAuth } from "./auth/middleware.ts";
+import usersRouter from "./auth/usersRoutes";
 
 //loadEnvFile(".env") //load env file
 dotenv.config()
@@ -50,6 +51,7 @@ async function setupClient() { //connect to mongo client
 app.use("/listings", requireAuth, listingsRouter);
 app.use("/conversations", requireAuth, conversationsRouter)
 app.use("/auth", authRouter);
+app.use("/users", usersRouter);
 
 const PORT = process.env.PORT || 3000;
 
