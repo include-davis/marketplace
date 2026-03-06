@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import axios from "axios";
 import { User } from "../models/User";
 import { signJWT } from "./jwt";
@@ -55,7 +55,7 @@ export async function googleCallback(req: Request, res: Response) {
     res.redirect(frontendUrl + "/auth/callback?token=" + jwt);
 
   } catch (err) {
-    
+
   console.log("Google login failed:", err);
   res.status(500).json({ message: "Google login failed" });
   }

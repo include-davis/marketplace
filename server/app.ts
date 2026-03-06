@@ -3,14 +3,13 @@ import express from "express"
 import cors from "cors"
 import mongoose from "mongoose";
 import type { Application } from "express"
-import { startMongoClient } from "./services/mongoService.ts"
-import { createMessagesRouter } from "./routes/messagesRouter.ts"
-import listingsRouter from "./routes/listingsRouter.ts"
-import conversationsRouter from "./routes/conversationsRoutes.ts"
-import usersRouter from "./routes/usersRouter.ts"
-import authRouter from "./auth/authRoutes.ts"
-import { requireAuth } from "./auth/middleware.ts";
-import usersRouter from "./auth/usersRoutes";
+import { startMongoClient } from "./services/mongoService"
+import { createMessagesRouter } from "./routes/messagesRouter"
+import listingsRouter from "./routes/listingsRouter"
+import conversationsRouter from "./routes/conversationsRoutes"
+import usersRouter from "./routes/usersRouter"
+import authRouter from "./auth/authRoutes"
+import { requireAuth } from "./auth/middleware";
 
 dotenv.config()
 console.log("JWT_SECRET loaded:", !!process.env.JWT_SECRET);

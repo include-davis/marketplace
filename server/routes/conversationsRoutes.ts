@@ -1,6 +1,6 @@
 //router for the 'conversations' collection
 import {Router, type Request, type Response} from "express";
-import { getConversationController, addConversationController } from "../controllers/conversationsControllers.ts";
+import { getConversationController, addConversationController } from "../controllers/conversationsControllers";
 
 const conversationsRouter = Router()
 

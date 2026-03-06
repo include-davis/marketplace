@@ -1,6 +1,6 @@
 import { verifyJWT } from "./jwt";
 import { User } from "../models/User";
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 
 declare global {
   namespace Express {

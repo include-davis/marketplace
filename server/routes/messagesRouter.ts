@@ -1,16 +1,16 @@
 import { Router } from "express";
 import type { Application } from "express";
-import { MessagesController } from "../controllers/messagesController.ts";
-import { MessagesService } from "../services/messagesService.ts";
+import { MessagesController } from "../controllers/messagesController";
+import { MessagesService } from "../services/messagesService";
 import {
   listConversationsForUser,
   addConversation,
-} from "../services/conversationService.ts";
-import { markConversationRead } from "../services/messagesService.ts";
+} from "../services/conversationService";
+import { markConversationRead } from "../services/messagesService";
 
 export function createMessagesRouter(app: Application): Router {
   const router = Router();
-  
+
   // Get MongoDB client from app.locals
   const client = app.locals.client;
 
