@@ -44,12 +44,18 @@ export async function googleCallback(req: Request, res: Response) {
       });
     }
 
-    const jwt = signJWT(user.id);
+    const jwt = signJWT(user._id.toString());
 
+    // If client asks for JSON, return token in body; else redirect to frontend
+    if (req.query.format === "json") {
+      res.json({ message: "Login successful", token: jwt });
+      return;
+    }
     const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
     res.redirect(frontendUrl + "/auth/callback?token=" + jwt);
 
   } catch (err) {
+    
   console.log("Google login failed:", err);
   res.status(500).json({ message: "Google login failed" });
   }

@@ -7,6 +7,7 @@ import { startMongoClient } from "./services/mongoService.ts"
 import { createMessagesRouter } from "./routes/messagesRouter.ts"
 import listingsRouter from "./routes/listingsRouter.ts"
 import conversationsRouter from "./routes/conversationsRoutes.ts"
+import usersRouter from "./routes/usersRouter.ts"
 import authRouter from "./auth/authRoutes.ts"
 import { requireAuth } from "./auth/middleware.ts";
 import usersRouter from "./auth/usersRoutes";
@@ -41,11 +42,12 @@ async function setupClient() { //connect to mongo client
     app.locals.client = client;
     
     // Mount routers after client is connected
-    app.use("/messages", createMessagesRouter(app));
+    app.use("/messages", requireAuth, createMessagesRouter(app));
 }
 
 app.use("/listings", requireAuth, listingsRouter);
-app.use("/conversations", conversationsRouter)
+app.use("/conversations", requireAuth, conversationsRouter);
+app.use("/users", usersRouter); // routes inside use requireAuth
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
 

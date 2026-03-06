@@ -97,4 +97,52 @@ export class MessagesController {
       res.status(500).json({ error: "Failed to create message" });
     }
   };
+
+  /**
+   * GET /messages/conversations/:id - same as getMessages, param name is "id"
+   */
+  getMessagesByConvId = async (req: Request, res: Response): Promise<void> => {
+    (req as any).params = { ...req.params, conversationId: req.params.id };
+    return this.getMessages(req, res);
+  };
+
+  /**
+   * POST /messages/send - send a message (senderId from JWT)
+   */
+  sendMessage = async (req: Request, res: Response): Promise<void> => {
+    const senderId = (req as any).user?._id?.toString();
+    if (!senderId) {
+      res.status(401).json({ error: "Not authenticated" });
+      return;
+    }
+    (req as any).body = { ...req.body, senderId };
+    return this.createMessage(req, res);
+  };
+
+  /**
+   * DELETE /messages/delete/:messageId - delete a message (only sender can delete)
+   */
+  deleteMessage = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userId = (req as any).user?._id?.toString();
+      if (!userId) {
+        res.status(401).json({ error: "Not authenticated" });
+        return;
+      }
+      const { messageId } = req.params;
+      if (!messageId || typeof messageId !== "string" || !ObjectId.isValid(messageId)) {
+        res.status(400).json({ error: "Valid messageId is required" });
+        return;
+      }
+      const deleted = await this.messagesService.deleteMessage(messageId, userId);
+      if (!deleted) {
+        res.status(403).json({ error: "Message not found or you are not the sender" });
+        return;
+      }
+      res.status(200).json({ message: "Message deleted" });
+    } catch (error) {
+      console.error("Error in deleteMessage controller:", error);
+      res.status(500).json({ error: "Failed to delete message" });
+    }
+  };
 }

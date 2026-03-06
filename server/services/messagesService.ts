@@ -75,4 +75,42 @@ export class MessagesService {
       throw error;
     }
   }
+
+  //Delete a message by id. Returns true if deleted, false if not found or not sender.
+  async deleteMessage(messageId: string, senderId: string): Promise<boolean> {
+    const db = this.client.db(this.dbName);
+    const collection = db.collection<Message>(this.collectionName);
+    const result = await collection.deleteOne({
+      _id: new ObjectId(messageId),
+      senderId: new ObjectId(senderId),
+    });
+    return result.deletedCount === 1;
+  }
+}
+
+//Read receipt: one doc per user per conversation with last read time. 
+export interface ReadReceipt {
+  conversationId: ObjectId;
+  userId: ObjectId;
+  readAt: Date;
+}
+
+export function getReadReceiptsCollection(client: MongoClient) {
+  return client.db("MarketPlace").collection<ReadReceipt>("readReceipts");
+}
+
+export async function markConversationRead(
+  client: MongoClient,
+  conversationId: string,
+  userId: string
+): Promise<void> {
+  const coll = getReadReceiptsCollection(client);
+  await coll.updateOne(
+    {
+      conversationId: new ObjectId(conversationId),
+      userId: new ObjectId(userId),
+    },
+    { $set: { readAt: new Date() } },
+    { upsert: true }
+  );
 }
