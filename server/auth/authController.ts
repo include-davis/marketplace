@@ -15,7 +15,7 @@ export async function register(req: Request, res: Response) {
   const user = await User.create({
     email,
     passwordHash: hash,
-    isEmailVerified: true,
+    isEmailVerified: false,
   });
 
   //Issue a token that has the user's id in the payload and send to client
