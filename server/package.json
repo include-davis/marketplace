@@ -22,7 +22,9 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.0.0",
     "mongoose": "^9.2.1",
-    "typescript": "^5.9.3"
+    "node-path": "^0.0.3",
+    "typescript": "^5.9.3",
+    "ws": "^8.19.0"
   },
   "type": "module",
   "devDependencies": {

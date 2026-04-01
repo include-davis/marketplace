@@ -84,5 +84,6 @@ export function createMessagesRouter(app: Application): Router {
   router.get("/:conversationId", messagesController.getMessages);
   router.post("/", messagesController.createMessage);
 
+
   return router;
 }
