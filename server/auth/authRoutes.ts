@@ -24,7 +24,4 @@ router.get("/google", (req, res) => {
 
 router.get("/google/callback", googleCallback);
 
-//Protected routes
-router.use(requireAuth);
-
 export default router;

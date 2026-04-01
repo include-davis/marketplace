@@ -48,7 +48,6 @@ app.use("/listings", requireAuth, listingsRouter);
 app.use("/conversations", requireAuth, conversationsRouter);
 app.use("/users", usersRouter); // routes inside use requireAuth
 app.use("/auth", authRouter);
-app.use("/users", usersRouter);
 
 const PORT = process.env.PORT || 3000;
 
