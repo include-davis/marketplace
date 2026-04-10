@@ -1,5 +1,5 @@
 import type { Application, Request, Response } from "express";
-import { MessagesService } from "../services/messagesService.ts";
+import { MessagesService } from "../services/messagesService";
 import { ObjectId } from "mongodb";
 import { fileURLToPath } from 'url';
 
@@ -48,12 +48,20 @@ export class MessagesController {
   createMessage = async (req: Request, res: Response): Promise<void> => {
     try {
  
-      const { conversationId, senderId, receiverId, message, image } = req.body;
+      const { conversationId, senderId, receiverIds, message, image } = req.body;
 
       // Validate required fields
-      if (!conversationId || !senderId || !receiverId) {
+      if (!conversationId || !senderId || !receiverIds) {
         res.status(400).json({ 
-          error: "Missing required fields: conversationId, senderId, and receiverId are required" 
+          error: "Missing required fields: conversationId, senderId, and receiverIds are required" 
+        });
+        return;
+      }
+
+      // Validate receiverIds is an array
+      if (!Array.isArray(receiverIds) || receiverIds.length === 0) {
+        res.status(400).json({ 
+          error: "receiverIds must be a non-empty array" 
         });
         return;
       }
@@ -77,9 +85,12 @@ export class MessagesController {
         return;
       }
 
-      if (!ObjectId.isValid(receiverId)) {
-        res.status(400).json({ error: "Invalid receiverId format" });
-        return;
+      // Validate all receiverIds are valid ObjectIds
+      for (const receiverId of receiverIds) {
+        if (!ObjectId.isValid(receiverId)) {
+          res.status(400).json({ error: `Invalid receiverId format: ${receiverId}` });
+          return;
+        }
       }
 
       // If message is provided, validate it's a non-empty string
@@ -91,7 +102,7 @@ export class MessagesController {
       const newMessage = await this.messagesService.createMessage({
         conversationId,
         senderId,
-        receiverId,
+        receiverIds,
         message: message ? message.trim() : "",
         image: image || null,
       });
