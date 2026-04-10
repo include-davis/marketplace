@@ -1,15 +1,15 @@
-import dotenv from "dotenv" x
-import express from "express" x
-import cors from "cors" x
-import mongoose from "mongoose"; x 
-import type { Application } from "express" x
-import { startMongoClient } from "./services/mongoService" x
-import { createMessagesRouter } from "./routes/messagesRouter" x
-import listingsRouter from "./routes/listingsRouter" x
-import conversationsRouter from "./routes/conversationsRoutes" x
-import usersRouter from "./routes/usersRouter" x
-import authRouter from "./auth/authRoutes" x
-import { requireAuth } from "./auth/middleware"; x
+import dotenv from "dotenv" 
+import express from "express" 
+import cors from "cors" 
+import mongoose from "mongoose"; x
+import type { Application } from "express" 
+import { startMongoClient } from "./services/mongoService" 
+import { createMessagesRouter } from "./routes/messagesRouter" 
+import listingsRouter from "./routes/listingsRouter" 
+import conversationsRouter from "./routes/conversationsRoutes" 
+import usersRouter from "./routes/usersRouter" 
+import authRouter from "./auth/authRoutes" 
+import { requireAuth } from "./auth/middleware"; 
 import { loadEnvFile } from "process"
 import { initializeSocket, setupSocketHandlers } from "./socket.ts"
 import { MessagesService } from "./services/messagesService.ts"
