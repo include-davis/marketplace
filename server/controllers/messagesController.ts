@@ -1,5 +1,5 @@
 import type { Application, Request, Response } from "express";
-import { MessagesService } from "../services/messagesService.ts";
+import { MessagesService } from "../services/messagesService";
 import { ObjectId } from "mongodb";
 import { fileURLToPath } from 'url';
 

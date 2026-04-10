@@ -19,7 +19,7 @@ export async function register(req: Request, res: Response) {
   });
 
   //Issue a token that has the user's id in the payload and send to client
-  const token = signJWT(user.id);
+  const token = signJWT(user.id); 
   res.json({ message: "User created successfully", token });
 }
 

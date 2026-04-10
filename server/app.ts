@@ -11,8 +11,8 @@ import usersRouter from "./routes/usersRouter"
 import authRouter from "./auth/authRoutes" 
 import { requireAuth } from "./auth/middleware"; 
 import { loadEnvFile } from "process"
-import { initializeSocket, setupSocketHandlers } from "./socket.ts"
-import { MessagesService } from "./services/messagesService.ts"
+import { initializeSocket, setupSocketHandlers } from "./socket"
+import { MessagesService } from "./services/messagesService"
 
 dotenv.config()
 console.log("JWT_SECRET loaded:", !!process.env.JWT_SECRET);
