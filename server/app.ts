@@ -56,6 +56,24 @@ async function setupClient() {
 
 setupClient()
 
+// Add welcome route
+app.get("/", (req, res) => {
+    res.json({
+        message: "Marketplace API is running",
+        version: "1.0.0",
+        endpoints: {
+            auth: "/auth",
+            users: "/users",
+            listings: "/listings",
+            conversations: "/conversations",
+            messages: "/messages"
+        }
+    });
+});
+
+app.use("/listings", requireAuth, listingsRouter);
+// ... rest of your routes
+
 app.use("/listings", requireAuth, listingsRouter);
 app.use("/conversations", requireAuth, conversationsRouter);
 app.use("/users", usersRouter); // routes inside use requireAuth
