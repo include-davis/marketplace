@@ -25,12 +25,12 @@
     "mongoose": "^9.4.1",
     "node-path": "^0.0.3",
     "socket.io": "^4.8.3",
+    "socket.io-client": "^4.8.3",
     "typescript": "^5.9.3",
     "ws": "^8.19.0"
   },
   "type": "module",
   "devDependencies": {
-    "socket.io-client": "^4.8.3",
     "tsx": "^4.21.0"
   }
 }
