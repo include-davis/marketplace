@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
@@ -60,7 +59,6 @@ setupClient().then(() => {
     console.error("Failed to start server:", err);
     process.exit(1);
 });
-=======
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -97,4 +95,3 @@ const PORT = process.env.PORT || 3000;
 app.locals.server.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
->>>>>>> 74e18f0 (Add listings UI, components, and integrate frontend with backend services)
