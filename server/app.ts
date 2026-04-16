@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
@@ -59,3 +60,41 @@ setupClient().then(() => {
     console.error("Failed to start server:", err);
     process.exit(1);
 });
+=======
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import type { Application } from "express";
+import { startMongoClient } from "./services/mongoService.ts";
+import { createMessagesRouter } from "./routes/messagesRouter.ts";
+import listingsRouter from "./routes/listingsRouter.ts";
+import conversationsRouter from "./routes/conversationsRoutes.ts";
+import intializeSocket from "./socket.ts";
+
+dotenv.config(); // ✅ correctly loads .env
+
+const app: Application = express();
+app.use(cors());
+app.use(express.json());
+
+async function setupClient() {
+  const client = await startMongoClient();
+  app.locals.client = client;
+
+  // Mount routers after client is connected
+  app.use("/messages", createMessagesRouter(app));
+}
+
+setupClient();
+
+intializeSocket(app);
+
+app.use("/listings", listingsRouter);
+app.use("/conversations", conversationsRouter);
+
+const PORT = process.env.PORT || 3000;
+
+app.locals.server.listen(PORT, () => {
+  console.log(`listening on port ${PORT}`);
+});
+>>>>>>> 74e18f0 (Add listings UI, components, and integrate frontend with backend services)

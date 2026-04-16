@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import FilterSection from "@/components/listings/FilterSection";
 import ProductGrid from "@/components/listings/ProductGrid";
 import SortDropdown from "@/components/listings/SortDropdown";
@@ -11,33 +11,54 @@ import {
 } from "@/components/listings/ListingStates";
 
 type Product = {
-  id: number;
+  _id: string;
   title: string;
+  desc: string;
   price: number;
   category: string;
+  stock: number;
 };
 
-const mockProducts: Product[] = [
-  { id: 1, title: "Wireless Mouse", price: 25, category: "Electronics" },
-  { id: 2, title: "Desk Lamp", price: 40, category: "Home" },
-  { id: 3, title: "T-Shirt", price: 18, category: "Clothing" },
-  { id: 4, title: "Notebook", price: 8, category: "Books" },
-  { id: 5, title: "Keyboard", price: 55, category: "Electronics" },
-  { id: 6, title: "Hoodie", price: 35, category: "Clothing" },
-  { id: 7, title: "Shelf Organizer", price: 30, category: "Home" },
-  { id: 8, title: "Novel", price: 14, category: "Books" },
-];
-
 export default function ListingsPage() {
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortOption, setSortOption] = useState("default");
   const [visibleCount, setVisibleCount] = useState(4);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
-  const loading = false;
-  const error = false;
+  useEffect(() => {
+    async function fetchListings() {
+      try {
+        setLoading(true);
+        setError(false);
+
+        const response = await fetch("http://localhost:5001/listings");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch listings");
+        }
+
+        const result = await response.json();
+
+        if (!result.success) {
+          throw new Error(result.message || "Failed to load listings");
+        }
+
+        setProducts(result.data);
+      } catch (err) {
+        console.error("Error fetching listings:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchListings();
+  }, []);
 
   const filteredAndSortedProducts = useMemo(() => {
-    let result = [...mockProducts];
+    let result = [...products];
 
     if (selectedCategory !== "All") {
       result = result.filter(
@@ -54,22 +75,23 @@ export default function ListingsPage() {
     }
 
     return result;
-  }, [selectedCategory, sortOption]);
+  }, [products, selectedCategory, sortOption]);
 
   const visibleProducts = filteredAndSortedProducts.slice(0, visibleCount);
   const canLoadMore = visibleCount < filteredAndSortedProducts.length;
 
   return (
     <main style={{ padding: "2rem" }}>
-      <h1 style={{ marginBottom: "1.5rem" }}>Listings</h1>
-
       <section
         style={{
           display: "flex",
-          justifyContent: "flex-end",
+          justifyContent: "space-between",
+          alignItems: "center",
           marginBottom: "1.5rem",
         }}
       >
+        <h1>Listings</h1>
+
         <SortDropdown
           sortOption={sortOption}
           onSortChange={setSortOption}
