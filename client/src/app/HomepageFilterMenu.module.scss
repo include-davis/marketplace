@@ -1,87 +1,81 @@
 .filterMenu {
-    position: relative;
-    width: 300px;
-    height: 741px;
-    background-color: #dfdfdf;
-    border: 2px solid #1f1f1f;
-    border-radius: 5px;
-    flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  height: 741px;
+  padding: 28px 20px 24px 20px;
+  background-color: #dfdfdf;
+  border: 2px solid #1f1f1f;
+  border-radius: 5px;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .title {
-    position: absolute;
-    top: 28px;
-    left: 20px;
-    width: 260px;
-    height: 27px;
-    margin: 0;
-    font-family: "Poppins";
-    font-weight: 700;
-    font-style: normal;
-    font-size: 18px;
-    line-height: 100%;
-    letter-spacing: 0%;
-    color: #1f1f1f;
+  margin: 0 0 30px 0;
+  font-family: "Poppins";
+  font-weight: 700;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #1f1f1f;
 }
 
 .dropdownGroup {
-    position: absolute;
-    top: 86px;
-    left: 20px;
-    display: flex;
-    flex-direction: column;
-    width: 255px;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 255px;
+  gap: 20px;
 }
 
 .dropdown {
-    width: 254px;
-    height: 38px;
-    background-color: #dfdfdf;
-    border: 1px solid #1f1f1f;
-    border-radius: 5px;
-    font-family: "Poppins", sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    color: #1f1f1f;
-    padding: 0 10px;
-    appearance: auto;
-    cursor: pointer;
-   
-    &:focus {
-      outline: none;
-      border-color: #8d22f2;
-    }
+  width: 254px;
+  height: 38px;
+  background-color: #dfdfdf;
+  border: 1px solid #1f1f1f;
+  border-radius: 5px;
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 14px;
+  color: #1f1f1f;
+  padding: 0 10px;
+  appearance: auto;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #8d22f2;
+  }
 }
 
 .applyButton {
-    position: absolute;
-    top: 686px;
-    left: 114px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 65px;
-    height: 36px;
-    padding: 8px 10px;
-    gap: 8px;
-    background-color: #8d22f2;
-    border: 1px solid #8d22f2;
-    border-radius: 5px;
-    font-family: "Poppins";
-    font-weight: 400;
-    font-size: 14px;
-    color: #ffffff;
-    cursor: pointer;
-   
-    &:hover {
-      background-color: #7a1cd9;
-      border-color: #7a1cd9;
-    }
-   
-    &:active {
-      background-color: #6a16c0;
-      border-color: #6a16c0;
-    }
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 65px;
+  height: 36px;
+  margin-top: auto;
+  align-self: center;
+  padding: 8px 10px;
+  gap: 8px;
+  background-color: #8d22f2;
+  border: 1px solid #8d22f2;
+  border-radius: 5px;
+  font-family: "Poppins";
+  font-weight: 400;
+  font-size: 14px;
+  color: #ffffff;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #7a1cd9;
+    border-color: #7a1cd9;
+  }
+
+  &:active {
+    background-color: #6a16c0;
+    border-color: #6a16c0;
+  }
 }
