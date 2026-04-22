@@ -25,6 +25,7 @@ npm install
 ```
 
 This will install all required packages including:
+
 - Express.js
 - MongoDB driver
 - Mongoose
@@ -43,6 +44,7 @@ PORT=3000
 ```
 
 **Example:**
+
 ```env
 MONGO_CONNECTION_STRING=mongodb+srv://username:password@cluster0.mongodb.net/?appName=Cluster0
 JWT_SECRET=my_super_secret_key_123
@@ -54,16 +56,19 @@ PORT=3000
 ### 4. Run the Server
 
 **Development mode (with auto-reload):**
+
 ```bash
 npm run dev
 ```
 
 **Production mode:**
+
 ```bash
 npm start
 ```
 
 You should see:
+
 ```
 JWT_SECRET loaded: true
 listening on port 3000
@@ -107,12 +112,10 @@ The server includes real-time messaging via Socket.IO. Here's how to test it:
      - Leave default IDs as is
      - Click "Join Room"
      - Type a message and click "Send"
-   
    - **In Tab 2 (User B):**
      - Optionally swap the Sender/Receiver IDs
      - Click "Join Room"
      - Type a message and click "Send"
-   
    - **Result:** Messages appear in BOTH tabs instantly! 🎉
 
 ### Method 2: Browser Console
@@ -126,7 +129,9 @@ http://localhost:3000/messages/test/feature
 Your server listens for these events:
 
 **Client → Server:**
+
 - `join_room` - Join a conversation room
+
   ```javascript
   socket.emit('join_room', conversationId);
   ```
@@ -138,12 +143,14 @@ Your server listens for these events:
     senderId: '507f191e810c19729de860ea',
     receiverIds: ['507f191e810c19729de860eb'],
     message: 'Hello!',
-    image: null // optional
+    image: null, // optional
   });
   ```
 
 **Server → Client:**
+
 - `receive_message` - Receive a new message
+
   ```javascript
   socket.on('receive_message', (data) => {
     console.log('New message:', data);
@@ -160,6 +167,7 @@ Your server listens for these events:
 ### Valid Test IDs (MongoDB ObjectIDs)
 
 Use these 24-character hex strings for testing:
+
 - Conversation ID: `507f1f77bcf86cd799439011`
 - Sender ID: `507f191e810c19729de860ea`
 - Receiver ID: `507f191e810c19729de860eb`
@@ -167,20 +175,24 @@ Use these 24-character hex strings for testing:
 ## Troubleshooting
 
 ### Server won't start
+
 - ✅ Check that you're in the `server` folder
 - ✅ Verify `.env` file exists with correct MongoDB connection string
 - ✅ Run `npm install` to ensure all dependencies are installed
 
 ### "Cannot GET /"
+
 - This is normal! The server has no root route defined
 - Test the API endpoints listed above or use the messaging test page
 
 ### WebSocket connection failed
+
 - ✅ Make sure the server is running on port 3000
 - ✅ Use the Socket.IO client (not raw WebSocket)
 - ✅ Check that CORS is enabled (it is by default)
 
 ### Database connection issues
+
 - ✅ Verify MongoDB connection string in `.env` file
 - ✅ Check that your IP address is whitelisted in MongoDB Atlas
 - ✅ Ensure database username/password are correct
@@ -216,6 +228,7 @@ The server uses `tsx watch` for hot-reloading during development. Any changes to
 ## Support
 
 If you encounter issues:
+
 1. Check the terminal for error messages
 2. Verify all prerequisites are installed
 3. Ensure `.env` file is properly configured

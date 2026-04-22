@@ -1,10 +1,10 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient, ObjectId } from 'mongodb';
 
 export interface Message {
   _id?: ObjectId;
   conversationId: ObjectId;
   senderId: ObjectId;
-  receiverIds: ObjectId[];  // Changed to array for group chat support
+  receiverIds: ObjectId[]; // Changed to array for group chat support
   message: string;
   image: string | null;
   createdAt: Date;
@@ -13,15 +13,15 @@ export interface Message {
 export interface CreateMessageData {
   conversationId: string;
   senderId: string;
-  receiverIds: string[];  // Changed to array for group chat support
+  receiverIds: string[]; // Changed to array for group chat support
   message: string;
   image?: string | null;
 }
 
 export class MessagesService {
   private client: MongoClient;
-  private dbName: string = "MarketPlace";
-  private collectionName: string = "messages";
+  private dbName: string = 'MarketPlace';
+  private collectionName: string = 'messages';
 
   constructor(client: MongoClient) {
     this.client = client;
@@ -30,7 +30,9 @@ export class MessagesService {
   /**
    * Fetch all messages for a given conversation, sorted by createdAt ascending
    */
-  async getMessagesByConversationId(conversationId: string): Promise<Message[]> {
+  async getMessagesByConversationId(
+    conversationId: string,
+  ): Promise<Message[]> {
     try {
       const db = this.client.db(this.dbName);
       const collection = db.collection<Message>(this.collectionName);
@@ -42,7 +44,7 @@ export class MessagesService {
 
       return messages;
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error('Error fetching messages:', error);
       throw error;
     }
   }
@@ -58,20 +60,20 @@ export class MessagesService {
       const newMessage: Message = {
         conversationId: new ObjectId(messageData.conversationId),
         senderId: new ObjectId(messageData.senderId),
-        receiverIds: messageData.receiverIds.map(id => new ObjectId(id)),
+        receiverIds: messageData.receiverIds.map((id) => new ObjectId(id)),
         message: messageData.message,
         image: messageData.image || null,
         createdAt: new Date(),
       };
 
       const result = await collection.insertOne(newMessage);
-      
+
       return {
         ...newMessage,
         _id: result.insertedId,
       };
     } catch (error) {
-      console.error("Error creating message:", error);
+      console.error('Error creating message:', error);
       throw error;
     }
   }
