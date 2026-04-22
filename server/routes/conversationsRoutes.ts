@@ -3,6 +3,7 @@ import { Router, type Request, type Response } from 'express';
 import {
   getConversationController,
   addConversationController,
+  getConversationsByUserController
 } from '../controllers/conversationsControllers.ts';
 
 const conversationsRouter = Router();
@@ -14,4 +15,9 @@ conversationsRouter.post('/', (req: Request, res: Response) => {
   addConversationController(req, res);
 });
 
+conversationsRouter.get('/:userId', (req: Request, res: Response) => {
+  getConversationsByUserController(req, res);
+})
+
+//gets all conversations by user
 export default conversationsRouter;

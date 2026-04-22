@@ -31,3 +31,16 @@ export async function addConversation(
 
   return record.insertedId;
 }
+
+export async function getConversationByUser(
+  client: MongoClient,
+  userId: string,
+) {
+   const db: Db = client.db('MarketPlace');
+   const collection: Collection = db.collection('Conversations');
+
+   const records = await collection.find({users: userId}).toArray()
+
+   return records
+
+}
