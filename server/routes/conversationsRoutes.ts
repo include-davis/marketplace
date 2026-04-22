@@ -15,7 +15,7 @@ conversationsRouter.post('/', (req: Request, res: Response) => {
   addConversationController(req, res);
 });
 
-conversationsRouter.get('/:userId', (req: Request, res: Response) => {
+conversationsRouter.get('/:username', (req: Request, res: Response) => {
   getConversationsByUserController(req, res);
 })
 

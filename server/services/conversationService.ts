@@ -34,13 +34,14 @@ export async function addConversation(
 
 export async function getConversationByUser(
   client: MongoClient,
-  userId: string,
+  username: string,
 ) {
    const db: Db = client.db('MarketPlace');
    const collection: Collection = db.collection('Conversations');
 
-   const records = await collection.find({users: userId}).toArray()
+   const records = await collection.find({users: username}).toArray()
 
    return records
 
 }
+

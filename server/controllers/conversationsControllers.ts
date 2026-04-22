@@ -77,7 +77,7 @@ export const getConversationsByUserController = async (
   try {
     const record = await getConversationByUser(
       client,
-      req.params.userId,
+      req.params.username,
       
     );
     res.status(200).json({
