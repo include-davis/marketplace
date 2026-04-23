@@ -1,0 +1,18 @@
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu {
+    height: 3rem;
+    width: auto;
+    object-fit: contain;
+}
+
+.buttonText {
+    font-size: 1rem;
+    color: #7e7e7e;
+    pointer-events: none;
+}
