@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Navbar.module.css";
 import { SearchBar } from "../SearchBar";
+import { Option } from "../Option";
 import Image from "next/image";
 
 export function Navbar() {
@@ -28,13 +29,13 @@ export function Navbar() {
                 <SearchBar />
             </div>
             <div className={styles.menuSection}>
-                <Image src="/material-symbols-light_sell-outline.svg" alt="Sell" width={100} height={100} className={styles.menu} />
-                <Image src="/famicons_bag-outline.svg" alt="Buy" width={100} height={100} className={styles.menu} />
-                <Image src="/line-md_chat.svg" alt="Chat" width={100} height={100} className={styles.menu} />
+                <Option src="/material-symbols-light_sell-outline.svg" label="Sell" />
+                <Option src="/famicons_bag-outline.svg" label="Buy" />
+                <Option src="/line-md_chat.svg" label="Chat" />
 
             </div>
             <div className={styles.accountSection} ref={dropdownRef}>
-                <Image src="/userIcon.svg" alt="Menu" width={100} height={100} className={styles.menu} />
+                <Image src="/userIcon.svg" alt="Menu" width={100} height={100} className={styles.accountIcon} />
                 <button
                     className={styles.chevronButton}
                     onClick={() => setDropdownOpen((prev) => !prev)}
