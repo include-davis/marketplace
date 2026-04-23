@@ -28,9 +28,9 @@ export function Navbar() {
                 <SearchBar />
             </div>
             <div className={styles.menuSection}>
-                <Image src="/Sell.svg" alt="Sell" width={100} height={100} className={styles.menu} />
-                <Image src="/Buy.svg" alt="Buy" width={100} height={100} className={styles.menu} />
-                <Image src="/Chat.svg" alt="Chat" width={100} height={100} className={styles.menu} />
+                <Image src="/material-symbols-light_sell-outline.svg" alt="Sell" width={100} height={100} className={styles.menu} />
+                <Image src="/famicons_bag-outline.svg" alt="Buy" width={100} height={100} className={styles.menu} />
+                <Image src="/line-md_chat.svg" alt="Chat" width={100} height={100} className={styles.menu} />
 
             </div>
             <div className={styles.accountSection} ref={dropdownRef}>
