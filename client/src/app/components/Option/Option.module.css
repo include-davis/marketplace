@@ -3,10 +3,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
 }
 
-.menu {
-    height: 3rem;
+.buttonImage {
+    height: 2.5rem;
     width: auto;
     object-fit: contain;
 }
