@@ -1,6 +1,22 @@
 "use client";
 import styles from "./HomepageFilterMenu.module.scss";
 import React from "react";
+import FilterDropdown from "./FilterDropdown";
+
+const DROPDOWN_OPTIONS: { label: string; options: string[] }[] = [
+  {
+    label: "Categories",
+    options: ["Electrical Components", "Tools", "Materials", "Fasteners"],
+  },
+  {
+    label: "Price Range",
+    options: ["Under $250", "$250 - $500", "$500 - $750", "$750 - $1000", "$1000+"],
+  },
+  {
+    label: "Sort By",
+    options: ["Relevance", "Newly Listed", "Price: Low to High", "Price: High to Low"],
+  },
+];
 
 export default function HomepageFilterMenu() {
   return (
@@ -8,62 +24,9 @@ export default function HomepageFilterMenu() {
       <h1 className={styles.title}>Filters</h1>
 
       <div className={styles.dropdownGroup}>
-        <select className={styles.dropdown} defaultValue="">
-          <option value="" disabled>
-            Categories
-          </option>
-          <option value="Electrical Components">
-            Electrical Components
-          </option>
-          <option value="Tools">
-            Tools
-          </option>
-          <option value="Materials">
-            Materials
-          </option>
-          <option value="Fasteners">
-            Fasteners
-          </option>
-        </select>
-
-        <select className={styles.dropdown} defaultValue="">
-          <option value="" disabled>
-            Price Range
-          </option>
-          <option value="Relevance">
-            Relevance
-          </option>
-          <option value="Newly Listed">
-            Newly Listed
-          </option>
-          <option value="Price: Low to High">
-            Price: Low to High
-          </option>
-          <option value="Price: High to Low">
-            Price: High to Low
-          </option>
-        </select>
-
-        <select className={styles.dropdown} defaultValue="">
-          <option value="" disabled>
-            Sort By
-          </option>
-          <option value="Under $250">
-            Under $250
-          </option>
-          <option value="$250 - $500">
-            $250 - $500
-          </option>
-          <option value="$500 - $750">
-            $500 - $750
-          </option>
-          <option value="$750 - $1000">
-            $750 - $1000
-          </option>
-          <option value="$1000+">
-            $1000+
-          </option>
-        </select>
+        {DROPDOWN_OPTIONS.map(({ label, options }) => (
+          <FilterDropdown key={label} label={label} options={options} />
+        ))}        
       </div>
 
       <button className={styles.applyButton}>Apply</button>
