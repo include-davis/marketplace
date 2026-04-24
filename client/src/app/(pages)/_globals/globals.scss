@@ -1,0 +1,31 @@
+:root {
+  --white: #FAFAFA;
+  --pure-white: #FFFFFF;
+  --light-gray: #DFDFDF;
+  --medium-gray: #9E9E9E;
+  --darker-gray: #514F4F;
+  --black: #1F1F1F;
+  --purple: #8D22F2;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font1);
+}
+
+body {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+h1 {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1rem;
+  font-weight: 600;
+}
