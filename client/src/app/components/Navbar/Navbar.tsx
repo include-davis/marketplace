@@ -35,13 +35,13 @@ export function Navbar() {
 
             </div>
             <div className={styles.accountSection} ref={dropdownRef}>
-                <Image src="/userIcon.svg" alt="Menu" width={100} height={100} className={styles.accountIcon} />
                 <button
                     className={styles.chevronButton}
                     onClick={() => setDropdownOpen((prev) => !prev)}
                     aria-label="Account menu"
                     id="account-menu-toggle"
                 >
+                    <Image src="/userIcon.svg" alt="Menu" width={100} height={100} className={styles.accountIcon} />
                     <svg
                         className={`${styles.chevron} ${dropdownOpen ? styles.chevronOpen : ""}`}
                         width="16"

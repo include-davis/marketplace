@@ -51,12 +51,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #555;
+  color: #818181;
   transition: color 0.2s ease;
 }
 
 .chevronButton:hover {
-  color: #111;
+  color: #5a5a5a;
 }
 
 .chevron {
