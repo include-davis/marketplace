@@ -1,21 +1,5 @@
 import { Collection, Db, MongoClient, ObjectId } from 'mongodb';
 
-export async function getConversation(
-  client: MongoClient,
-  user1id: string,
-  user2id: string,
-) {
-  const db: Db = client.db('MarketPlace');
-  const collection: Collection = db.collection('Conversations');
-  const queryId = `${user1id}_${user2id}`;
-
-  const record = await collection.findOne({
-    conversationid: queryId,
-  });
-
-  return record;
-}
-
 export async function addConversation(
   client: MongoClient,
   user1id: string,
@@ -34,12 +18,12 @@ export async function addConversation(
 
 export async function getConversationByUser(
   client: MongoClient,
-  username: string,
+  userid: string,
 ) {
    const db: Db = client.db('MarketPlace');
    const collection: Collection = db.collection('Conversations');
 
-   const records = await collection.find({users: username}).toArray()
+   const records = await collection.find({users: userid}).toArray()
 
    return records
 

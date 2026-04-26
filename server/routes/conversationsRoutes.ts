@@ -1,22 +1,18 @@
 //router for the 'conversations' collection
 import { Router, type Request, type Response } from 'express';
 import {
-  getConversationController,
   addConversationController,
   getConversationsByUserController
-} from '../controllers/conversationsControllers.ts';
+} from '../controllers/conversationsControllers';
 
 const conversationsRouter = Router();
 
-conversationsRouter.get('/:user1id/:user2id', (req: Request, res: Response) => {
-  getConversationController(req, res);
-});
-conversationsRouter.post('/', (req: Request, res: Response) => {
+conversationsRouter.post('/', (req: Request, res: Response) => { //adds conversation document
   addConversationController(req, res);
 });
 
-conversationsRouter.get('/:username', (req: Request, res: Response) => {
-  getConversationsByUserController(req, res);
+conversationsRouter.get('/:userid', (req: Request, res: Response) => { //gets all conversations by username
+  getConversationsByUserController(req, res); 
 })
 
 //gets all conversations by user
