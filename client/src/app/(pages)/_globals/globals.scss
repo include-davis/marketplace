@@ -1,11 +1,13 @@
+@use "./mixins.scss";
+
 :root {
-  --white: #FAFAFA;
-  --pure-white: #FFFFFF;
-  --light-gray: #DFDFDF;
-  --medium-gray: #9E9E9E;
-  --darker-gray: #514F4F;
-  --black: #1F1F1F;
-  --purple: #8D22F2;
+  --white: #fafafa;
+  --pure-white: #ffffff;
+  --light-gray: #dfdfdf;
+  --medium-gray: #9e9e9e;
+  --darker-gray: #514f4f;
+  --black: #1f1f1f;
+  --purple: #8d22f2;
 }
 
 * {
