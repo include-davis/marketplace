@@ -12,23 +12,25 @@
   transform: translateY(-50%);
   width: 1.5rem;
   height: 1.5rem;
-  color: #7e7e7e;
   pointer-events: none;
 }
 
 .searchBar {
   width: 100%;
   padding: 0.6rem 0.8rem 0.4rem 2.5rem;
-  background-color: white;
-  border: 1px solid black;
+  background-color: var(--white);
+  border: 1px solid var(--black);
   border-radius: 0.3rem;
   font-size: 1.2rem;
-  color: black;
   outline: none;
   box-sizing: border-box;
 
+  &::placeholder {
+    color: var(--medium-gray);
+  }
+
   &:focus {
-    border-color: rgb(0, 0, 0);
-    box-shadow: 0 0 0 2px rgb(0, 0, 0);
+    border-color: var(--black);
+    box-shadow: 0 0 0 2px var(--black);
   }
 }

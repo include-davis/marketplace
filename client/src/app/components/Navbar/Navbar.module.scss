@@ -2,13 +2,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
+  background-color: var(--white);
   width: 100%;
   height: 5.625rem;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 100;
+  box-shadow: 0 0px 6px rgba(0, 0, 0, 0.12);
 }
 
 .logo {
@@ -51,12 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #818181;
   transition: color 0.2s ease;
-}
-
-.chevronButton:hover {
-  color: #5a5a5a;
 }
 
 .chevron {
@@ -71,9 +67,8 @@
   position: absolute;
   top: calc(100% + 1.05rem);
   right: 0;
-  background: white;
+  background: var(--white);
   border-radius: 0.5rem;
-  border-color: black;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   min-width: 15rem;
   overflow: hidden;
@@ -97,25 +92,25 @@
   display: block;
   padding: 0.5rem 1rem;
   background: none;
-  color: #333;
+  color: var(--black);
   cursor: pointer;
   text-align: left;
   width: 100%;
   font-size: 0.9rem;
   border: none;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--light-gray);
 }
 
 .dropdownItem:last-child {
   border-bottom: none;
   text-align: left;
   font-size: 0.9rem;
-  color: #333;
+  color: var(--black);
 
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
 
 .dropdownItem:hover {
-  background-color: #d3d3d3;
+  background-color: var(--light-gray);
 }
