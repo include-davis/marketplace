@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import styles from "./Navbar.module.css";
-import { SearchBar } from "../SearchBar";
-import { Option } from "../Option";
 import Image from "next/image";
+import styles from "./Navbar.module.css";
+import { SearchBar } from "../SearchBar/SearchBar";
+import { Option } from "../Option/Option";
 
-export function Navbar() {
+export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
