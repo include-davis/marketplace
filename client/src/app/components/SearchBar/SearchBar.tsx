@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./SearchBar.module.css";
+import styles from "./SearchBar.module.scss";
 
 export function SearchBar() {
   return (
@@ -22,8 +22,8 @@ export function SearchBar() {
         type="text"
         className={styles.searchBar}
         placeholder="Search"
-        // value={searchQuery}
-        // onChange={(e) => setSearchQuery(e.target.value)}
+      // value={searchQuery}
+      // onChange={(e) => setSearchQuery(e.target.value)}
       />
     </div>
   );

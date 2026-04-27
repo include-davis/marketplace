@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./Option.module.css";
+import styles from "./Option.module.scss";
 import Image from "next/image";
 
 interface OptionProps {
