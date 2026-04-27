@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import styles from "./Navbar.module.css";
+import styles from "./Navbar.module.scss";
 import { SearchBar } from "../SearchBar/SearchBar";
 import { Option } from "../Option/Option";
 
@@ -28,7 +28,7 @@ export default function Navbar() {
       <div className={styles.container}>
         <div className={styles.logoSection}>
           <Image
-            src="/Hashtag.svg"
+            src="/Navbar/Hashtag.svg"
             alt="Include"
             width={41}
             height={42}
@@ -39,9 +39,9 @@ export default function Navbar() {
           <SearchBar />
         </div>
         <div className={styles.menuSection}>
-          <Option src="/material-symbols-light_sell-outline.svg" label="Sell" />
-          <Option src="/famicons_bag-outline.svg" label="Buy" />
-          <Option src="/line-md_chat.svg" label="Chat" />
+          <Option src="/Navbar/material-symbols-light_sell-outline.svg" label="Sell" />
+          <Option src="/Navbar/famicons_bag-outline.svg" label="Buy" />
+          <Option src="/Navbar/line-md_chat.svg" label="Chat" />
         </div>
         <div className={styles.accountSection} ref={dropdownRef}>
           <button
@@ -51,7 +51,7 @@ export default function Navbar() {
             id="account-menu-toggle"
           >
             <Image
-              src="/userIcon.svg"
+              src="/Navbar/userIcon.svg"
               alt="Menu"
               width={100}
               height={100}
