@@ -1,0 +1,24 @@
+@mixin phone {
+  @media screen and (max-width: 720px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (max-width: 900px) {
+    @content;
+  }
+}
+
+@mixin sm-desktop {
+  @media screen and (max-width: 1200px) {
+    @content;
+  }
+}
+
+@mixin fontStyle($size, $weight, $line-height, $family) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
+  font-family: $family;
+}
