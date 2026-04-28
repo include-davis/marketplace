@@ -4,21 +4,15 @@
   width: 300px;
   height: 741px;
   padding: 28px 20px 24px 20px;
-  background-color: #dfdfdf;
-  border: 2px solid #1f1f1f;
+  background-color: var(--light-gray);
+  border: 2px solid var(--black);
   border-radius: 5px;
-  flex-shrink: 0;
-  box-sizing: border-box;
 }
 
 .title {
   margin: 0 0 30px 0;
-  font-family: "Poppins";
-  font-weight: 700;
-  font-style: normal;
-  font-size: 18px;
   line-height: 100%;
-  color: #1f1f1f;
+  color: var(--black);
 }
 
 .dropdownGroup {
@@ -30,7 +24,6 @@
 
 .applyButton {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   width: 65px;
@@ -38,14 +31,12 @@
   margin-top: auto;
   align-self: center;
   padding: 8px 10px;
-  gap: 8px;
-  background-color: #8d22f2;
-  border: 1px solid #8d22f2;
+  background-color: var(--purple);
+  border: 1px solid var(--purple);
   border-radius: 5px;
-  font-family: "Poppins";
   font-weight: 400;
-  font-size: 14px;
-  color: #ffffff;
+  font-size: 0.875rem;
+  color: var(--pure-white);
   cursor: pointer;
 
   &:hover {
