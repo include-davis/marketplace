@@ -1,17 +1,9 @@
-@use "../_globals/mixins";
-
-.pageWrapper {
-  padding: 0;
-  margin: 0;
-}
-
 .searchHeading {
   position: absolute;
   top: 144px;
   left: 108px;
   width: 203px;
   height: 27px;
-  margin: 0;
 }
 
 .contentRow {
@@ -20,10 +12,5 @@
   left: 103px;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  gap: 24px; 
-}
-
-.listingsArea {
-  flex: 1;
+  gap: 24px;
 }
