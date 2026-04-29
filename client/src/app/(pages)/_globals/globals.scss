@@ -1,0 +1,33 @@
+@use "./mixins.scss";
+
+:root {
+  --white: #fafafa;
+  --pure-white: #ffffff;
+  --light-gray: #dfdfdf;
+  --medium-gray: #9e9e9e;
+  --darker-gray: #514f4f;
+  --black: #1f1f1f;
+  --purple: #8d22f2;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font1);
+}
+
+body {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+h1 {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1rem;
+  font-weight: 600;
+}
