@@ -40,12 +40,12 @@
   cursor: pointer;
 
   &:hover {
-    background-color: #7a1cd9;
-    border-color: #7a1cd9;
+    background-color: var(--dark-purple);
+    border-color: var(--dark-purple);
   }
 
   &:active {
-    background-color: #6a16c0;
-    border-color: #6a16c0;
+    background-color: var(--darker-purple);
+    border-color: var(--darker-purple);
   }
 }
