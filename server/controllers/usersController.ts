@@ -1,4 +1,4 @@
-import type { Request, Response } from "express";
+import type { Request, Response } from 'express';
 
 /**
  * GET /users/me
@@ -8,7 +8,7 @@ import type { Request, Response } from "express";
 export async function getMe(req: Request, res: Response): Promise<void> {
   const user = req.user;
   if (!user) {
-    res.status(401).json({ message: "Not authenticated" });
+    res.status(401).json({ message: 'Not authenticated' });
     return;
   }
   // Return safe user fields only (passwordHash is already excluded by schema select: false)

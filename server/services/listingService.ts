@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient, ObjectId } from 'mongodb';
 
 /**
  * Get all listings from the database.
@@ -6,7 +6,7 @@ import { MongoClient, ObjectId } from "mongodb";
  * @returns An array containing all listings in the database.
  */
 export async function getAllListings(client: MongoClient) {
-  const listings = client.db("MarketPlace").collection("Listings").find();
+  const listings = client.db('MarketPlace').collection('Listings').find();
   return listings.toArray();
 }
 
@@ -17,8 +17,11 @@ export async function getAllListings(client: MongoClient) {
  * @returns An object representing the listing.
  */
 export async function getListing(client: MongoClient, id: string) {
-    const listing = await client.db("MarketPlace").collection("Listings").findOne({ _id: new ObjectId(id)});
-    return listing;
+  const listing = await client
+    .db('MarketPlace')
+    .collection('Listings')
+    .findOne({ _id: new ObjectId(id) });
+  return listing;
 }
 
 /**
@@ -31,16 +34,20 @@ export async function getListing(client: MongoClient, id: string) {
  * @param stock: The quantity available of the new listing.
  * @returns The newly created Listing's id.
  */
-export async function createListing(client: MongoClient, title: string, desc: string,
-                                    price: number, category: string, stock: number) {
-    const myDB = client.db("MarketPlace");
-    const myColl = myDB.collection("Listings");
-    const doc = { title, desc, price, category, stock };
-    const result = await myColl.insertOne(doc);
-    console.log(
-        `A document was inserted with the _id: ${result.insertedId}`,
-    );
-    return result.insertedId;
+export async function createListing(
+  client: MongoClient,
+  title: string,
+  desc: string,
+  price: number,
+  category: string,
+  stock: number,
+) {
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const doc = { title, desc, price, category, stock };
+  const result = await myColl.insertOne(doc);
+  console.log(`A document was inserted with the _id: ${result.insertedId}`);
+  return result.insertedId;
 }
 
 /**
@@ -53,23 +60,29 @@ export async function createListing(client: MongoClient, title: string, desc: st
  * @param category: The category the new listing falls under.
  * @param stock: The quantity available of the new listing.
  */
-export async function updateListing(client: MongoClient, id: string, title: string, 
-                                    desc: string, price: number, category: string, 
-                                    stock: number) {
-    const myDB = client.db("MarketPlace");
-    const myColl = myDB.collection("Listings");
-    const filter = { _id: new ObjectId(id) };
-    const updateDoc = {
-        $set: {
-            title,
-            desc,
-            price,
-            category,
-            stock
-        },
-    };
-    const result = await myColl.updateOne(filter, updateDoc);
-    return result;
+export async function updateListing(
+  client: MongoClient,
+  id: string,
+  title: string,
+  desc: string,
+  price: number,
+  category: string,
+  stock: number,
+) {
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const filter = { _id: new ObjectId(id) };
+  const updateDoc = {
+    $set: {
+      title,
+      desc,
+      price,
+      category,
+      stock,
+    },
+  };
+  const result = await myColl.updateOne(filter, updateDoc);
+  return result;
 }
 
 /**
@@ -78,9 +91,9 @@ export async function updateListing(client: MongoClient, id: string, title: stri
  * @param id Represents the ID of the listing to update.
  */
 export async function deleteListing(client: MongoClient, id: string) {
-    const myDB = client.db("MarketPlace");
-    const myColl = myDB.collection("Listings");
-    const filter = { _id: new ObjectId(id) };
-    const deleteResult = await myColl.deleteOne(filter);
-    return deleteResult;
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const filter = { _id: new ObjectId(id) };
+  const deleteResult = await myColl.deleteOne(filter);
+  return deleteResult;
 }
