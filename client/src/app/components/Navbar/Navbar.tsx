@@ -39,7 +39,10 @@ export default function Navbar() {
           <SearchBar />
         </div>
         <div className={styles.menuSection}>
-          <Option src="/Navbar/material-symbols-light_sell-outline.svg" label="Sell" />
+          <Option
+            src="/Navbar/material-symbols-light_sell-outline.svg"
+            label="Sell"
+          />
           <Option src="/Navbar/famicons_bag-outline.svg" label="Buy" />
           <Option src="/Navbar/line-md_chat.svg" label="Chat" />
         </div>
@@ -57,7 +60,13 @@ export default function Navbar() {
               height={100}
               className={styles.accountIcon}
             />
-            <Image src="/Navbar/chevron.svg" alt="Menu" width={30} height={30} className={`${styles.chevron} ${dropdownOpen ? styles.chevronOpen : ""}`} />
+            <Image
+              src="/Navbar/chevron.svg"
+              alt="Menu"
+              width={30}
+              height={30}
+              className={`${styles.chevron} ${dropdownOpen ? styles.chevronOpen : ""}`}
+            />
           </button>
           {dropdownOpen && (
             <div className={styles.dropdown} id="account-dropdown">
