@@ -3,15 +3,13 @@ import styles from "./FilterDropdown.module.scss";
 import React, { useState } from "react";
 import Image from "next/image";
 
-interface FilterDropdownProps {
-  label: string;
-  options: string[];
-}
-
 export default function FilterDropdown({
   label,
   options,
-}: FilterDropdownProps) {
+}: {
+  label: string;
+  options: string[];
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [checkedOptions, setCheckedOptions] = useState<Set<string>>(new Set());
 

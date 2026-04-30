@@ -5,7 +5,7 @@ import HomepageFilterMenu from "../_components/HomepageFilterMenu/HomepageFilter
 
 export default function Home() {
   return (
-    <div>
+    <div className={styles.pageWrapper}>
       <h1 className={styles.searchHeading}>
         Search Results for &ldquo;X&rdquo;
       </h1>

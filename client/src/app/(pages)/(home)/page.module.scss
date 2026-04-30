@@ -1,15 +1,14 @@
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 144px 0 0 112px;
+}
+
 .searchHeading {
-  position: absolute;
-  top: 144px;
-  left: 108px;
-  width: 203px;
-  height: 27px;
+  margin: 0 0 72px 0;
 }
 
 .contentRow {
-  position: absolute;
-  top: 239px;
-  left: 103px;
   display: flex;
   flex-direction: row;
   gap: 24px;
