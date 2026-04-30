@@ -5,6 +5,7 @@ import {
   getAllListings,
   getListing,
   updateListing,
+  addListingImage,
 } from '../services/listingService.ts';
 
 /**
@@ -165,6 +166,40 @@ export const deleteListingController = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       data: id,
+    });
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: e.message,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "couldn't get error message",
+      });
+    }
+  }
+};
+
+export const uploadPhotoController = async (req: Request, res: Response) => {
+  const client = req.app.locals.client;
+  try {
+    const id: string = req.params.id;
+    const image: string = req.body.image;
+
+    if (!image) {
+      res.status(400).json({
+        success: false,
+        message: 'No image provided. Needs a Base64-encoded string.',
+      });
+      return;
+    }
+
+    const record = await addListingImage(client, id, image);
+    res.status(200).json({
+      success: true,
+      data: record,
     });
   } catch (e: unknown) {
     if (e instanceof Error) {

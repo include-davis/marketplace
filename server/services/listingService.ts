@@ -97,3 +97,23 @@ export async function deleteListing(client: MongoClient, id: string) {
   const deleteResult = await myColl.deleteOne(filter);
   return deleteResult;
 }
+
+export async function addListingImage(
+  client: MongoClient,
+  id: string,
+  imageData: string,
+) {
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const filter = { _id: new ObjectId(id) };
+  const imagePush = {
+    $push: {
+      images: imageData,
+    },
+  };
+  const result = await myColl.updateOne(filter, imagePush as any);
+  if (result.matchedCount === 0) {
+    throw new Error(`Listing with id ${id} not found`);
+  }
+  return result;
+}

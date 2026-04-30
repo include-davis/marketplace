@@ -5,6 +5,7 @@ import {
   createListingController,
   updateListingController,
   deleteListingController,
+  uploadPhotoController,
 } from '../controllers/listingsController.ts';
 
 const listingsRouter = Router();
@@ -24,5 +25,7 @@ listingsRouter.put('/:id', (req: Request, res: Response) =>
 listingsRouter.delete('/:id', (req: Request, res: Response) =>
   deleteListingController(req, res),
 );
-
+listingsRouter.post('/:id/image', (req: Request, res: Response) =>
+  uploadPhotoController(req, res),
+);
 export default listingsRouter;
