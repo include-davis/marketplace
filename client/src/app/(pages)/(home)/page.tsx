@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.scss";
 import React from "react";
-import HomepageFilterMenu from "../_components/HomepageFilterMenu/HomepageFilterMenu";
+import HomepageFilterMenu from "./_components/HomepageFilterMenu/HomepageFilterMenu";
 
 export default function Home() {
   return (
