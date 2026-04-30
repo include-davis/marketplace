@@ -5,7 +5,7 @@ import {
   getAllListings,
   getListing,
   updateListing,
-  addListingImage,
+  addListingImages,
 } from '../services/listingService.ts';
 
 /**
@@ -186,20 +186,24 @@ export const uploadPhotoController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
     const id: string = req.params.id;
-    const image: string = req.body.image;
+    const files = req.files as Express.Multer.File[];
 
-    if (!image) {
+    if (!files || files.length === 0) {
       res.status(400).json({
         success: false,
-        message: 'No image provided. Needs a Base64-encoded string.',
+        message: 'No images provided. Upload image files using the "images" field.',
       });
       return;
     }
 
-    const record = await addListingImage(client, id, image);
+    const imagePaths = files.map(
+      (file) => `/uploads/listings/${file.filename}`,
+    );
+
+    const record = await addListingImages(client, id, imagePaths);
     res.status(200).json({
       success: true,
-      data: record,
+      data: { ...record, imagePaths },
     });
   } catch (e: unknown) {
     if (e instanceof Error) {

@@ -98,17 +98,17 @@ export async function deleteListing(client: MongoClient, id: string) {
   return deleteResult;
 }
 
-export async function addListingImage(
+export async function addListingImages(
   client: MongoClient,
   id: string,
-  imageData: string,
+  imagePaths: string[],
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
   const filter = { _id: new ObjectId(id) };
   const imagePush = {
     $push: {
-      images: imageData,
+      images: { $each: imagePaths },
     },
   };
   const result = await myColl.updateOne(filter, imagePush as any);

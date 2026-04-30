@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import path from 'path';
 import type { Application } from 'express';
 import { startMongoClient } from './services/mongoService';
 import { createMessagesRouter } from './routes/messagesRouter';
@@ -28,6 +29,7 @@ try {
 const app: Application = express();
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(import.meta.dirname, 'uploads')));
 
 // Create HTTP server + Socket.IO — must happen before listen()
 const server = initializeSocket(app);
