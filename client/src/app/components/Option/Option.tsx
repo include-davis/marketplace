@@ -3,13 +3,15 @@
 import styles from "./Option.module.scss";
 import Image from "next/image";
 
-interface OptionProps {
+export default function Option({
+  src,
+  label,
+  onClick,
+}: {
   src: string;
   label: string;
   onClick?: () => void;
-}
-
-export function Option({ src, label, onClick }: OptionProps) {
+}) {
   return (
     <button className={styles.buttonContainer} onClick={onClick}>
       <Image

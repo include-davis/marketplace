@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import styles from "./Navbar.module.scss";
 import { SearchBar } from "../SearchBar/SearchBar";
-import { Option } from "../Option/Option";
+import Option from "../Option/Option";
 
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
