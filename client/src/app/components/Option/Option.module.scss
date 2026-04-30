@@ -1,23 +1,23 @@
 .buttonContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .buttonImage {
-    height: 2.5rem;
-    width: auto;
-    object-fit: contain;
+  height: 40px;
+  width: auto;
+  object-fit: contain;
 }
 
 .buttonText {
-    font-size: 1rem;
-    font-family: var(--font1);
-    color: var(--black);
-    pointer-events: none;
+  font-size: 1rem;
+  font-family: var(--font1);
+  color: var(--black);
+  pointer-events: none;
 }
