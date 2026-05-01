@@ -7,7 +7,7 @@
 
 .searchIcon {
   position: absolute;
-  left: 9.6px;
+  left: 8px;
   top: 50%;
   transform: translateY(-50%);
   width: 24px;
@@ -17,20 +17,15 @@
 
 .searchBar {
   width: 100%;
-  padding: 9.6px 12.8px 6.4px 40px;
+  padding: 8px 12px 8px 40px;
   background-color: var(--white);
   border: 1px solid var(--black);
-  border-radius: 4.8px;
-  font-size: 19.2px;
+  border-radius: 5px;
+  font-size: 20px;
   outline: none;
   box-sizing: border-box;
 
   &::placeholder {
     color: var(--medium-gray);
-  }
-
-  &:focus {
-    border-color: var(--black);
-    box-shadow: 0 0 0 2px var(--black);
   }
 }
