@@ -1,4 +1,4 @@
-import "./_globals/globals.scss";
+//import "./_globals/globals.scss" 
 import React from "react";
 import { Poppins } from "next/font/google";
 
