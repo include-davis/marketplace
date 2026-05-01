@@ -15,7 +15,7 @@
 .logo {
   height: 43px;
   width: auto;
-  margin-left: 7rem;
+  margin-left: 112px;
   object-fit: contain;
 }
 
@@ -25,9 +25,9 @@
 }
 
 .menuSection {
-  margin-right: 6rem;
+  margin-right: 96px;
   display: flex;
-  gap: 2rem;
+  gap: 32px;
 }
 
 .accountIcon {
@@ -37,18 +37,18 @@
 }
 
 .accountSection {
-  margin-right: 10rem;
+  margin-right: 160px;
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 4px;
 }
 
 .chevronButton {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,10 +65,10 @@
 
 .dropdown {
   position: absolute;
-  top: calc(100% + 1.05rem);
-  right: 2.2rem;
+  top: calc(100% + 16.8px);
+  right: 35.2px;
   background: var(--white);
-  border-radius: 0.5rem;
+  border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   min-width: 296px;
   overflow: hidden;
@@ -90,13 +90,13 @@
 
 .dropdownItem {
   display: block;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   background: none;
   color: var(--black);
   cursor: pointer;
   text-align: left;
   width: 100%;
-  font-size: 0.9rem;
+  font-size: 18px;
   border: none;
   border-bottom: 1px solid var(--light-gray);
 }
@@ -104,7 +104,7 @@
 .dropdownItem:last-child {
   border-bottom: none;
   text-align: left;
-  font-size: 0.9rem;
+  font-size: 18px;
   color: var(--black);
 
   cursor: pointer;
