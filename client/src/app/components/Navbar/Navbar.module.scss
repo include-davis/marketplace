@@ -1,0 +1,115 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--white);
+  width: 100%;
+  height: 90px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  box-shadow: 0 0px 6px rgba(0, 0, 0, 0.12);
+}
+
+.logo {
+  height: 48px;
+  width: auto;
+  margin-left: 112px;
+  object-fit: contain;
+}
+
+.searchBarSection {
+  margin-right: auto;
+  width: 100%;
+}
+
+.menuSection {
+  margin-right: 96px;
+  display: flex;
+  gap: 32px;
+}
+
+.accountIcon {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+}
+
+.accountSection {
+  margin-right: 160px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chevronButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 16px);
+  right: 36px;
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  min-width: 296px;
+  overflow: hidden;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  display: block;
+  padding: 8px 16px;
+  background: none;
+  color: var(--black);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-size: 1.125rem;
+  border: none;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.dropdownItem:last-child {
+  border-bottom: none;
+  text-align: left;
+  font-size: 1.125rem;
+  color: var(--black);
+
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.dropdownItem:hover {
+  background-color: var(--light-gray);
+}
