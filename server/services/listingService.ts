@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient, ObjectId } from 'mongodb';
 
 /**
  * Get all listings from the database.
@@ -31,10 +31,16 @@ export async function getAllListings(client: MongoClient) {
  */
 export async function getListing(client: MongoClient, id: string) {
   const listing = await client
+<<<<<<< HEAD
     .db("MarketPlace")
     .collection("Listings")
     .findOne({ _id: new ObjectId(id) });
 
+=======
+    .db('MarketPlace')
+    .collection('Listings')
+    .findOne({ _id: new ObjectId(id) });
+>>>>>>> origin/main
   return listing;
 }
 
@@ -54,6 +60,7 @@ export async function createListing(
   desc: string,
   price: number,
   category: string,
+<<<<<<< HEAD
   stock: number
 ) {
   const myDB = client.db("MarketPlace");
@@ -63,6 +70,15 @@ export async function createListing(
   const result = await myColl.insertOne(doc);
   console.log(`A document was inserted with the _id: ${result.insertedId}`);
 
+=======
+  stock: number,
+) {
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const doc = { title, desc, price, category, stock };
+  const result = await myColl.insertOne(doc);
+  console.log(`A document was inserted with the _id: ${result.insertedId}`);
+>>>>>>> origin/main
   return result.insertedId;
 }
 
@@ -83,12 +99,20 @@ export async function updateListing(
   desc: string,
   price: number,
   category: string,
+<<<<<<< HEAD
   stock: number
 ) {
   const myDB = client.db("MarketPlace");
   const myColl = myDB.collection("Listings");
   const filter = { _id: new ObjectId(id) };
 
+=======
+  stock: number,
+) {
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const filter = { _id: new ObjectId(id) };
+>>>>>>> origin/main
   const updateDoc = {
     $set: {
       title,
@@ -98,7 +122,10 @@ export async function updateListing(
       stock,
     },
   };
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
   const result = await myColl.updateOne(filter, updateDoc);
   return result;
 }
@@ -109,6 +136,7 @@ export async function updateListing(
  * @param id Represents the ID of the listing to delete.
  */
 export async function deleteListing(client: MongoClient, id: string) {
+<<<<<<< HEAD
   const myDB = client.db("MarketPlace");
   const myColl = myDB.collection("Listings");
   const filter = { _id: new ObjectId(id) };
@@ -116,3 +144,11 @@ export async function deleteListing(client: MongoClient, id: string) {
   const deleteResult = await myColl.deleteOne(filter);
   return deleteResult;
 }
+=======
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const filter = { _id: new ObjectId(id) };
+  const deleteResult = await myColl.deleteOne(filter);
+  return deleteResult;
+}
+>>>>>>> origin/main

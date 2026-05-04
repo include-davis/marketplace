@@ -1,11 +1,11 @@
-import jwt from "jsonwebtoken";
-import type { SignOptions } from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
+import type { SignOptions } from 'jsonwebtoken';
 
-const JWT_EXPIRES_IN: string = process.env.JWT_EXPIRES_IN ?? "30m";
+const JWT_EXPIRES_IN: string = process.env.JWT_EXPIRES_IN ?? '30m';
 
 function getSecret() {
   const secret = process.env.JWT_SECRET;
-  if (!secret) throw new Error("JWT_SECRET missing from env");
+  if (!secret) throw new Error('JWT_SECRET missing from env');
   return secret;
 }
 
@@ -16,7 +16,7 @@ export function signJWT(userId: string) {
   return jwt.sign({ sub: userId }, getSecret(), options);
 }
 
-//Check if token is real, unlock it using secret, and return the payload (which contains the user's id) 
+//Check if token is real, unlock it using secret, and return the payload (which contains the user's id)
 export function verifyJWT(token: string) {
   return jwt.verify(token, getSecret()) as { sub: string };
 }

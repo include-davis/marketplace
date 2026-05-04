@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx app.ts",
+    "start": "node --experimental-strip-types app.ts",
+    "dev": "tsx watch app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -21,7 +22,7 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.0.0",
-    "mongoose": "^9.2.1",
+    "mongoose": "^9.4.1",
     "node-path": "^0.0.3",
     "socket.io": "^4.8.3",
     "typescript": "^5.9.3",
@@ -29,8 +30,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "@types/bcrypt": "^6.0.0",
-    "@types/jsonwebtoken": "^9.0.10",
-    "tsx": "^4.19.0"
+    "socket.io-client": "^4.8.3",
+    "tsx": "^4.21.0"
   }
 }

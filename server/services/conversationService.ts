@@ -1,27 +1,31 @@
-import { Collection, Db, MongoClient, ObjectId } from "mongodb";
+import { Collection, Db, MongoClient, ObjectId } from 'mongodb';
 
-export async function getConversation(client: MongoClient, user1id: string, user2id: string) {
-    
-    const db : Db = client.db("MarketPlace")
-    const collection : Collection = db.collection("Conversations")
-    const queryId = `${user1id}_${user2id}`;
-    
-    const record = await collection.findOne({ 
-    conversationid:  queryId })
+export async function addConversation(
+  client: MongoClient,
+  user1id: string,
+  user2id: string,
+) {
+  const db: Db = client.db('MarketPlace');
+  const collection: Collection = db.collection('Conversations');
 
-    return record
+  const record = await collection.insertOne({
+    users: [user1id, user2id],
+    conversationid: user1id + '_' + user2id,
+  });
+
+  return record.insertedId;
+}
+
+export async function getConversationByUser(
+  client: MongoClient,
+  userid: string,
+) {
+   const db: Db = client.db('MarketPlace');
+   const collection: Collection = db.collection('Conversations');
+
+   const records = await collection.find({users: userid}).toArray()
+
+   return records
 
 }
 
-export async function addConversation(client: MongoClient, user1id: string, user2id: string) {
-    
-    const db: Db = client.db("MarketPlace")
-    const collection: Collection = db.collection("Conversations")
-
-    const record = await collection.insertOne({
-        users: [user1id, user2id],
-        conversationid: user1id + '_' + user2id,
-    })
-
-    return record.insertedId
-}
