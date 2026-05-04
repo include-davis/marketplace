@@ -3,27 +3,35 @@
 import { useEffect, useMemo, useState } from "react";
 import FilterSection from "@/components/listings/FilterSection";
 import ProductGrid from "@/components/listings/ProductGrid";
-import SortDropdown from "@/components/listings/SortDropdown";
 import {
   EmptyState,
   ErrorState,
   LoadingState,
 } from "@/components/listings/ListingStates";
 
+type ListingStatus = "active" | "inactive" | "draft" | "completed";
+
 type Product = {
   _id: string;
   title: string;
-  desc: string;
+  desc?: string;
   price: number;
-  category: string;
-  stock: number;
+  category?: string;
+  stock?: number;
+  imageUrl?: string;
+  status?: ListingStatus;
+};
+
+const statusLabels: Record<ListingStatus, string> = {
+  active: "Active",
+  inactive: "Inactive",
+  draft: "Drafts",
+  completed: "Completed",
 };
 
 export default function ListingsPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [sortOption, setSortOption] = useState("default");
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [selectedStatus, setSelectedStatus] = useState<ListingStatus>("active");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -45,7 +53,12 @@ export default function ListingsPage() {
           throw new Error(result.message || "Failed to load listings");
         }
 
-        setProducts(result.data);
+        const listingsWithDefaultStatus = result.data.map((listing: Product) => ({
+          ...listing,
+          status: listing.status || "active",
+        }));
+
+        setProducts(listingsWithDefaultStatus);
       } catch (err) {
         console.error("Error fetching listings:", err);
         setError(true);
@@ -57,58 +70,52 @@ export default function ListingsPage() {
     fetchListings();
   }, []);
 
-  const filteredAndSortedProducts = useMemo(() => {
-    let result = [...products];
+  const statusCounts = useMemo(() => {
+    return {
+      active: products.filter((product) => product.status === "active").length,
+      inactive: products.filter((product) => product.status === "inactive").length,
+      draft: products.filter((product) => product.status === "draft").length,
+      completed: products.filter((product) => product.status === "completed").length,
+    };
+  }, [products]);
 
-    if (selectedCategory !== "All") {
-      result = result.filter(
-        (product) => product.category === selectedCategory
-      );
-    }
-
-    if (sortOption === "price-low") {
-      result.sort((a, b) => a.price - b.price);
-    } else if (sortOption === "price-high") {
-      result.sort((a, b) => b.price - a.price);
-    } else if (sortOption === "title-az") {
-      result.sort((a, b) => a.title.localeCompare(b.title));
-    }
-
-    return result;
-  }, [products, selectedCategory, sortOption]);
-
-  const visibleProducts = filteredAndSortedProducts.slice(0, visibleCount);
-  const canLoadMore = visibleCount < filteredAndSortedProducts.length;
+  const filteredProducts = useMemo(() => {
+    return products.filter((product) => product.status === selectedStatus);
+  }, [products, selectedStatus]);
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <section
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "1.5rem",
-        }}
-      >
-        <h1>Listings</h1>
-
-        <SortDropdown
-          sortOption={sortOption}
-          onSortChange={setSortOption}
-        />
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#ffffff",
+        padding: "2rem 3rem",
+      }}
+    >
+      <section style={{ marginBottom: "3rem" }}>
+        <p
+          style={{
+            fontSize: "0.875rem",
+            fontWeight: 600,
+            color: "#111",
+            marginBottom: "2rem",
+          }}
+        >
+          Sell &gt; {statusLabels[selectedStatus]} Listings
+        </p>
       </section>
 
       <section
         style={{
           display: "grid",
-          gridTemplateColumns: "260px 1fr",
-          gap: "2rem",
+          gridTemplateColumns: "220px 1fr",
+          gap: "3rem",
           alignItems: "start",
         }}
       >
         <FilterSection
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
+          selectedStatus={selectedStatus}
+          onStatusChange={setSelectedStatus}
+          statusCounts={statusCounts}
         />
 
         <div>
@@ -116,30 +123,13 @@ export default function ListingsPage() {
             <LoadingState />
           ) : error ? (
             <ErrorState />
-          ) : filteredAndSortedProducts.length === 0 ? (
+          ) : filteredProducts.length === 0 ? (
             <EmptyState />
           ) : (
-            <>
-              <ProductGrid products={visibleProducts} />
-
-              {canLoadMore && (
-                <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
-                  <button
-                    onClick={() => setVisibleCount((prev) => prev + 4)}
-                    style={{
-                      padding: "0.75rem 1.25rem",
-                      borderRadius: "8px",
-                      border: "1px solid #333",
-                      backgroundColor: "#111",
-                      color: "white",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Load More
-                  </button>
-                </div>
-              )}
-            </>
+            <ProductGrid
+              products={filteredProducts}
+              selectedStatus={selectedStatus}
+            />
           )}
         </div>
       </section>

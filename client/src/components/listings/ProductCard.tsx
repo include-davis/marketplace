@@ -1,81 +1,153 @@
+type ListingStatus = "active" | "inactive" | "draft" | "completed";
+
 type Product = {
-    _id?: string;
-    title: string;
-    desc?: string;
-    price: number;
-    category: string;
-    stock?: number;
-    image?: string;
-  };
-  
-  type ProductCardProps = {
-    product: Product;
-  };
-  
-  export default function ProductCard({ product }: ProductCardProps) {
-    const description = product.desc ?? "No description available";
-    const stockDisplay = product.stock ?? "N/A";
-    const hasImage = Boolean(product.image);
-  
-    return (
+  _id?: string;
+  title: string;
+  price: number;
+  image?: string;
+  imageUrl?: string;
+  status?: ListingStatus;
+};
+
+type ProductCardProps = {
+  product: Product;
+  selectedStatus: ListingStatus;
+};
+
+export default function ProductCard({
+  product,
+  selectedStatus,
+}: ProductCardProps) {
+  const imageSrc = product.image || product.imageUrl;
+
+  const statusLabel =
+    selectedStatus === "inactive"
+      ? "INACTIVE"
+      : selectedStatus === "draft"
+      ? "DRAFT"
+      : selectedStatus === "completed"
+      ? "SOLD"
+      : null;
+
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "40px 80px 1fr 120px 40px 40px",
+        alignItems: "center",
+        gap: "1rem",
+        padding: "1.25rem 0",
+        borderBottom: "1px solid #eee",
+        backgroundColor: "#fff",
+        transition: "background 0.2s",
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.background = "#fafafa")}
+      onMouseLeave={(e) => (e.currentTarget.style.background = "#fff")}
+    >
+      {/* Checkbox */}
+      <input type="checkbox" />
+
+      {/* Image */}
       <div
         style={{
-          border: "1px solid #333",
-          borderRadius: "10px",
-          padding: "1rem",
-          backgroundColor: "#111",
+          width: "80px",
+          height: "80px",
+          borderRadius: "8px",
+          overflow: "hidden",
+          backgroundColor: "#e5e5e5",
+          position: "relative",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "0.75rem",
+          color: "#777",
         }}
       >
-        {hasImage ? (
+        {imageSrc ? (
           <img
-            src={product.image}
+            src={imageSrc}
             alt={product.title}
             style={{
               width: "100%",
-              height: "150px",
+              height: "100%",
               objectFit: "cover",
-              borderRadius: "8px",
-              marginBottom: "1rem",
             }}
           />
         ) : (
+          "No Image"
+        )}
+
+        {/* Status overlay */}
+        {statusLabel && (
           <div
             style={{
-              height: "150px",
-              backgroundColor: "#222",
-              borderRadius: "8px",
-              marginBottom: "1rem",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#888",
-              fontSize: "0.95rem",
+              position: "absolute",
+              bottom: "4px",
+              left: "4px",
+              backgroundColor: "rgba(0,0,0,0.7)",
+              color: "#fff",
+              fontSize: "0.65rem",
+              padding: "2px 6px",
+              borderRadius: "4px",
+              fontWeight: 600,
             }}
           >
-            No Image
+            {statusLabel}
           </div>
         )}
-  
-        <div>
-          <h3 style={{ marginBottom: "0.5rem" }}>{product.title}</h3>
-          <p style={{ marginBottom: "0.25rem", fontWeight: "bold" }}>
-            ${product.price}
-          </p>
-          <p style={{ color: "#aaa", marginBottom: "0.25rem" }}>
-            {product.category}
-          </p>
-          <p style={{ color: "#aaa", marginBottom: "0.5rem" }}>
-            Stock: {stockDisplay}
-          </p>
-          <p style={{ color: "#bbb", fontSize: "0.9rem" }}>
-            {description.length > 60
-              ? description.slice(0, 60) + "..."
-              : description}
-          </p>
-        </div>
       </div>
-    );
-  }
+
+      {/* Title */}
+      <div>
+        <p
+          style={{
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            color: "#111",
+          }}
+        >
+          {product.title}
+        </p>
+      </div>
+
+      {/* Price input */}
+      <input
+        type="number"
+        defaultValue={product.price}
+        style={{
+          padding: "0.4rem 0.5rem",
+          border: "1px solid #ddd",
+          borderRadius: "6px",
+          width: "100%",
+          fontSize: "0.9rem",
+        }}
+      />
+
+      {/* Delete icon */}
+      <button
+        style={{
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          fontSize: "1rem",
+          color: "#666",
+        }}
+      >
+        🗑
+      </button>
+
+      {/* Dropdown icon */}
+      <button
+        style={{
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          fontSize: "1rem",
+          color: "#666",
+        }}
+      >
+        ▾
+      </button>
+    </div>
+  );
+}

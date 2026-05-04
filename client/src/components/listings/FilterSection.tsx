@@ -1,48 +1,77 @@
+type ListingStatus = "active" | "inactive" | "draft" | "completed";
+
 type FilterSectionProps = {
-    selectedCategory: string;
-    onCategoryChange: (category: string) => void;
-  };
-  
-  export default function FilterSection({
-    selectedCategory,
-    onCategoryChange,
-  }: FilterSectionProps) {
-    const categories = ["All", "Electronics", "Clothing", "Home", "Books"];
-  
-    return (
-      <aside
+  selectedStatus: ListingStatus;
+  onStatusChange: (status: ListingStatus) => void;
+  statusCounts: Record<ListingStatus, number>;
+};
+
+export default function FilterSection({
+  selectedStatus,
+  onStatusChange,
+  statusCounts,
+}: FilterSectionProps) {
+  const statuses: { key: ListingStatus; label: string }[] = [
+    { key: "active", label: "Active" },
+    { key: "inactive", label: "Inactive" },
+    { key: "draft", label: "Drafts" },
+    { key: "completed", label: "Completed" },
+  ];
+
+  return (
+    <aside
+      style={{
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+        padding: "1rem",
+        backgroundColor: "#fff",
+        width: "100%",
+        boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+      }}
+    >
+      <h2
         style={{
-          border: "1px solid #333",
-          borderRadius: "10px",
-          padding: "1rem",
-          backgroundColor: "#111",
+          marginBottom: "1rem",
+          fontSize: "1rem",
+          fontWeight: 600,
         }}
       >
-        <h2 style={{ marginBottom: "1rem" }}>Filters</h2>
-  
-        <div>
-          <p style={{ marginBottom: "0.5rem" }}>Category</p>
-          {categories.map((category) => (
-            <label
-              key={category}
+        Listings
+      </h2>
+
+      <div>
+        {statuses.map((status) => {
+          const isSelected = selectedStatus === status.key;
+
+          return (
+            <div
+              key={status.key}
+              onClick={() => onStatusChange(status.key)}
               style={{
-                display: "block",
-                marginBottom: "0.5rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: "0.5rem 0.75rem",
+                marginBottom: "0.25rem",
                 cursor: "pointer",
+                borderRadius: "6px",
+                backgroundColor: isSelected ? "#f3f3f3" : "transparent",
+                fontWeight: isSelected ? 600 : 400,
+                transition: "background 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                if (!isSelected) e.currentTarget.style.background = "#fafafa";
+              }}
+              onMouseLeave={(e) => {
+                if (!isSelected) e.currentTarget.style.background = "transparent";
               }}
             >
-              <input
-                type="radio"
-                name="category"
-                value={category}
-                checked={selectedCategory === category}
-                onChange={() => onCategoryChange(category)}
-                style={{ marginRight: "0.5rem" }}
-              />
-              {category}
-            </label>
-          ))}
-        </div>
-      </aside>
-    );
-  }
+              <span>{status.label}</span>
+              <span>{statusCounts?.[status.key] ?? 0}</span>
+            </div>
+          );
+        })}
+      </div>
+    </aside>
+  );
+}

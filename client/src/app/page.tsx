@@ -3,90 +3,92 @@
 import { useMemo, useState } from "react";
 import FilterSection from "@/components/listings/FilterSection";
 import ProductGrid from "@/components/listings/ProductGrid";
-import SortDropdown from "@/components/listings/SortDropdown";
 import {
   EmptyState,
   ErrorState,
   LoadingState,
 } from "@/components/listings/ListingStates";
 
+type ListingStatus = "active" | "inactive" | "draft" | "completed";
+
 type Product = {
   id: number;
   title: string;
   price: number;
-  category: string;
+  category?: string;
+  status: ListingStatus;
+  image?: string;
+  imageUrl?: string;
 };
 
 const mockProducts: Product[] = [
-  { id: 1, title: "Wireless Mouse", price: 25, category: "Electronics" },
-  { id: 2, title: "Desk Lamp", price: 40, category: "Home" },
-  { id: 3, title: "T-Shirt", price: 18, category: "Clothing" },
-  { id: 4, title: "Notebook", price: 8, category: "Books" },
-  { id: 5, title: "Keyboard", price: 55, category: "Electronics" },
-  { id: 6, title: "Hoodie", price: 35, category: "Clothing" },
-  { id: 7, title: "Shelf Organizer", price: 30, category: "Home" },
-  { id: 8, title: "Novel", price: 14, category: "Books" },
+  { id: 1, title: "Wireless Mouse", price: 25, category: "Electronics", status: "active" },
+  { id: 2, title: "Desk Lamp", price: 40, category: "Home", status: "active" },
+  { id: 3, title: "T-Shirt", price: 18, category: "Clothing", status: "inactive" },
+  { id: 4, title: "Notebook", price: 8, category: "Books", status: "draft" },
+  { id: 5, title: "Keyboard", price: 55, category: "Electronics", status: "completed" },
+  { id: 6, title: "Hoodie", price: 35, category: "Clothing", status: "active" },
+  { id: 7, title: "Shelf Organizer", price: 30, category: "Home", status: "inactive" },
+  { id: 8, title: "Novel", price: 14, category: "Books", status: "completed" },
 ];
 
+const statusLabels: Record<ListingStatus, string> = {
+  active: "Active",
+  inactive: "Inactive",
+  draft: "Drafts",
+  completed: "Completed",
+};
+
 export default function ListingsPage() {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [sortOption, setSortOption] = useState("default");
-  const [visibleCount, setVisibleCount] = useState(4);
+  const [selectedStatus, setSelectedStatus] = useState<ListingStatus>("active");
 
   const loading = false;
   const error = false;
 
-  const filteredAndSortedProducts = useMemo(() => {
-    let result = [...mockProducts];
+  const statusCounts = useMemo(() => {
+    return {
+      active: mockProducts.filter((product) => product.status === "active").length,
+      inactive: mockProducts.filter((product) => product.status === "inactive").length,
+      draft: mockProducts.filter((product) => product.status === "draft").length,
+      completed: mockProducts.filter((product) => product.status === "completed").length,
+    };
+  }, []);
 
-    if (selectedCategory !== "All") {
-      result = result.filter(
-        (product) => product.category === selectedCategory
-      );
-    }
-
-    if (sortOption === "price-low") {
-      result.sort((a, b) => a.price - b.price);
-    } else if (sortOption === "price-high") {
-      result.sort((a, b) => b.price - a.price);
-    } else if (sortOption === "title-az") {
-      result.sort((a, b) => a.title.localeCompare(b.title));
-    }
-
-    return result;
-  }, [selectedCategory, sortOption]);
-
-  const visibleProducts = filteredAndSortedProducts.slice(0, visibleCount);
-  const canLoadMore = visibleCount < filteredAndSortedProducts.length;
+  const filteredProducts = useMemo(() => {
+    return mockProducts.filter((product) => product.status === selectedStatus);
+  }, [selectedStatus]);
 
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1 style={{ marginBottom: "1.5rem" }}>Listings</h1>
-
-      <section
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#ffffff",
+        padding: "2rem 3rem",
+      }}
+    >
+      <p
         style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          marginBottom: "1.5rem",
+          fontSize: "0.875rem",
+          fontWeight: 600,
+          color: "#111",
+          marginBottom: "3rem",
         }}
       >
-        <SortDropdown
-          sortOption={sortOption}
-          onSortChange={setSortOption}
-        />
-      </section>
+        Sell &gt; {statusLabels[selectedStatus]} Listings
+      </p>
 
       <section
         style={{
           display: "grid",
-          gridTemplateColumns: "260px 1fr",
-          gap: "2rem",
+          gridTemplateColumns: "220px 1fr",
+          gap: "3rem",
           alignItems: "start",
         }}
       >
         <FilterSection
-          selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
+          selectedStatus={selectedStatus}
+          onStatusChange={setSelectedStatus}
+          statusCounts={statusCounts}
         />
 
         <div>
@@ -94,30 +96,13 @@ export default function ListingsPage() {
             <LoadingState />
           ) : error ? (
             <ErrorState />
-          ) : filteredAndSortedProducts.length === 0 ? (
+          ) : filteredProducts.length === 0 ? (
             <EmptyState />
           ) : (
-            <>
-              <ProductGrid products={visibleProducts} />
-
-              {canLoadMore && (
-                <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
-                  <button
-                    onClick={() => setVisibleCount((prev) => prev + 4)}
-                    style={{
-                      padding: "0.75rem 1.25rem",
-                      borderRadius: "8px",
-                      border: "1px solid #333",
-                      backgroundColor: "#111",
-                      color: "white",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Load More
-                  </button>
-                </div>
-              )}
-            </>
+            <ProductGrid
+              products={filteredProducts}
+              selectedStatus={selectedStatus}
+            />
           )}
         </div>
       </section>
