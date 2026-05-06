@@ -21,17 +21,16 @@ export default function FilterSection({
   return (
     <aside
       style={{
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-        padding: "1rem",
-        backgroundColor: "#fff",
+        border: "2px solid #111",
+        borderRadius: "8px",
+        padding: "1.5rem",
+        backgroundColor: "#e6e6e6",
         width: "100%",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
       }}
     >
       <h2
         style={{
-          marginBottom: "1rem",
+          marginBottom: "1.5rem",
           fontSize: "1rem",
           fontWeight: 600,
         }}
@@ -51,19 +50,12 @@ export default function FilterSection({
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                padding: "0.5rem 0.75rem",
-                marginBottom: "0.25rem",
+                padding: "0.55rem 0",
+                marginBottom: "0.5rem",
                 cursor: "pointer",
-                borderRadius: "6px",
-                backgroundColor: isSelected ? "#f3f3f3" : "transparent",
-                fontWeight: isSelected ? 600 : 400,
-                transition: "background 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                if (!isSelected) e.currentTarget.style.background = "#fafafa";
-              }}
-              onMouseLeave={(e) => {
-                if (!isSelected) e.currentTarget.style.background = "transparent";
+                backgroundColor: "transparent",
+                fontWeight: isSelected ? 500 : 400,
+                color: isSelected ? "#111" : "#555",
               }}
             >
               <span>{status.label}</span>
