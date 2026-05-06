@@ -33,6 +33,7 @@ export default function FilterSection({
           marginBottom: "1.5rem",
           fontSize: "1rem",
           fontWeight: 600,
+          color: "#1F1F1F",
         }}
       >
         Listings
@@ -55,7 +56,7 @@ export default function FilterSection({
                 cursor: "pointer",
                 backgroundColor: "transparent",
                 fontWeight: isSelected ? 500 : 400,
-                color: isSelected ? "#111" : "#555",
+                color: isSelected ? "#7A7A7A" : "#1F1F1F",
               }}
             >
               <span>{status.label}</span>
