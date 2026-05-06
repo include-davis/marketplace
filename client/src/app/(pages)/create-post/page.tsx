@@ -72,51 +72,81 @@ function DimensionField() {
 
 export default function CreatePostPage() {
     return (
-      <main>
-        <Link href="/home">Back</Link>
-        <form>
-          <div>
+      <main className={styles.page}>
+        <div className={styles.backLink}>
+          <Image src={'/back_arrow.svg'} alt="<" width={24} height={24} />
+          <Link href="/home">Back</Link>
+        </div>
+
+        <form className={styles.form}>
+          <div className={styles.title}>
             <h2>List an item</h2>
           </div>
-          <div>
-            <h2>Product Details</h2>
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>Product Details</h2>
+
             <div>
               <h3>Title</h3>
               <TextField label="Title" name="Title" placeholder="Text" />
             </div>
-            <div>
-              <h3>Description</h3>
+
+            <div className={styles.textAreaField}>
+              <label htmlFor="Description">
+                Description <span>*</span>
+              </label>
               <TextField
                 label="Description"
                 name="Description"
                 placeholder="Text"
               />
             </div>
-            <div>
-              <div>
-                <h3>Category</h3>
+
+            <div className={styles.twoColumn}>
+              <div className={styles.dropdownField}>
+                <label>
+                  Category <span>*</span>
+                </label>
                 <FilterDropdown label="Text" options={['meow', 'woof']} />
               </div>
-              <div>
-                <h3>Material Property</h3>
+              <div className={styles.dropdownField}>
+                <label>
+                  Material Property <span>*</span>
+                </label>
                 <FilterDropdown label="Text" options={['idk', 'hi']} />
               </div>
             </div>
-            <div>
-              <h3>Condition</h3>
-              <FilterDropdown label="Text" options={['bad', 'mid', 'good']} />
+
+            <div className={styles.halfWidth}>
+              <div className={styles.dropdownField}>
+                <label>
+                  Condition <span>*</span>
+                </label>
+                <FilterDropdown label="Text" options={['bad', 'mid', 'good']} />
+              </div>
             </div>
+
             <DimensionField />
-            <TextField
-              label="Price"
-              name="Price"
-              type="number"
-              prefix="$"
-              placeholder="Add price"
-            />
+
+            <div className={styles.priceWidth}>
+              <TextField
+                label="Price"
+                name="Price"
+                type="number"
+                prefix="$"
+                placeholder="Add price"
+              />
+            </div>
+          </section>
+
+          <div className={styles.actions}>
+            <button type="button" className={styles.draftButton}>
+              Save as draft
+            </button>
+            <button type="submit" className={styles.previewButton}>
+              See Preview
+            </button>
           </div>
-          <button>Save as draft</button>
-          <button>See Preview</button>
         </form>
       </main>
     );
