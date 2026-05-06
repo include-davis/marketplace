@@ -7,5 +7,5 @@ const router = Router();
 // All user routes require authentication
 router.use(requireAuth);
 router.get('/me', getMe);
-
+router.get("/:id") //gets the entire user document
 export default router;
