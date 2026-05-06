@@ -8,7 +8,7 @@ interface MessageBoxProps {
 
 const MessageBox = ({username, conversationId}: MessageBoxProps) => {
 
-    //get the users photo from the users table using the username ^
+    
     return (
     <div className={styles["message-box"]} data-id={conversationId}>
       <img

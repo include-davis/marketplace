@@ -31,7 +31,7 @@ const MessagesGrid = () => {
 
         const filtered = result.data.map((convo: any) => ({
               id: convo.conversationid,
-              users: convo.users, // adjust logic later
+              users: convo.users,
         }));
 
         setConversations(filtered);
