@@ -4,14 +4,22 @@ import MessageBox from '../messagebox/messagebox';
 import styles from "./messagesgrid.module.scss";
 
 
-interface Conversaton {
-  id: string,
+interface Conversation {
+  _id: string,
   users: string[],
 }
 
+interface FilteredConversation {
+  convoid: string,
+  otherUserId: string, 
+}
+
+//first fetch all conversation documents of a user with their id
+
 const MessagesGrid = () => {
-  const [conversations, setConversations] = useState<Conversaton[]>([]); //stores all the conversations
+  const [conversations, setConversations] = useState<FilteredConversation[]>([]); //stores all the conversations
   const [loading, setLoading] = useState<boolean>(false)
+  const currentUserId = '123'
 
   useEffect(() => {
 
@@ -19,19 +27,20 @@ const MessagesGrid = () => {
       try {
 
         setLoading(true)
-        const url: string = 'http://localhost:3000/conversations/123';
+        const url: string = `http://localhost:3000/conversations/${currentUserId}`;
 
         const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OWVkNzA2N2M3ZjUzZDNiZjc4YjBjMTUiLCJpYXQiOjE3Nzc1OTU3OTEsImV4cCI6MTc3NzU5NzU5MX0.Hp4zo3NQyNH2bhpXiTO8SeBLoSmyF0M2MxnZaWbGLc4'
+                'Authorization': 'Bearer {auth token here}'
             }
         });
-         const result = await response.json();
+        
+        const result = await response.json();
 
-        const filtered = result.data.map((convo: any) => ({
-              id: convo.conversationid,
-              users: convo.users,
+        const filtered = result.data.map((convo: Conversation) => ({
+              convoid: convo._id,
+              otherUserId: convo.users.find((userId: string) => userId !== currentUserId),
         }));
 
         setConversations(filtered);
@@ -45,6 +54,8 @@ const MessagesGrid = () => {
 
     getConversations();
   }, []);
+
+  console.log(conversations)
 
   if (loading) {
   return (
@@ -67,9 +78,9 @@ const MessagesGrid = () => {
     <div className={styles["message-list"]}>
       {conversations.map((convo) => (
         <MessageBox
-          key={convo.id}
-          username={convo.users[1]}
-          conversationId={convo.id}
+          key={convo.convoid}
+          otherUserId={convo.otherUserId}
+          conversationId={convo.convoid}
         />
       ))}
     </div>

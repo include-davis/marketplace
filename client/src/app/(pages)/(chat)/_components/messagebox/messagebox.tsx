@@ -2,12 +2,14 @@
 import styles from "./messagesbox.module.scss";
 
 interface MessageBoxProps {
-    username: string,
+    otherUserId: string,
     conversationId: string,
 }
 
-const MessageBox = ({username, conversationId}: MessageBoxProps) => {
+const MessageBox = ({otherUserId, conversationId}: MessageBoxProps) => {
 
+    //get user with 'otherUserId'
+    const userName = 'placeholder'
     
     return (
     <div className={styles["message-box"]} data-id={conversationId}>
@@ -19,7 +21,7 @@ const MessageBox = ({username, conversationId}: MessageBoxProps) => {
 
       <div className={styles.content}>
         <div className={styles["top-row"]}>
-          <span className={styles.username}>{username}</span>
+          <span className={styles.username}>{userName}</span>
           <span className={styles.time}>{}</span>
         </div>
 
