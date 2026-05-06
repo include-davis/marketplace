@@ -9,6 +9,9 @@ interface MessageBoxProps {
 const MessageBox = ({otherUserId, conversationId}: MessageBoxProps) => {
 
     //get user with 'otherUserId'
+    //get last send message with 'conversationId'
+
+    
     const userName = 'placeholder'
     
     return (
