@@ -3,7 +3,8 @@
 import Image from 'next/image';
 import styles from './page.module.scss';
 import React, { useState } from 'react';
-import HomePagination from '../../HomePagination';
+import HomePagination from './_components/HomePagination/HomePagination';
+import HomepageFilterMenu from './_components/HomepageFilterMenu/HomepageFilterMenu';
 
 export default function Home() {
   const totalPages = 10; // Temporary, will change once product listings are implemented
@@ -16,11 +17,15 @@ export default function Home() {
       </h1>
 
       <div className={styles.contentRow}>
-        <HomePagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        <HomepageFilterMenu />
+
+        <div className={styles.listingsArea}>
+          <HomePagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
       </div>
     </div>
   );

@@ -35,7 +35,7 @@
   color: var(--black);
 
   &:hover:not(.active) {
-    background-color: #e0c9fd;
+    background-color: var(--light-purple);
   }
 }
 

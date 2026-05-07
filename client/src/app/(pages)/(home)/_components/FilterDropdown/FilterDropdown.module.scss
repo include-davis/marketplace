@@ -1,0 +1,58 @@
+.dropdown {
+  width: 256px;
+  background-color: var(--light-gray);
+  border: 1px solid var(--black);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.label {
+  color: var(--black);
+}
+
+.arrow {
+  flex-shrink: 0;
+}
+
+.optionsList {
+  padding: 0 12px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+}
+
+.optionButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+.checkbox {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.optionLabel {
+  color: var(--black);
+}
