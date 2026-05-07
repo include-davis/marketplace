@@ -95,11 +95,7 @@ export default function CreatePostPage() {
               <label htmlFor="Description">
                 Description <span>*</span>
               </label>
-              <TextField
-                label="Description"
-                name="Description"
-                placeholder="Text"
-              />
+              <textarea></textarea>
             </div>
 
             <div className={styles.twoColumn}>
