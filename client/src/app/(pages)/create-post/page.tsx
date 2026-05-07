@@ -11,7 +11,7 @@ function TextField({ label, name, type = "text", prefix, placeholder }: { label:
     
     return (
       <div className={styles.field}>
-        <label htmlFor={name}>{label}</label>
+        <label htmlFor={name}>{label} <span className={styles.requiredSymbol}>*</span></label>
         <div className={styles.inputWrapper}>
           {prefix && <span>{prefix}</span>}
           <input
@@ -93,7 +93,7 @@ export default function CreatePostPage() {
 
             <div className={styles.textAreaField}>
               <label htmlFor="Description">
-                Description <span>*</span>
+                Description <span className={styles.requiredSymbol}>*</span>
               </label>
               <textarea></textarea>
             </div>
@@ -101,24 +101,24 @@ export default function CreatePostPage() {
             <div className={styles.twoColumn}>
               <div className={styles.dropdownField}>
                 <label>
-                  Category <span>*</span>
+                  Category <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <FilterDropdown label="Text" options={['meow', 'woof']} />
+                <FilterDropdown label="Text" options={['Fastening and Joining', 'Power Transmission', 'Electrical and Lightning', 'Fabricating', 'Sawing and Cutting', 'Other']} />
               </div>
               <div className={styles.dropdownField}>
                 <label>
                   Material Property <span>*</span>
                 </label>
-                <FilterDropdown label="Text" options={['idk', 'hi']} />
+                <FilterDropdown label="Text" options={['Mechanical Property', 'Thermal Property', 'Electrical Property', 'Chemical Property', 'Other']} />
               </div>
             </div>
 
             <div className={styles.halfWidth}>
               <div className={styles.dropdownField}>
                 <label>
-                  Condition <span>*</span>
+                  Condition <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <FilterDropdown label="Text" options={['bad', 'mid', 'good']} />
+                <FilterDropdown label="Text" options={['New', 'Like new', 'Good', 'Fair', 'Poor', 'Other']} />
               </div>
             </div>
 

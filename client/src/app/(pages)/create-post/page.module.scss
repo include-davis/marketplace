@@ -1,0 +1,45 @@
+
+.field {
+    width: 100%;
+    border-width: 2;
+}
+
+.requiredSymbol {
+    color: red;
+}
+
+.page {
+    min-height: 100vh;
+    background: #f7f7f7;
+    padding: 32px 48px 72px;
+    color: #1f1f1f;
+}
+
+.backLink {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f1f1f;
+}
+
+.back {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    text-decoration: none;
+}
+
+.title {
+    margin-bottom: 24px;
+}
+
+.form {
+    width: 100%;
+    max-width: 1120px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 71px;
+}
