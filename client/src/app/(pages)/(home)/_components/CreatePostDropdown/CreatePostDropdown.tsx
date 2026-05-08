@@ -5,34 +5,30 @@ import Image from "next/image";
 
 export default function CreatePostDropdown({
   label,
+  placeholder,
   options,
 }: {
-  label: string;
-  options: string[];
+    label: string;
+    placeholder: string;
+    options: string[];
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [checkedOptions, setCheckedOptions] = useState<Set<string>>(new Set());
+  const [selectedOption, setSelectedOption] = useState("");
+  
+  const displayText =
+    isOpen && !selectedOption ? placeholder : selectedOption || label;
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
 
-  const toggleOption = (option: string) => {
-    setCheckedOptions((prev) => {
-      const next = new Set(prev);
-
-      if (next.has(option)) {
-        next.delete(option);
-      } else {
-        next.add(option);
-      }
-
-      return next;
-    });
+  const handleSelect = (option: string) => {
+    setSelectedOption(option);
+    setIsOpen(false);
   };
 
   return (
     <div className={styles.dropdown}>
       <button type="button" className={styles.header} onClick={toggleOpen}>
-        <h2 className={styles.label}>{label}</h2>
+        <h2 className={styles.label}>{displayText}</h2>
         <Image
           src={isOpen ? "/dropdownSymbolDown.svg" : "/dropdownSymbolUp.svg"}
           alt={isOpen ? "Collapsed" : "Expanded"}
@@ -47,8 +43,9 @@ export default function CreatePostDropdown({
           {options.map((option) => (
             <li key={option}>
               <button
+                type="button"
                 className={styles.optionButton}
-                onClick={() => toggleOption(option)}
+                onClick={() => handleSelect(option)}
               >
                 <h4 className={styles.optionLabel}>{option}</h4>
               </button>
