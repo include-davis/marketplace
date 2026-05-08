@@ -6,14 +6,15 @@ import Image from "next/image";
 import styles from "./page.module.scss";
 import FilterDropdown from '../(home)/_components/FilterDropdown/FilterDropdown';
 
-function TextField({ label, name, type = "text", prefix, placeholder }: { label: string; name: string; type?: string;  prefix?: string, placeholder?: string}) {
+function TextField({ label, name, type = "text", placeholder }: { label: string; name: string; type?: string; placeholder?: string}) {
     const [value, setValue] = useState("");
     
     return (
       <div className={styles.field}>
-        <label htmlFor={name}>{label} <span className={styles.requiredSymbol}>*</span></label>
+        <label htmlFor={name}>
+          {label} <span className={styles.requiredSymbol}>*</span>
+        </label>
         <div className={styles.inputWrapper}>
-          {prefix && <span>{prefix}</span>}
           <input
             id={name}
             name={name}
@@ -21,6 +22,7 @@ function TextField({ label, name, type = "text", prefix, placeholder }: { label:
             value={value}
             placeholder={placeholder}
             onChange={(e) => setValue(e.target.value)}
+            className={styles.textFieldBox}
           />
         </div>
       </div>
@@ -48,22 +50,25 @@ function DimensionField() {
           placeholder="#"
           value={dimensions.length}
           onChange={(e) => handleChange('length', e.target.value)}
+          className={styles.dimensionSquare}
         />
-        <Image src={'/dimensions_x.svg'} alt="x" width={24} height={24} />
+        <Image src={'/dimensions_x.svg'} alt="x" width={32} height={32} />
         <input
           type="number"
           inputMode="decimal"
           placeholder="#"
           value={dimensions.width}
           onChange={(e) => handleChange('width', e.target.value)}
+          className={styles.dimensionSquare}
         />
-        <Image src={'/dimensions_x.svg'} alt="x" width={24} height={24} />
+        <Image src={'/dimensions_x.svg'} alt="x" width={32} height={32} />
         <input
           type="number"
           inputMode="decimal"
           placeholder="#"
           value={dimensions.height}
           onChange={(e) => handleChange('height', e.target.value)}
+          className={styles.dimensionSquare}
         />
       </div>
     </div>
@@ -75,9 +80,7 @@ export default function CreatePostPage() {
       <main className={styles.page}>
         <Link href="/home" className={styles.back}>
           <Image src={'/back_arrow.svg'} alt="<" width={32} height={32} />
-          <div className={styles.backLink}>
-            Back
-          </div>
+          <div className={styles.backLink}>Back</div>
         </Link>
 
         <form className={styles.form}>
@@ -89,15 +92,19 @@ export default function CreatePostPage() {
             <h2 className={styles.sectionTitle}>Product Details</h2>
 
             <div>
-              <h3>Title</h3>
-              <TextField label="Title" name="Title" placeholder="Text" />
+                        <TextField label="Title" name="Title" placeholder="Text"/>
             </div>
 
             <div className={styles.textAreaField}>
               <label htmlFor="Description">
                 Description <span className={styles.requiredSymbol}>*</span>
               </label>
-              <textarea></textarea>
+              <textarea
+                rows="8"
+                maxlength="200"
+                placeholder="Give a brief description"
+                className={styles.textAreaBox}
+              ></textarea>
             </div>
 
             <div className={styles.twoColumn}>
@@ -153,7 +160,6 @@ export default function CreatePostPage() {
                 label="Price"
                 name="Price"
                 type="number"
-                prefix="$"
                 placeholder="Add price"
               />
             </div>
