@@ -1,2 +1,17 @@
-@use "app/(pages)/_globals/mixins.scss";
+@use "../_globals/mixins.scss";
 
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 54px 100px 16px 100px;
+}
+
+.searchHeading {
+  margin: 0 0 72px 0;
+}
+
+.contentRow {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
