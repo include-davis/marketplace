@@ -1,8 +1,8 @@
-import Image from "next/image";
-import styles from "./page.module.scss";
-import React from "react";
-import MessagesGrid from "@/app/(pages)/(chat)/_components/messagesgrid/messagesgrid";
-import HomepageFilterMenu from "./_components/HomepageFilterMenu/HomepageFilterMenu";
+import Image from 'next/image';
+import styles from './page.module.scss';
+import React from 'react';
+import MessagesGrid from '@/app/(pages)/(chat)/_components/messagesgrid/messagesgrid';
+import HomepageFilterMenu from './_components/HomepageFilterMenu/HomepageFilterMenu';
 
 export default function Home() {
   return (
@@ -14,8 +14,7 @@ export default function Home() {
       <div className={styles.contentRow}>
         <HomepageFilterMenu />
       </div>
-      <MessagesGrid/>
+      <MessagesGrid />
     </div>
-
   );
 }
