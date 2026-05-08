@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 56px;
+  padding-bottom: 40px;
+  background-color: var(--white);
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+}
+
+.logoSection {
+  padding-left: 120px;
+}
+
+.rightPanel {
+  display: flex;
+  padding-right: 120px;
+  gap: 40px;
+  font-size: 0.875rem;
+  font-family: var(--font1);
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
