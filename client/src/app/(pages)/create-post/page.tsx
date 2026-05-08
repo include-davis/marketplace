@@ -73,10 +73,12 @@ function DimensionField() {
 export default function CreatePostPage() {
     return (
       <main className={styles.page}>
-        <div className={styles.backLink}>
-          <Image src={'/back_arrow.svg'} alt="<" width={24} height={24} />
-          <Link href="/home">Back</Link>
-        </div>
+        <Link href="/home" className={styles.back}>
+          <Image src={'/back_arrow.svg'} alt="<" width={32} height={32} />
+          <div className={styles.backLink}>
+            Back
+          </div>
+        </Link>
 
         <form className={styles.form}>
           <div className={styles.title}>
@@ -103,13 +105,32 @@ export default function CreatePostPage() {
                 <label>
                   Category <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <FilterDropdown label="Text" options={['Fastening and Joining', 'Power Transmission', 'Electrical and Lightning', 'Fabricating', 'Sawing and Cutting', 'Other']} />
+                <FilterDropdown
+                  label="Text"
+                  options={[
+                    'Fastening and Joining',
+                    'Power Transmission',
+                    'Electrical and Lightning',
+                    'Fabricating',
+                    'Sawing and Cutting',
+                    'Other',
+                  ]}
+                />
               </div>
               <div className={styles.dropdownField}>
                 <label>
                   Material Property <span>*</span>
                 </label>
-                <FilterDropdown label="Text" options={['Mechanical Property', 'Thermal Property', 'Electrical Property', 'Chemical Property', 'Other']} />
+                <FilterDropdown
+                  label="Text"
+                  options={[
+                    'Mechanical Property',
+                    'Thermal Property',
+                    'Electrical Property',
+                    'Chemical Property',
+                    'Other',
+                  ]}
+                />
               </div>
             </div>
 
@@ -118,7 +139,10 @@ export default function CreatePostPage() {
                 <label>
                   Condition <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <FilterDropdown label="Text" options={['New', 'Like new', 'Good', 'Fair', 'Poor', 'Other']} />
+                <FilterDropdown
+                  label="Text"
+                  options={['New', 'Like new', 'Good', 'Fair', 'Poor', 'Other']}
+                />
               </div>
             </div>
 
