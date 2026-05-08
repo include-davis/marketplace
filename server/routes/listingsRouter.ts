@@ -5,14 +5,17 @@ import {
   createListingController,
   updateListingController,
   deleteListingController,
+  getUploadSignatureController,
   uploadPhotoController,
 } from '../controllers/listingsController.ts';
-import { uploadListingImages } from '../services/multerService.js';
 
 const listingsRouter = Router();
 
 listingsRouter.get('/', (req: Request, res: Response) =>
   getAllListingsController(req, res),
+);
+listingsRouter.get('/upload-signature', (req: Request, res: Response) =>
+  getUploadSignatureController(req, res),
 );
 listingsRouter.get('/:id', (req: Request, res: Response) =>
   getListingController(req, res),
@@ -26,9 +29,8 @@ listingsRouter.put('/:id', (req: Request, res: Response) =>
 listingsRouter.delete('/:id', (req: Request, res: Response) =>
   deleteListingController(req, res),
 );
-listingsRouter.post(
-  '/:id/image',
-  uploadListingImages.array('images', 5),
-  (req: Request, res: Response) => uploadPhotoController(req, res),
+listingsRouter.post('/:id/image', (req: Request, res: Response) =>
+  uploadPhotoController(req, res),
 );
 export default listingsRouter;
+

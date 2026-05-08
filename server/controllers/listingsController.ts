@@ -7,6 +7,7 @@ import {
   updateListing,
   addListingImages,
 } from '../services/listingService.ts';
+import { generateUploadSignature } from '../services/cloudinaryService.ts';
 
 /**
  *
@@ -182,28 +183,61 @@ export const deleteListingController = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Returns signed upload params for the frontend to upload directly to Cloudinary.
+ */
+export const getUploadSignatureController = async (_req: Request, res: Response) => {
+  try {
+    const signatureData = generateUploadSignature('listings');
+    res.status(200).json({
+      success: true,
+      data: signatureData,
+    });
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      res.status(500).json({
+        success: false,
+        message: e.message,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: "couldn't get error message",
+      });
+    }
+  }
+};
+
+/**
+ * Saves Cloudinary image URLs to a listing in MongoDB.
+ * Called by the frontend after uploading directly to Cloudinary.
+ */
 export const uploadPhotoController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
     const id: string = req.params.id;
-    const files = req.files as Express.Multer.File[];
+    const { imageUrls } = req.body;
 
-    if (!files || files.length === 0) {
+    if (!imageUrls || !Array.isArray(imageUrls) || imageUrls.length === 0) {
       res.status(400).json({
         success: false,
-        message: 'No images provided. Upload image files using the "images" field.',
+        message: 'No image URLs provided.',
       });
       return;
     }
 
-    const imagePaths = files.map(
-      (file) => `/uploads/listings/${file.filename}`,
-    );
+    if (imageUrls.length > 5) {
+      res.status(400).json({
+        success: false,
+        message: 'A listing can have at most 5 images.',
+      });
+      return;
+    }
 
-    const record = await addListingImages(client, id, imagePaths);
+    const record = await addListingImages(client, id, imageUrls);
     res.status(200).json({
       success: true,
-      data: { ...record, imagePaths },
+      data: { ...record, imageUrls },
     });
   } catch (e: unknown) {
     if (e instanceof Error) {
@@ -219,3 +253,4 @@ export const uploadPhotoController = async (req: Request, res: Response) => {
     }
   }
 };
+
