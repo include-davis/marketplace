@@ -8,11 +8,39 @@
     color: red;
 }
 
+.inputWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.dimensionRow {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.dimensionSquare {
+    width: 64px;
+    height: 64px;
+    font-size: 16px;
+    border: 2px solid;
+    border-radius: 5px;
+
+    &::placeholder {
+        text-align: center;
+        padding-left: 16px;
+    }
+}
+
 .page {
     min-height: 100vh;
     background: #f7f7f7;
     padding: 32px 48px 72px;
     color: #1f1f1f;
+    margin-top: 100px;
+    max-width: 1240px;
+    margin-inline: auto;
 }
 
 .backLink {
@@ -33,6 +61,15 @@
     margin-bottom: 24px;
 }
 
+.textFieldBox {
+    width: 100%;
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
 .form {
     width: 100%;
     max-width: 1120px;
@@ -42,4 +79,57 @@
     display: flex;
     flex-direction: column;
     gap: 71px;
+}
+
+.textAreaField {
+    display: flex;
+    flex-direction: column;
+}
+
+.textAreaBox {
+    resize: none;
+    width: 100%;
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.twoColumn {
+    display: flex;
+    flex-direction: row;
+    justify-content: between;
+    gap: 24px;
+}
+
+.priceWidth {
+    max-width: 220px;
+}
+
+.actions {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 71px;
+}
+
+.draftButton {
+    width: 300px;
+    height: 50px;
+    border: 1px solid;
+    border-color: black;
+    border-radius: 5px;
+    background: lightgrey;
+    color: white;
+}
+
+.previewButton {
+    width: 300px;
+    height: 50px;
+    border: 1px solid;
+    border-color: black;
+    border-radius: 5px;
+    background: #8D22F2;
+    color: white;
 }
