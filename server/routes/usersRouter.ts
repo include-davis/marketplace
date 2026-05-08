@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getMe } from '../controllers/usersController';
+import { getMe, getUserDocument } from '../controllers/usersController';
 import { requireAuth } from '../auth/middleware';
 
 const router = Router();
@@ -7,5 +7,5 @@ const router = Router();
 // All user routes require authentication
 router.use(requireAuth);
 router.get('/me', getMe);
-router.get("/:id") //gets the entire user document
+router.get('/:id', getUserDocument) //gets the entire user document of a user NOT in the session
 export default router;

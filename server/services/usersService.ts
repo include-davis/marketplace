@@ -2,9 +2,12 @@ import { MongoClient, ObjectId } from 'mongodb';
 
 
 export async function getDocument(client: MongoClient, id: string) {
-  const listing = await client
+  const document = await client
     .db('MarketPlace')
-    .collection('Listings')
+    .collection('users')
     .findOne({ _id: new ObjectId(id) });
-  return listing;
+  return document;
 }
+
+
+
