@@ -133,3 +133,13 @@
     background: #8D22F2;
     color: white;
 }
+
+@media (max-width: 500px) {
+  .page {
+    max-width: 100%;
+  }
+
+    .twoColumn {
+        flex-direction: column;
+    }
+}
