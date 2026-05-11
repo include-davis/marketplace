@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./page.module.scss";
@@ -78,102 +78,82 @@ function DimensionField() {
 export default function CreatePostPage() {
     return (
       <main className={styles.page}>
-        <Link href="/home" className={styles.back}>
-          <Image src={'/back_arrow.svg'} alt="<" width={32} height={32} />
-          <div className={styles.backLink}>Back</div>
-        </Link>
+        <div className={styles.pageContainer}>
+          <Link href="/home" className={styles.back}>
+            <Image src={'/back_arrow.svg'} alt="<" width={32} height={32} />
+            <div className={styles.backLink}>Back</div>
+          </Link>
 
-        <form className={styles.form}>
-          <div className={styles.title}>
-            <h2>List an item</h2>
-          </div>
-
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>Product Details</h2>
-
-            <div>
-                        <TextField label="Title" name="Title" placeholder="Text"/>
+          <form className={styles.form}>
+            <div className={styles.title}>
+              <h2>List an item</h2>
             </div>
 
-            <div className={styles.textAreaField}>
-              <label htmlFor="Description">
-                Description <span className={styles.requiredSymbol}>*</span>
-              </label>
-              <textarea
-                rows="8"
-                maxlength="200"
-                placeholder="Give a brief description"
-                className={styles.textAreaBox}
-              ></textarea>
-            </div>
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Product Details</h2>
 
-            <div className={styles.twoColumn}>
-              <div className={styles.dropdownField}>
-                <label>
-                  Category <span className={styles.requiredSymbol}>*</span>
+              <div>
+                <TextField label="Title" name="Title" placeholder="Text" />
+              </div>
+
+              <div className={styles.textAreaField}>
+                <label htmlFor="Description">
+                  Description <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <FilterDropdown
-                  label="Text"
-                  options={[
-                    'Fastening and Joining',
-                    'Power Transmission',
-                    'Electrical and Lightning',
-                    'Fabricating',
-                    'Sawing and Cutting',
-                    'Other',
-                  ]}
+                <textarea
+                  rows={8}
+                  placeholder="Give a brief description"
+                  className={styles.textAreaBox}
+                ></textarea>
+              </div>
+
+              <div className={styles.twoColumn}>
+                <div className={styles.dropdownField}>
+                  <label>
+                    Category <span className={styles.requiredSymbol}>*</span>
+                  </label>
+                  <div></div>
+                </div>
+                <div className={styles.dropdownField}>
+                  <label>
+                    Material Property{' '}
+                    <span className={styles.requiredSymbol}>*</span>
+                  </label>
+                  <div></div>
+                </div>
+              </div>
+
+              <div className={styles.halfWidth}>
+                <div className={styles.dropdownField}>
+                  <label>
+                    Condition <span className={styles.requiredSymbol}>*</span>
+                  </label>
+                  <div></div>
+                </div>
+              </div>
+
+              <DimensionField />
+
+              <div className={styles.priceWidth}>
+                <TextField
+                  label="Price"
+                  name="Price"
+                  type="number"
+                  placeholder="Add price"
                 />
               </div>
-              <div className={styles.dropdownField}>
-                <label>
-                  Material Property <span>*</span>
-                </label>
-                <FilterDropdown
-                  label="Text"
-                  options={[
-                    'Mechanical Property',
-                    'Thermal Property',
-                    'Electrical Property',
-                    'Chemical Property',
-                    'Other',
-                  ]}
-                />
-              </div>
+            </section>
+
+            <div className={styles.actions}>
+              <button type="button" className={styles.draftButton}>
+                Save as draft
+              </button>
+              <button type="submit" className={styles.previewButton}>
+                See Preview
+              </button>
             </div>
-
-            <div className={styles.halfWidth}>
-              <div className={styles.dropdownField}>
-                <label>
-                  Condition <span className={styles.requiredSymbol}>*</span>
-                </label>
-                <FilterDropdown
-                  label="Text"
-                  options={['New', 'Like new', 'Good', 'Fair', 'Poor', 'Other']}
-                />
-              </div>
-            </div>
-
-            <DimensionField />
-
-            <div className={styles.priceWidth}>
-              <TextField
-                label="Price"
-                name="Price"
-                type="number"
-                placeholder="Add price"
-              />
-            </div>
-          </section>
-
-          <div className={styles.actions}>
-            <button type="button" className={styles.draftButton}>
-              Save as draft
-            </button>
-            <button type="submit" className={styles.previewButton}>
-              See Preview
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </main>
     );
 }
