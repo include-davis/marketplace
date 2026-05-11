@@ -1,0 +1,50 @@
+.sidebar {
+    border: 2px solid #1f1f1f;
+    border-radius: 12px;
+    background-color: #f3f3f3;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 260px;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1f1f1f;
+    margin-bottom: 1.5rem;
+  }
+  
+  .statusList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .statusItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    color: #1f1f1f;
+  }
+  
+  .statusItem:hover {
+    background-color: #e7e7e7;
+  }
+  
+  .selected {
+    background-color: #dcdcdc;
+    color: #7a7a7a;
+    font-weight: 600;
+  }
+  
+  .label {
+    font-size: 1rem;
+  }
+  
+  .count {
+    font-size: 1rem;
+  }

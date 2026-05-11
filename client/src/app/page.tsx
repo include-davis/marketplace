@@ -1,13 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import FilterSection from "@/components/listings/FilterSection";
-import ProductGrid from "@/components/listings/ProductGrid";
-import {
-  EmptyState,
-  ErrorState,
-  LoadingState,
-} from "@/components/listings/ListingStates";
+import FilterSection from "@/components/listings/FilterSection/FilterSection";
 
 type ListingStatus = "active" | "inactive" | "draft" | "completed";
 
@@ -17,8 +11,6 @@ type Product = {
   price: number;
   category?: string;
   status: ListingStatus;
-  image?: string;
-  imageUrl?: string;
 };
 
 const mockProducts: Product[] = [
@@ -42,9 +34,6 @@ const statusLabels: Record<ListingStatus, string> = {
 export default function ListingsPage() {
   const [selectedStatus, setSelectedStatus] = useState<ListingStatus>("active");
 
-  const loading = false;
-  const error = false;
-
   const statusCounts = useMemo(() => {
     return {
       active: mockProducts.filter((product) => product.status === "active").length,
@@ -53,10 +42,6 @@ export default function ListingsPage() {
       completed: mockProducts.filter((product) => product.status === "completed").length,
     };
   }, []);
-
-  const filteredProducts = useMemo(() => {
-    return mockProducts.filter((product) => product.status === selectedStatus);
-  }, [selectedStatus]);
 
   return (
     <main
@@ -77,35 +62,11 @@ export default function ListingsPage() {
         Sell &gt; {statusLabels[selectedStatus]} Listings
       </p>
 
-      <section
-        style={{
-          display: "grid",
-          gridTemplateColumns: "220px 1fr",
-          gap: "3rem",
-          alignItems: "start",
-        }}
-      >
-        <FilterSection
-          selectedStatus={selectedStatus}
-          onStatusChange={setSelectedStatus}
-          statusCounts={statusCounts}
-        />
-
-        <div>
-          {loading ? (
-            <LoadingState />
-          ) : error ? (
-            <ErrorState />
-          ) : filteredProducts.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <ProductGrid
-              products={filteredProducts}
-              selectedStatus={selectedStatus}
-            />
-          )}
-        </div>
-      </section>
+      <FilterSection
+        selectedStatus={selectedStatus}
+        onStatusChange={setSelectedStatus}
+        statusCounts={statusCounts}
+      />
     </main>
   );
 }
