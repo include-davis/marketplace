@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.scss';
-import FilterDropdown from '../(home)/_components/FilterDropdown/FilterDropdown';
 
 function TextField({
   label,
