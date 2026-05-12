@@ -23,7 +23,7 @@
   width: 64px;
   height: 64px;
   font-size: 1rem;
-  border: 2px solid;
+  border: 2px solid var(--pure-black);
   border-radius: 5px;
   padding: 16px;
 
@@ -46,6 +46,7 @@ input[type='number']::-webkit-outer-spin-button {
   background-color: var(--white);
   padding: calc(96px + 32px) 48px 72px;
   color: var(--black);
+  gap: 80px;
 }
 
 .pageContainer {
@@ -73,7 +74,7 @@ input[type='number']::-webkit-outer-spin-button {
 
 .textFieldBox {
   width: 100%;
-  border: 2px solid;
+  border: 2px solid var(--pure-black);
   border-radius: 5px;
   padding: 16px;
   font-size: 1rem;
@@ -98,7 +99,7 @@ input[type='number']::-webkit-outer-spin-button {
 .textAreaBox {
   resize: none;
   width: 100%;
-  border: 2px solid;
+  border: 2px solid var(--pure-black);
   border-radius: 5px;
   padding: 16px;
   font-size: 1rem;
@@ -119,7 +120,6 @@ input[type='number']::-webkit-outer-spin-button {
   display: flex;
   gap: 24px;
   justify-content: center;
-  margin-top: 71px;
 }
 
 .draftButton {
@@ -127,16 +127,16 @@ input[type='number']::-webkit-outer-spin-button {
   height: 50px;
   border: 1px solid var(--pure-black);
   border-radius: 5px;
-  background: var(--light-gray);
+  background-color: var(--light-gray);
   color: var(--white);
 }
 
 .previewButton {
   width: 300px;
   height: 50px;
-  border: 1px solid var(--black);
+  border: 1px solid var(--pure-black);
   border-radius: 5px;
-  background: var(--purple);
+  background-color: var(--purple);
   color: var(--white);
 }
 
