@@ -1,8 +1,7 @@
 'use client';
 
-import Image from 'next/image';
 import styles from './page.module.scss';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import HomePagination from './_components/HomePagination/HomePagination';
 import HomepageFilterMenu from './_components/HomepageFilterMenu/HomepageFilterMenu';
 
