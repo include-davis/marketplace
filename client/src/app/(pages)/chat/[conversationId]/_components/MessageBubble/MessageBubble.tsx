@@ -1,39 +1,39 @@
-"use client";
+'use client';
 
-import styles from "./chat.module.scss";
+import Image from 'next/image';
+import styles from './MessageBubble.module.scss';
+import type { Message } from '@/types/messaging';
 
-interface Message {
-  id: string;
-  text: string;
-  senderId: string;
-  createdAt: string;
-  image?: string | null;
-}
-
-interface MessageBubbleProps {
+export default function MessageBubble({
+  message,
+  isOwn,
+  avatarUrl,
+}: {
   message: Message;
   isOwn: boolean;
   avatarUrl?: string | null;
-}
-
-export default function MessageBubble({ message, isOwn, avatarUrl }: MessageBubbleProps) {
+}) {
   return (
     <div className={`${styles.bubbleRow} ${isOwn ? styles.own : styles.other}`}>
       {!isOwn && (
         <div className={styles.avatar}>
-          {avatarUrl && <img src={avatarUrl} alt="" />}
+          {avatarUrl && <Image src={avatarUrl} alt="" width={40} height={40} />}
         </div>
       )}
 
       <div className={styles.bubbleContent}>
         {message.image && (
-          <img
+          <Image
             src={message.image}
             alt=""
-            style={{ maxWidth: 200, borderRadius: 12, marginBottom: 4 }}
+            width={200}
+            height={200}
+            className={styles.messageImage}
           />
         )}
-        <div className={`${styles.bubble} ${isOwn ? styles.own : styles.other}`}>
+        <div
+          className={`${styles.bubble} ${isOwn ? styles.own : styles.other}`}
+        >
           {message.text}
         </div>
 

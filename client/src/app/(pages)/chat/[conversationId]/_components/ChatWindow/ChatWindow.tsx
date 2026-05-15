@@ -1,32 +1,23 @@
-"use client";
+'use client';
 
-import { useRef, useEffect } from "react";
-import styles from "./chat.module.scss";
-import MessageBubble from "./MessageBubble";
-import MessageInput from "./MessageInput";
-
-interface Message {
-  id: string;
-  text: string;
-  senderId: string;
-  createdAt: string;
-  image?: string | null;
-}
-
-interface ChatWindowProps {
-  messages: Message[];
-  currentUserId: string;
-  onSend: (data: { text: string; createdAt: string }) => void;
-  productName?: string;
-  productImage?: string | null;
-  otherUserAvatar?: string | null;
-  onBack?: () => void;
-}
+import { useRef, useEffect } from 'react';
+import Image from 'next/image';
+import styles from './ChatWindow.module.scss';
+import MessageBubble from '../MessageBubble/MessageBubble';
+import MessageInput from '../MessageInput/MessageInput';
+import type { Message } from '@/types/messaging';
 
 function BackArrowIcon() {
   return (
     <svg viewBox="0 0 24 48" fill="currentColor">
-      <path d="M18 4L6 24l12 20" stroke="currentColor" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d="M18 4L6 24l12 20"
+        stroke="currentColor"
+        strokeWidth="3"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -35,15 +26,23 @@ export default function ChatWindow({
   messages,
   currentUserId,
   onSend,
-  productName = "Product Name",
+  productName = 'Product Name',
   productImage,
   otherUserAvatar,
   onBack,
-}: ChatWindowProps) {
+}: {
+  messages: Message[];
+  currentUserId: string;
+  onSend: (data: { text: string; createdAt: string }) => void;
+  productName?: string;
+  productImage?: string | null;
+  otherUserAvatar?: string | null;
+  onBack?: () => void;
+}) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   return (
@@ -60,9 +59,10 @@ export default function ChatWindow({
       {/* Product Image */}
       {productImage && (
         <div className={styles.productImageWrapper}>
-          <img
+          <Image
             src={productImage}
             alt={productName}
+            fill
             className={styles.productImage}
           />
         </div>

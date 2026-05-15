@@ -1,0 +1,67 @@
+.inputBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 24px;
+  background-color: var(--light-gray);
+}
+
+.inputIcons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: var(--black);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.textInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  background-color: var(--pure-white);
+  border-radius: 17.5px;
+  padding: 8px 16px;
+  font-family: var(--font2);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--black);
+
+  &::placeholder {
+    color: var(--dark-gray);
+  }
+}
+
+.sendButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: var(--black);
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}

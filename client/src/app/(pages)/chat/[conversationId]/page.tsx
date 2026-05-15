@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState, useCallback, useRef } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { io, Socket } from "socket.io-client";
-import ChatWindow from "./ChatWindow";
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { io, Socket } from 'socket.io-client';
+import ChatWindow from './_components/ChatWindow/ChatWindow';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 interface ServerMessage {
   _id: string;
@@ -45,26 +45,28 @@ export default function ChatPage() {
   const socketRef = useRef<Socket | null>(null);
 
   // TODO: Replace with real auth context when available
-  const currentUserId = typeof window !== "undefined"
-    ? localStorage.getItem("userId") || ""
-    : "";
-  const receiverIds = typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("receiverIds") || "[]")
-    : [];
-  const token = typeof window !== "undefined"
-    ? localStorage.getItem("token") || ""
-    : "";
+  const currentUserId =
+    typeof window !== 'undefined' ? localStorage.getItem('userId') || '' : '';
+  const receiverIds =
+    typeof window !== 'undefined'
+      ? JSON.parse(localStorage.getItem('receiverIds') || '[]')
+      : [];
+  const token =
+    typeof window !== 'undefined' ? localStorage.getItem('token') || '' : '';
 
   // Placeholder values — will be populated from conversation/listing data
-  const productName = typeof window !== "undefined"
-    ? localStorage.getItem("chatProductName") || "Product Name"
-    : "Product Name";
-  const productImage = typeof window !== "undefined"
-    ? localStorage.getItem("chatProductImage") || null
-    : null;
-  const otherUserAvatar = typeof window !== "undefined"
-    ? localStorage.getItem("chatOtherUserAvatar") || null
-    : null;
+  const productName =
+    typeof window !== 'undefined'
+      ? localStorage.getItem('chatProductName') || 'Product Name'
+      : 'Product Name';
+  const productImage =
+    typeof window !== 'undefined'
+      ? localStorage.getItem('chatProductImage') || null
+      : null;
+  const otherUserAvatar =
+    typeof window !== 'undefined'
+      ? localStorage.getItem('chatOtherUserAvatar') || null
+      : null;
 
   useEffect(() => {
     if (!conversationId) return;
@@ -81,7 +83,7 @@ export default function ChatPage() {
           setMessages(serverMessages.map(toUIMessage));
         }
       } catch (err) {
-        console.error("Failed to fetch messages:", err);
+        console.error('Failed to fetch messages:', err);
       }
     };
 
@@ -89,27 +91,27 @@ export default function ChatPage() {
 
     // Connect Socket.IO
     const socket = io(API_URL, {
-      transports: ["websocket", "polling"],
+      transports: ['websocket', 'polling'],
     });
     socketRef.current = socket;
 
-    socket.on("connect", () => {
+    socket.on('connect', () => {
       setConnected(true);
-      socket.emit("join_room", conversationId);
+      socket.emit('join_room', conversationId);
     });
 
-    socket.on("receive_message", (msg: ServerMessage) => {
+    socket.on('receive_message', (msg: ServerMessage) => {
       setMessages((prev) => {
         if (prev.some((m) => m.id === msg._id)) return prev;
         return [...prev, toUIMessage(msg)];
       });
     });
 
-    socket.on("error", (err: { message: string }) => {
-      console.error("Socket error:", err.message);
+    socket.on('error', (err: { message: string }) => {
+      console.error('Socket error:', err.message);
     });
 
-    socket.on("disconnect", () => {
+    socket.on('disconnect', () => {
       setConnected(false);
     });
 
@@ -123,7 +125,7 @@ export default function ChatPage() {
     (data: { text: string; createdAt: string }) => {
       if (!socketRef.current || !currentUserId) return;
 
-      socketRef.current.emit("send_message", {
+      socketRef.current.emit('send_message', {
         conversationId,
         senderId: currentUserId,
         receiverIds,
@@ -131,7 +133,7 @@ export default function ChatPage() {
         image: null,
       });
     },
-    [conversationId, currentUserId, receiverIds]
+    [conversationId, currentUserId, receiverIds],
   );
 
   const handleBack = () => {
