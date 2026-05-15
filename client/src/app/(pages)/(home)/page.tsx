@@ -4,6 +4,7 @@ import styles from './page.module.scss';
 import { useState } from 'react';
 import HomePagination from './_components/HomePagination/HomePagination';
 import HomepageFilterMenu from './_components/HomepageFilterMenu/HomepageFilterMenu';
+import ProductGrid from "./_components/ProductGrid/ProductGrid";
 
 export default function Home() {
   const totalPages = 10; // Temporary, will change once product listings are implemented
@@ -19,6 +20,8 @@ export default function Home() {
         <HomepageFilterMenu />
 
         <div className={styles.listingsArea}>
+          <ProductGrid />
+          
           <HomePagination
             currentPage={currentPage}
             totalPages={totalPages}

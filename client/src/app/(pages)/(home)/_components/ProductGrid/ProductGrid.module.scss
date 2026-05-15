@@ -1,0 +1,10 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  gap: 12px 28px;
+}
+
+.message {
+  font-size: 14px;
+  color: var(--black);
+}
