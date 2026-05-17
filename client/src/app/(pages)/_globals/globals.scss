@@ -1,4 +1,4 @@
-@use "./mixins.scss";
+@use './mixins.scss';
 
 :root {
   --white: #fafafa;
@@ -8,6 +8,7 @@
   --darker-gray: #514f4f;
   --black: #1f1f1f;
   --purple: #8d22f2;
+  --light-purple: #e0c9fd;
   --dark-purple: #7a1cd9;
   --darker-purple: #6a16c0;
 }
@@ -32,7 +33,6 @@ h1 {
 h2 {
   font-size: 1rem;
   font-weight: 600;
-
 }
 
 h4 {

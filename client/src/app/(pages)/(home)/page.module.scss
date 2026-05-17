@@ -1,9 +1,9 @@
-@use "../_globals/mixins.scss";
+@use '../_globals/mixins.scss';
 
 .pageWrapper {
   display: flex;
   flex-direction: column;
-  padding: 54px 100px 16px 100px;
+  padding: 154px 100px 16px 100px;
 }
 
 .searchHeading {
@@ -14,4 +14,11 @@
   display: flex;
   flex-direction: row;
   gap: 24px;
+}
+
+.listingsArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
 }
