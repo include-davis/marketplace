@@ -1,0 +1,583 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Security Test — Cloudinary Uploads</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #1a1a2e;
+        color: #e0e0e0;
+        padding: 2rem;
+      }
+      h1 {
+        color: #fff;
+        margin-bottom: 0.5rem;
+      }
+      .subtitle {
+        color: #aaa;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+      }
+      h2 {
+        color: #ccc;
+        margin: 1.5rem 0 0.75rem;
+        font-size: 1.1rem;
+      }
+
+      .section {
+        background: #16213e;
+        border: 1px solid #0f3460;
+        border-radius: 8px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        color: #aaa;
+        margin-bottom: 0.25rem;
+      }
+      input[type='text'] {
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid #0f3460;
+        border-radius: 4px;
+        background: #1a1a2e;
+        color: #e0e0e0;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+      }
+      button {
+        padding: 0.5rem 1.25rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        margin-right: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .btn-primary {
+        background: #e94560;
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background: #c73650;
+      }
+      .btn-secondary {
+        background: #0f3460;
+        color: #fff;
+      }
+      .btn-secondary:hover {
+        background: #1a4a8a;
+      }
+      .btn-primary:disabled,
+      .btn-secondary:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      #log {
+        background: #0d1117;
+        border: 1px solid #0f3460;
+        border-radius: 4px;
+        padding: 1rem;
+        font-family: 'Courier New', monospace;
+        font-size: 0.8rem;
+        max-height: 600px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      .log-success {
+        color: #4caf50;
+      }
+      .log-error {
+        color: #e94560;
+      }
+      .log-info {
+        color: #64b5f6;
+      }
+      .log-header {
+        color: #ffd54f;
+        font-weight: bold;
+      }
+
+      .result {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        margin-left: 0.5rem;
+      }
+      .result-pass {
+        background: #1b5e20;
+        color: #4caf50;
+      }
+      .result-fail {
+        background: #5e1b1b;
+        color: #e94560;
+      }
+      .result-skip {
+        background: #4e4e1b;
+        color: #ffd54f;
+      }
+
+      .summary {
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 8px;
+        font-size: 0.95rem;
+      }
+      .summary-pass {
+        background: #1b5e20;
+        border: 1px solid #4caf50;
+      }
+      .summary-fail {
+        background: #5e1b1b;
+        border: 1px solid #e94560;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🔒 Security Test Suite — Cloudinary Uploads</h1>
+    <p class="subtitle">
+      Automated tests for auth gating, ownership checks, and 5-image cap
+    </p>
+
+    <div class="section">
+      <h2>Configuration</h2>
+      <label for="apiBase">API Base URL</label>
+      <input type="text" id="apiBase" value="http://localhost:4000" />
+      <div style="margin-top: 0.5rem">
+        <button class="btn-primary" onclick="runAllTests()">
+          ▶ Run All Tests
+        </button>
+        <button class="btn-secondary" onclick="clearLog()">Clear Log</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Results</h2>
+      <div id="results"></div>
+      <div id="summary"></div>
+    </div>
+
+    <div class="section">
+      <h2>Log</h2>
+      <div id="log"></div>
+    </div>
+
+    <script>
+      /* ── Helpers ─────────────────────────────────────── */
+      const BASE = () =>
+        document.getElementById('apiBase').value.trim().replace(/\/$/, '');
+      const testResults = [];
+
+      function log(msg, type = 'info') {
+        const el = document.getElementById('log');
+        const time = new Date().toLocaleTimeString();
+        const cls =
+          type === 'error'
+            ? 'log-error'
+            : type === 'success'
+              ? 'log-success'
+              : type === 'header'
+                ? 'log-header'
+                : 'log-info';
+        el.innerHTML += `<span class="${cls}">[${time}] ${msg}</span>\n`;
+        el.scrollTop = el.scrollHeight;
+      }
+
+      function clearLog() {
+        document.getElementById('log').innerHTML = '';
+      }
+
+      function hdrs(token) {
+        const h = { 'Content-Type': 'application/json' };
+        if (token) h['Authorization'] = `Bearer ${token}`;
+        return h;
+      }
+
+      function record(name, passed, detail) {
+        testResults.push({ name, passed, detail });
+        const cls = passed ? 'result-pass' : 'result-fail';
+        const icon = passed ? '✅' : '❌';
+        log(`${icon} ${name}: ${detail}`, passed ? 'success' : 'error');
+      }
+
+      function renderResults() {
+        const el = document.getElementById('results');
+        el.innerHTML = testResults
+          .map((t) => {
+            const cls = t.passed ? 'result-pass' : 'result-fail';
+            const icon = t.passed ? '✅' : '❌';
+            return `<div style="margin:4px 0">${icon} <strong>${t.name}</strong> <span class="result ${cls}">${t.passed ? 'PASS' : 'FAIL'}</span><br/><span style="color:#888;font-size:0.8rem;margin-left:1.5rem">${t.detail}</span></div>`;
+          })
+          .join('');
+
+        const passed = testResults.filter((t) => t.passed).length;
+        const total = testResults.length;
+        const allPassed = passed === total;
+        const sumEl = document.getElementById('summary');
+        sumEl.className = `summary ${allPassed ? 'summary-pass' : 'summary-fail'}`;
+        sumEl.innerHTML = `<strong>${passed}/${total} tests passed</strong>`;
+      }
+
+      /* ── API helpers ─────────────────────────────────── */
+      // Note: requireAuth returns res.sendStatus(401) which is plain text,
+      // so every .json() call needs a .catch() fallback.
+      async function safeParse(res) {
+        try {
+          return await res.json();
+        } catch {
+          return null;
+        }
+      }
+
+      async function apiRegister(email, password) {
+        const res = await fetch(`${BASE()}/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        return { status: res.status, body: await safeParse(res) };
+      }
+
+      async function apiLogin(email, password) {
+        const res = await fetch(`${BASE()}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        return { status: res.status, body: await safeParse(res) };
+      }
+
+      async function apiGetSignature(token) {
+        const res = await fetch(`${BASE()}/listings/upload-signature`, {
+          headers: hdrs(token),
+        });
+        return { status: res.status, body: await safeParse(res) };
+      }
+
+      async function apiCreateListing(token, data) {
+        const res = await fetch(`${BASE()}/listings`, {
+          method: 'POST',
+          headers: hdrs(token),
+          body: JSON.stringify(data),
+        });
+        return { status: res.status, body: await safeParse(res) };
+      }
+
+      async function apiSaveImages(token, listingId, imageUrls) {
+        const res = await fetch(`${BASE()}/listings/${listingId}/image`, {
+          method: 'POST',
+          headers: hdrs(token),
+          body: JSON.stringify({ imageUrls }),
+        });
+        return { status: res.status, body: await safeParse(res) };
+      }
+
+      async function apiGetListing(token, listingId) {
+        const res = await fetch(`${BASE()}/listings/${listingId}`, {
+          headers: hdrs(token),
+        });
+        return { status: res.status, body: await safeParse(res) };
+      }
+
+      async function apiDeleteListing(token, listingId) {
+        const res = await fetch(`${BASE()}/listings/${listingId}`, {
+          method: 'DELETE',
+          headers: hdrs(token),
+        });
+        return { status: res.status, body: await safeParse(res) };
+      }
+
+      /* ── Fake image URLs for testing (no actual Cloudinary upload needed) ── */
+      function fakeUrl(n) {
+        return `https://res.cloudinary.com/test/image/upload/fake_${n}_${Date.now()}.jpg`;
+      }
+
+      /* ── Test Suite ──────────────────────────────────── */
+      async function runAllTests() {
+        testResults.length = 0;
+        clearLog();
+        document.getElementById('results').innerHTML = '';
+        document.getElementById('summary').innerHTML = '';
+
+        const ts = Date.now();
+        const email = `sectest_${ts}@test.com`;
+        const password = 'TestPass123!';
+        let token = null;
+        let listingId = null;
+
+        log('═══════════════════════════════════════════', 'header');
+        log('  SECURITY TEST SUITE — Starting', 'header');
+        log('═══════════════════════════════════════════', 'header');
+
+        /* ── Test 1: No account — signature should 401 ─── */
+        log(
+          '\n── Test 1: Get signature with NO account (no token) ──',
+          'header',
+        );
+        try {
+          const r = await apiGetSignature(null);
+          record(
+            'No account → get signature',
+            r.status === 401,
+            `Expected 401, got ${r.status}`,
+          );
+        } catch (e) {
+          record('No account → get signature', false, e.message);
+        }
+
+        /* ── Test 2: No account — save images should 401 ─── */
+        log('\n── Test 2: Save images with NO account (no token) ──', 'header');
+        try {
+          const r = await apiSaveImages(null, '000000000000000000000000', [
+            fakeUrl(1),
+          ]);
+          record(
+            'No account → save images',
+            r.status === 401,
+            `Expected 401, got ${r.status}`,
+          );
+        } catch (e) {
+          record('No account → save images', false, e.message);
+        }
+
+        /* ── Test 3: No account — create listing should 401 ─── */
+        log('\n── Test 3: Create listing with NO account ──', 'header');
+        try {
+          const r = await apiCreateListing(null, {
+            title: 'x',
+            desc: 'x',
+            price: 1,
+            category: 'x',
+            stock: 1,
+          });
+          record(
+            'No account → create listing',
+            r.status === 401,
+            `Expected 401, got ${r.status}`,
+          );
+        } catch (e) {
+          record('No account → create listing', false, e.message);
+        }
+
+        /* ── Test 4: Bad token — signature should 401 ─── */
+        log('\n── Test 4: Get signature with INVALID token ──', 'header');
+        try {
+          const r = await apiGetSignature('not.a.real.jwt.token');
+          record(
+            'Invalid token → get signature',
+            r.status === 401,
+            `Expected 401, got ${r.status}`,
+          );
+        } catch (e) {
+          record('Invalid token → get signature', false, e.message);
+        }
+
+        /* ── Register + Login ─────────────────────────── */
+        log('\n── Registering test account ──', 'header');
+        try {
+          const reg = await apiRegister(email, password);
+          if (reg.body.token) {
+            token = reg.body.token;
+            log(`Registered ${email}, token obtained`, 'success');
+          } else {
+            log('Register failed: ' + JSON.stringify(reg.body), 'error');
+            renderResults();
+            return;
+          }
+        } catch (e) {
+          log('Register error: ' + e.message, 'error');
+          renderResults();
+          return;
+        }
+
+        /* ── Test 5: Logged in — get signature should succeed ── */
+        log('\n── Test 5: Get signature while LOGGED IN ──', 'header');
+        try {
+          const r = await apiGetSignature(token);
+          record(
+            'Logged in → get signature',
+            r.status === 200 && r.body.success,
+            r.body.success
+              ? 'Got signature'
+              : `Failed: ${JSON.stringify(r.body)}`,
+          );
+        } catch (e) {
+          record('Logged in → get signature', false, e.message);
+        }
+
+        /* ── Test 6: Logged in, no listing — save images to fake ID should fail ── */
+        log('\n── Test 6: Save images to NON-EXISTENT listing ──', 'header');
+        try {
+          const r = await apiSaveImages(token, '000000000000000000000000', [
+            fakeUrl(1),
+          ]);
+          const failed = r.status === 404 || r.status === 400;
+          record(
+            'Logged in, no listing → save images',
+            failed,
+            `Expected 404 or 400, got ${r.status}: ${r.body.message || ''}`,
+          );
+        } catch (e) {
+          record('Logged in, no listing → save images', false, e.message);
+        }
+
+        /* ── Create a listing ─────────────────────────── */
+        log('\n── Creating test listing ──', 'header');
+        try {
+          const r = await apiCreateListing(token, {
+            title: 'Security Test Item',
+            desc: 'Automated test',
+            price: 9.99,
+            category: 'test',
+            stock: 1,
+          });
+          if (r.body.success) {
+            listingId = r.body.data;
+            log(`Listing created: ${listingId}`, 'success');
+          } else {
+            log('Create listing failed: ' + JSON.stringify(r.body), 'error');
+            renderResults();
+            return;
+          }
+        } catch (e) {
+          log('Create listing error: ' + e.message, 'error');
+          renderResults();
+          return;
+        }
+
+        /* ── Test 7: Verify listing has sellerId ── */
+        log('\n── Test 7: Verify listing has sellerId ──', 'header');
+        try {
+          const r = await apiGetListing(token, listingId);
+          const hasSeller =
+            r.body.success && r.body.data && r.body.data.sellerId;
+          record(
+            'Listing has sellerId',
+            !!hasSeller,
+            hasSeller
+              ? `sellerId = ${r.body.data.sellerId}`
+              : 'sellerId missing from listing doc',
+          );
+        } catch (e) {
+          record('Listing has sellerId', false, e.message);
+        }
+
+        /* ── Test 8: Upload 1 image to owned listing — should succeed ── */
+        log('\n── Test 8: Save 1 image to OWNED listing ──', 'header');
+        try {
+          const r = await apiSaveImages(token, listingId, [fakeUrl(1)]);
+          record(
+            'Save 1 image to owned listing',
+            r.status === 200 && r.body.success,
+            r.body.success
+              ? 'Saved successfully'
+              : `${r.status}: ${r.body.message}`,
+          );
+        } catch (e) {
+          record('Save 1 image to owned listing', false, e.message);
+        }
+
+        /* ── Test 9: Upload 4 more (total → 5) — should succeed ── */
+        log('\n── Test 9: Save 4 more images (total → 5) ──', 'header');
+        try {
+          const urls = [fakeUrl(2), fakeUrl(3), fakeUrl(4), fakeUrl(5)];
+          const r = await apiSaveImages(token, listingId, urls);
+          record(
+            'Save 4 more images (total 5)',
+            r.status === 200 && r.body.success,
+            r.body.success
+              ? 'Saved — now at 5'
+              : `${r.status}: ${r.body.message}`,
+          );
+        } catch (e) {
+          record('Save 4 more images (total 5)', false, e.message);
+        }
+
+        /* ── Test 10: Upload 1 more (total → 6) — should FAIL with cap error ── */
+        log('\n── Test 10: Save 1 more image (would exceed 5) ──', 'header');
+        try {
+          const r = await apiSaveImages(token, listingId, [fakeUrl(6)]);
+          const blocked = r.status === 400 && !r.body.success;
+          record(
+            '6th image blocked by cap',
+            blocked,
+            blocked
+              ? `Correctly rejected: ${r.body.message}`
+              : `Expected 400, got ${r.status}: ${r.body.message || 'success?!'}`,
+          );
+        } catch (e) {
+          record('6th image blocked by cap', false, e.message);
+        }
+
+        /* ── Test 11: Verify listing has exactly 5 images ── */
+        log('\n── Test 11: Verify listing has exactly 5 images ──', 'header');
+        try {
+          const r = await apiGetListing(token, listingId);
+          const count = r.body.data?.images?.length ?? 0;
+          record(
+            'Listing has exactly 5 images',
+            count === 5,
+            `Image count: ${count}`,
+          );
+        } catch (e) {
+          record('Listing has exactly 5 images', false, e.message);
+        }
+
+        /* ── Test 12: Different user can't upload to this listing ── */
+        log(
+          '\n── Test 12: Different user tries to upload to listing ──',
+          'header',
+        );
+        let token2 = null;
+        try {
+          const email2 = `sectest2_${ts}@test.com`;
+          const reg2 = await apiRegister(email2, password);
+          token2 = reg2.body.token;
+          if (!token2) {
+            record(
+              'Ownership — diff user blocked',
+              false,
+              'Could not register 2nd user',
+            );
+          } else {
+            const r = await apiSaveImages(token2, listingId, [fakeUrl(99)]);
+            record(
+              'Ownership — diff user blocked',
+              r.status === 403,
+              `Expected 403, got ${r.status}: ${r.body.message || ''}`,
+            );
+          }
+        } catch (e) {
+          record('Ownership — diff user blocked', false, e.message);
+        }
+
+        /* ── Cleanup: delete the test listing ── */
+        log('\n── Cleanup ──', 'header');
+        try {
+          await apiDeleteListing(token, listingId);
+          log(`Deleted test listing ${listingId}`, 'success');
+        } catch (e) {
+          log('Cleanup warning: ' + e.message, 'info');
+        }
+
+        /* ── Done ── */
+        log('\n═══════════════════════════════════════════', 'header');
+        log('  TEST SUITE COMPLETE', 'header');
+        log('═══════════════════════════════════════════', 'header');
+        renderResults();
+      }
+    </script>
+  </body>
+</html>

@@ -75,6 +75,7 @@ export const createListingController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
     const userId: string = req.body.userId;
+    const sellerId: string = req.user._id.toString();
     const title: string = req.body.title;
     const desc: string = req.body.desc;
     const price: number = req.body.price;
@@ -83,6 +84,7 @@ export const createListingController = async (req: Request, res: Response) => {
 
     const record = await createListing(
       client,
+      sellerId,
       title,
       desc,
       price,
@@ -186,8 +188,12 @@ export const deleteListingController = async (req: Request, res: Response) => {
 /**
  * Returns signed upload params for the frontend to upload directly to Cloudinary.
  */
-export const getUploadSignatureController = async (_req: Request, res: Response) => {
+export const getUploadSignatureController = async (
+  req: Request,
+  res: Response,
+) => {
   try {
+    console.log(`Upload signature requested by user: ${req.user._id}`);
     const signatureData = generateUploadSignature('listings');
     res.status(200).json({
       success: true,
@@ -226,14 +232,25 @@ export const uploadPhotoController = async (req: Request, res: Response) => {
       return;
     }
 
-    if (imageUrls.length > 5) {
-      res.status(400).json({
+    // Verify the caller owns the listing
+    const listing = await getListing(client, id);
+    if (!listing) {
+      res.status(404).json({
         success: false,
-        message: 'A listing can have at most 5 images.',
+        message: `Listing with id ${id} not found.`,
       });
       return;
     }
 
+    if (listing.sellerId !== req.user._id.toString()) {
+      res.status(403).json({
+        success: false,
+        message: 'You do not own this listing.',
+      });
+      return;
+    }
+
+    // addListingImages enforces the 5-image cap
     const record = await addListingImages(client, id, imageUrls);
     res.status(200).json({
       success: true,
@@ -253,4 +270,3 @@ export const uploadPhotoController = async (req: Request, res: Response) => {
     }
   }
 };
-

@@ -27,6 +27,7 @@ export async function getListing(client: MongoClient, id: string) {
 /**
  * Create a new listing in the database.
  * @param client: The MongoClient object.
+ * @param sellerId: The authenticated user's ID (from JWT).
  * @param title: The title of the new listing.
  * @param desc: A description of the new listing.
  * @param price: The price of the new listing.
@@ -36,6 +37,7 @@ export async function getListing(client: MongoClient, id: string) {
  */
 export async function createListing(
   client: MongoClient,
+  sellerId: string,
   title: string,
   desc: string,
   price: number,
@@ -44,7 +46,7 @@ export async function createListing(
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
-  const doc = { title, desc, price, category, stock };
+  const doc = { sellerId, title, desc, price, category, stock, images: [] };
   const result = await myColl.insertOne(doc);
   console.log(`A document was inserted with the _id: ${result.insertedId}`);
   return result.insertedId;
@@ -103,17 +105,29 @@ export async function addListingImages(
   id: string,
   imagePaths: string[],
 ) {
+  const MAX_IMAGES = 5;
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
   const filter = { _id: new ObjectId(id) };
+
+  // Fetch the listing to check the current image count
+  const listing = await myColl.findOne(filter);
+  if (!listing) {
+    throw new Error(`Listing with id ${id} not found`);
+  }
+
+  const existingCount = Array.isArray(listing.images) ? listing.images.length : 0;
+  if (existingCount + imagePaths.length > MAX_IMAGES) {
+    throw new Error(
+      `Cannot add ${imagePaths.length} image(s). Listing already has ${existingCount} image(s) (max ${MAX_IMAGES}).`,
+    );
+  }
+
   const imagePush = {
     $push: {
       images: { $each: imagePaths },
     },
   };
   const result = await myColl.updateOne(filter, imagePush as any);
-  if (result.matchedCount === 0) {
-    throw new Error(`Listing with id ${id} not found`);
-  }
   return result;
 }
