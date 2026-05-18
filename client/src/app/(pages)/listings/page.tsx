@@ -1,13 +1,13 @@
 "use client";
 
-import ProductGrid from "../../components/listings/ProductGrid/ProductGrid";
-import { mockListings } from "../../mock/listings";
+import ProductGrid from "./_components/ProductGrid/ProductGrid";
+import { mockListings } from "@/mock/listings";
+import styles from "./page.module.scss";
 
 export default function ListingsPage() {
   return (
-    <main style={{ padding: "2rem" }}>
-      <h1 style={{ marginBottom: "1.5rem" }}>Listings</h1>
-
+    <main className={styles.main}>
+      <h1 className={styles.heading}>Listings</h1>
       <ProductGrid products={mockListings} selectedStatus="active" />
     </main>
   );

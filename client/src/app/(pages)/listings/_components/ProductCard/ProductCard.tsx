@@ -1,16 +1,8 @@
-import Image from "next/image";
-import styles from "./ProductCard.module.scss";
-
-type ListingStatus = "active" | "inactive" | "draft" | "completed";
-
-type Product = {
-  _id?: string;
-  title: string;
-  price: number;
-  image?: string;
-  imageUrl?: string;
-  status?: ListingStatus;
-};
+import React from 'react';
+import Image from 'next/image';
+import styles from './ProductCard.module.scss';
+// Import the types from the new shared file
+import { Product, ListingStatus } from "@/utils/listings-utils";
 
 export default function ProductCard({
   product,
@@ -19,49 +11,41 @@ export default function ProductCard({
   product: Product;
   selectedStatus: ListingStatus;
 }) {
-  const imageSrc = product.image || product.imageUrl;
+  const imageSrc = product.images?.[0] || '/fallback-placeholder.png';
 
   const statusLabel =
-    selectedStatus === "inactive"
-      ? "INACTIVE"
-      : selectedStatus === "draft"
-        ? "DRAFT"
-        : selectedStatus === "completed"
-          ? "SOLD"
-          : null;
+    selectedStatus === 'inactive'
+      ? 'INACTIVE'
+      : selectedStatus === 'draft'
+      ? 'DRAFT'
+      : selectedStatus === 'completed'
+      ? 'SOLD'
+      : null;
 
   return (
     <div className={styles.card}>
       <div className={styles.imageWrapper}>
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt={product.title}
-            width={180}
-            height={140}
-            className={styles.productImage}
-          />
-        ) : (
-          <div className={styles.noImage}>No Image</div>
-        )}
-
+        <Image
+          src={imageSrc}
+          alt={product.title}
+          width={180}
+          height={140}
+          className={styles.productImage}
+        />
         {statusLabel && <div className={styles.statusBadge}>{statusLabel}</div>}
       </div>
 
       <div className={styles.content}>
         <p className={styles.title}>{product.title}</p>
-
         <input
           className={styles.priceInput}
           type="number"
           defaultValue={product.price}
         />
-
         <div className={styles.actions}>
           <button className={styles.iconButton} type="button">
             🗑
           </button>
-
           <button className={styles.iconButton} type="button">
             ⌄
           </button>

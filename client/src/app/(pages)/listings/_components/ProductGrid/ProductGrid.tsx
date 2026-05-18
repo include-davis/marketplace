@@ -1,20 +1,7 @@
-
-import ProductCard from "../ProductCard/ProductCard";
-import styles from "./ProductGrid.module.scss";
-
-type ListingStatus = "active" | "inactive" | "draft" | "completed";
-
-type Product = {
-  _id?: string;
-  title: string;
-  desc?: string;
-  price: number;
-  category?: string;
-  stock?: number;
-  image?: string;
-  imageUrl?: string;
-  status?: ListingStatus;
-};
+import React from 'react';
+import ProductCard from '../ProductCard/ProductCard';
+import styles from './ProductGrid.module.scss';
+import { Product, ListingStatus } from "@/utils/listings-utils";
 
 export default function ProductGrid({
   products,
@@ -28,11 +15,11 @@ export default function ProductGrid({
   }
 
   const actionLabel =
-    selectedStatus === "active"
-      ? "Mark Inactive"
-      : selectedStatus === "inactive"
-        ? "Mark Active"
-        : "";
+    selectedStatus === 'active'
+      ? 'Mark Inactive'
+      : selectedStatus === 'inactive'
+      ? 'Mark Active'
+      : '';
 
   return (
     <section>
@@ -43,7 +30,7 @@ export default function ProductGrid({
         </label>
 
         <div className={styles.actions}>
-          {selectedStatus === "active" && (
+          {selectedStatus === 'active' && (
             <button className={styles.secondaryButton} type="button">
               List an Item
             </button>
