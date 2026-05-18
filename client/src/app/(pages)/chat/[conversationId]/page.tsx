@@ -37,32 +37,26 @@ export default function ChatPage() {
   const [connected, setConnected] = useState(false);
   const socketRef = useRef<Socket | null>(null);
 
-  // TODO: Replace with real auth context when available
-  const currentUserId =
-    typeof window !== 'undefined' ? localStorage.getItem('userId') || '' : '';
-  const receiverIds =
-    typeof window !== 'undefined'
-      ? JSON.parse(localStorage.getItem('receiverIds') || '[]')
-      : [];
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') || '' : '';
+  // Store localStorage values in state to avoid hydration mismatch
+  const [currentUserId, setCurrentUserId] = useState('');
+  const [receiverIds, setReceiverIds] = useState<string[]>([]);
+  const [token, setToken] = useState('');
+  const [productName, setProductName] = useState('Product Name');
+  const [productImage, setProductImage] = useState<string | null>(null);
+  const [otherUserAvatar, setOtherUserAvatar] = useState<string | null>(null);
 
-  // Placeholder values — will be populated from conversation/listing data
-  const productName =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('chatProductName') || 'Product Name'
-      : 'Product Name';
-  const productImage =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('chatProductImage') || null
-      : null;
-  const otherUserAvatar =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('chatOtherUserAvatar') || null
-      : null;
+  // Initialize localStorage values after hydration
+  useEffect(() => {
+    setCurrentUserId(localStorage.getItem('userId') || '');
+    setReceiverIds(JSON.parse(localStorage.getItem('receiverIds') || '[]'));
+    setToken(localStorage.getItem('token') || '');
+    setProductName(localStorage.getItem('chatProductName') || 'Product Name');
+    setProductImage(localStorage.getItem('chatProductImage') || null);
+    setOtherUserAvatar(localStorage.getItem('chatOtherUserAvatar') || null);
+  }, []);
 
   useEffect(() => {
-    if (!conversationId) return;
+    if (!conversationId || !token) return;
 
     // Fetch message history
     const fetchMessages = async () => {
