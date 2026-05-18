@@ -1,6 +1,3 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
 import styles from './ProductGrid.module.scss';
 import ProductCard from '../ProductCard/ProductCard';
 
@@ -13,38 +10,15 @@ interface Listing {
   stock: number;
 }
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-export default function ProductGrid() {
-  const [listings, setListings] = useState<Listing[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchListings = async () => {
-      try {
-        const response = await fetch(`${BACKEND_URL}/listings`);
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch listings: ${response.status}`);
-        }
-
-        const json = await response.json();
-        setListings(json.data);
-      } catch (e: unknown) {
-        if (e instanceof Error) {
-          setError(e.message);
-        } else {
-          setError('An unknown error occurred.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchListings();
-  }, []);
-
+export default function ProductGrid({
+  listings,
+  loading,
+  error,
+}: {
+  listings: Listing[];
+  loading: boolean;
+  error: string | null;
+}) {
   if (loading) {
     return <div className={styles.message}>Loading listings...</div>;
   }
