@@ -4,10 +4,11 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
 import ChatWindow from './_components/ChatWindow/ChatWindow';
+import type { Message } from '@/types/messaging';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
-interface ServerMessage {
+type ServerMessage = {
   _id: string;
   conversationId: string;
   senderId: string;
@@ -15,17 +16,9 @@ interface ServerMessage {
   message: string;
   image?: string | null;
   createdAt: string;
-}
+};
 
-interface UIMessage {
-  id: string;
-  text: string;
-  senderId: string;
-  createdAt: string;
-  image?: string | null;
-}
-
-function toUIMessage(msg: ServerMessage): UIMessage {
+function toUIMessage(msg: ServerMessage): Message {
   return {
     id: msg._id,
     text: msg.message,
@@ -40,7 +33,7 @@ export default function ChatPage() {
   const router = useRouter();
   const conversationId = params.conversationId as string;
 
-  const [messages, setMessages] = useState<UIMessage[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [connected, setConnected] = useState(false);
   const socketRef = useRef<Socket | null>(null);
 
