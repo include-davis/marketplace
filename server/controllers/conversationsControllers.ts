@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 import {
   addConversation,
-  getConversationByUser
+  getConversationByUser,
 } from '../services/conversationService';
 
 export const addConversationController = async (
@@ -35,7 +35,6 @@ export const addConversationController = async (
   }
 };
 
-
 export const getConversationsByUserController = async (
   req: Request,
   res: Response,
@@ -43,17 +42,13 @@ export const getConversationsByUserController = async (
   const client = req.app.locals.client;
 
   try {
+    const userid: string | string[] | undefined = req.params.userid;
 
-    const userid: string | string[] | undefined = req.params.userid
-
-    if (typeof userid !== "string") {
-      throw new Error("Invalid username");
+    if (typeof userid !== 'string') {
+      throw new Error('Invalid username');
     }
 
-    const record = await getConversationByUser(
-      client,
-      userid
-    );
+    const record = await getConversationByUser(client, userid);
     res.status(200).json({
       success: true,
       data: record,

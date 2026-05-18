@@ -7,7 +7,6 @@ import MessageBubble from '../MessageBubble/MessageBubble';
 import MessageInput from '../MessageInput/MessageInput';
 import type { Message } from '@/types/messaging';
 
-
 export default function ChatWindow({
   messages,
   currentUserId,
@@ -36,7 +35,12 @@ export default function ChatWindow({
       {/* Header */}
       <div className={styles.header}>
         <button onClick={onBack} className={styles.backButton}>
-          <Image src="/messaging/back-arrow.svg" alt="Back" width={24} height={45} />
+          <Image
+            src="/messaging/back-arrow.svg"
+            alt="Back"
+            width={24}
+            height={45}
+          />
           <span>Back</span>
         </button>
         <span className={styles.productName}>{productName}</span>

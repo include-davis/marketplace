@@ -1,30 +1,30 @@
-"use client";
-import styles from "./HomepageFilterMenu.module.scss";
-import React from "react";
-import FilterDropdown from "../FilterDropdown/FilterDropdown";
+'use client';
+import styles from './HomepageFilterMenu.module.scss';
+import React from 'react';
+import FilterDropdown from '../FilterDropdown/FilterDropdown';
 
 const DROPDOWN_OPTIONS: { label: string; options: string[] }[] = [
   {
-    label: "Categories",
-    options: ["Electrical Components", "Tools", "Materials", "Fasteners"],
+    label: 'Categories',
+    options: ['Electrical Components', 'Tools', 'Materials', 'Fasteners'],
   },
   {
-    label: "Price Range",
+    label: 'Price Range',
     options: [
-      "Under $250",
-      "$250 - $500",
-      "$500 - $750",
-      "$750 - $1000",
-      "$1000+",
+      'Under $250',
+      '$250 - $500',
+      '$500 - $750',
+      '$750 - $1000',
+      '$1000+',
     ],
   },
   {
-    label: "Sort By",
+    label: 'Sort By',
     options: [
-      "Relevance",
-      "Newly Listed",
-      "Price: Low to High",
-      "Price: High to Low",
+      'Relevance',
+      'Newly Listed',
+      'Price: Low to High',
+      'Price: High to Low',
     ],
   },
 ];

@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import styles from "./Navbar.module.scss";
-import { SearchBar } from "../SearchBar/SearchBar";
-import Option from "../Option/Option";
+import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
+import styles from './Navbar.module.scss';
+import { SearchBar } from '../SearchBar/SearchBar';
+import Option from '../Option/Option';
 
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -19,8 +19,8 @@ export default function Navbar() {
         setDropdownOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -65,7 +65,7 @@ export default function Navbar() {
               alt="Menu"
               width={30}
               height={30}
-              className={`${styles.chevron} ${dropdownOpen ? styles.chevronOpen : ""}`}
+              className={`${styles.chevron} ${dropdownOpen ? styles.chevronOpen : ''}`}
             />
           </button>
           {dropdownOpen && (

@@ -20,7 +20,11 @@ export default function MessageBubble({
           {avatarUrl && (
             <Image
               src={avatarUrl}
-              alt={message.senderId ? `Avatar for user ${message.senderId}` : 'User avatar'}
+              alt={
+                message.senderId
+                  ? `Avatar for user ${message.senderId}`
+                  : 'User avatar'
+              }
               width={40}
               height={40}
             />
