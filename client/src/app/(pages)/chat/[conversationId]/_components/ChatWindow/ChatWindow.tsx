@@ -7,20 +7,6 @@ import MessageBubble from '../MessageBubble/MessageBubble';
 import MessageInput from '../MessageInput/MessageInput';
 import type { Message } from '@/types/messaging';
 
-function BackArrowIcon() {
-  return (
-    <svg viewBox="0 0 24 48" fill="currentColor">
-      <path
-        d="M18 4L6 24l12 20"
-        stroke="currentColor"
-        strokeWidth="3"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 export default function ChatWindow({
   messages,
@@ -50,7 +36,7 @@ export default function ChatWindow({
       {/* Header */}
       <div className={styles.header}>
         <button onClick={onBack} className={styles.backButton}>
-          <BackArrowIcon />
+          <Image src="/messaging/back-arrow.svg" alt="Back" width={24} height={45} />
           <span>Back</span>
         </button>
         <span className={styles.productName}>{productName}</span>
