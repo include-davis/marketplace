@@ -194,7 +194,8 @@ export const getUploadSignatureController = async (
 ) => {
   try {
     console.log(`Upload signature requested by user: ${req.user._id}`);
-    const signatureData = generateUploadSignature('listings');
+    const signatureData = generateUploadSignature(`listings/${req.params.id}`);
+
     res.status(200).json({
       success: true,
       data: signatureData,
