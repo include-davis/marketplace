@@ -24,7 +24,7 @@ export default function ProductGrid({
   }
 
   if (error) {
-    return <div className={styles.message}>Error -- {error}</div>;
+    return <div className={styles.message}>ERROR -- {error}</div>;
   }
 
   if (listings.length === 0) {
