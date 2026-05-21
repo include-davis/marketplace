@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './page.module.scss';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import HomePagination from './_components/HomePagination/HomePagination';
 import HomepageFilterMenu from './_components/HomepageFilterMenu/HomepageFilterMenu';
 import ProductGrid from './_components/ProductGrid/ProductGrid';

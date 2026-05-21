@@ -1,6 +1,5 @@
 'use client';
 import styles from './HomepageFilterMenu.module.scss';
-import React from 'react';
 import FilterDropdown from '../FilterDropdown/FilterDropdown';
 
 interface FilterState {
@@ -70,7 +69,9 @@ export default function HomepageFilterMenu({
         />
       </div>
 
-      <button className={styles.applyButton} onClick={handleApply}>Apply</button>
+      <button className={styles.applyButton} onClick={handleApply}>
+        Apply
+      </button>
     </div>
   );
 }
