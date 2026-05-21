@@ -20,10 +20,12 @@ export async function getConversationByUser(
   client: MongoClient,
   userid: string,
 ) {
-  const db: Db = client.db('MarketPlace');
-  const collection: Collection = db.collection('Conversations');
+   const db: Db = client.db('MarketPlace');
+   const collection: Collection = db.collection('Conversations');
 
-  const records = await collection.find({ users: userid }).toArray();
+   const records = await collection.find({users: userid}).toArray()
 
-  return records;
+   return records
+
 }
+

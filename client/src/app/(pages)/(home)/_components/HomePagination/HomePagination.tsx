@@ -80,7 +80,7 @@ export default function HomePagination({
           >
             {page}
           </button>
-        ),
+        )
       )}
 
       <button

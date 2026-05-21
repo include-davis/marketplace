@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import styles from './SearchBar.module.scss';
+import Image from "next/image";
+import styles from "./SearchBar.module.scss";
 
 export function SearchBar() {
   return (

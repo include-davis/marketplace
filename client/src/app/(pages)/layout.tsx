@@ -1,7 +1,7 @@
 import './_globals/globals.scss';
 import React from 'react';
-import { Poppins, Plus_Jakarta_Sans } from 'next/font/google';
-import Navbar from '../components/Navbar/Navbar';
+import { Poppins } from 'next/font/google';
+import Navbar from "@/app/components/Navbar/Navbar";
 import Footer from '../components/Footer/Footer';
 
 const poppins = Poppins({
@@ -11,23 +11,18 @@ const poppins = Poppins({
   display: 'swap',
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font2',
-  display: 'swap',
-});
-
-export default function PagesLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`${poppins.variable} ${plusJakartaSans.variable}`}>
-      <Navbar />
-      {children}
-      <Footer />
-    </div>
+    <html lang="en" className={poppins.variable}>
+      <body>        
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
+    </html>
   );
 }

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import styles from './Option.module.scss';
-import Image from 'next/image';
+import styles from "./Option.module.scss";
+import Image from "next/image";
 
 export default function Option({
   src,

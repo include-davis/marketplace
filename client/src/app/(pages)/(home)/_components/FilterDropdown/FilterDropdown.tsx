@@ -1,7 +1,7 @@
-'use client';
-import styles from './FilterDropdown.module.scss';
-import React, { useState } from 'react';
-import Image from 'next/image';
+"use client";
+import styles from "./FilterDropdown.module.scss";
+import React, { useState } from "react";
+import Image from "next/image";
 
 export default function FilterDropdown({
   label,
@@ -34,8 +34,8 @@ export default function FilterDropdown({
       <button className={styles.header} onClick={toggleOpen}>
         <h2 className={styles.label}>{label}</h2>
         <Image
-          src={isOpen ? '/dropdownSymbolUp.svg' : '/dropdownSymbolDown.svg'}
-          alt={isOpen ? 'Collapsed' : 'Expanded'}
+          src={isOpen ? "/dropdownSymbolUp.svg" : "/dropdownSymbolDown.svg"}
+          alt={isOpen ? "Collapsed" : "Expanded"}
           width={15}
           height={9}
           className={styles.arrow}
@@ -53,10 +53,10 @@ export default function FilterDropdown({
                 <Image
                   src={
                     checkedOptions.has(option)
-                      ? '/checked_checkbox.svg'
-                      : '/blank_checkbox.svg'
+                      ? "/checked_checkbox.svg"
+                      : "/blank_checkbox.svg"
                   }
-                  alt={checkedOptions.has(option) ? 'Checked' : 'Unchecked'}
+                  alt={checkedOptions.has(option) ? "Checked" : "Unchecked"}
                   width={24}
                   height={24}
                   className={styles.checkbox}
