@@ -4,19 +4,9 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
 import ChatWindow from './_components/ChatWindow/ChatWindow';
-import type { Message } from '@/types/messaging';
+import type { Message, ServerMessage } from '@/types/messaging';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-
-type ServerMessage = {
-  _id: string;
-  conversationId: string;
-  senderId: string;
-  receiverIds: string[];
-  message: string;
-  image?: string | null;
-  createdAt: string;
-};
 
 function toUIMessage(msg: ServerMessage): Message {
   return {

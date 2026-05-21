@@ -13,10 +13,10 @@
 }
 
 .avatar {
-  width: 56px;
-  height: 56px;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
-  background-color: #d9d9d9;
+  background-color: var(--bg-gray);
   flex-shrink: 0;
   overflow: hidden;
 
@@ -61,7 +61,7 @@
 
 .deliveredText {
   font-family: var(--font1);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--dark-gray);
   margin-top: 4px;

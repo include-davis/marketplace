@@ -5,3 +5,13 @@ export type Message = {
   createdAt: string;
   image?: string | null;
 };
+
+export type ServerMessage = {
+  _id: string;
+  conversationId: string;
+  senderId: string;
+  receiverIds: string[];
+  message: string;
+  image?: string | null;
+  createdAt: string;
+};
