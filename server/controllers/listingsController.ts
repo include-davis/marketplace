@@ -187,14 +187,48 @@ export const deleteListingController = async (req: Request, res: Response) => {
 
 /**
  * Returns signed upload params for the frontend to upload directly to Cloudinary.
+ * Checks ownership and enforces the 5-image cap before issuing a signature.
  */
 export const getUploadSignatureController = async (
   req: Request,
   res: Response,
 ) => {
+  const MAX_IMAGES = 5;
+  const client = req.app.locals.client;
   try {
+    const listingId = req.params.id;
     console.log(`Upload signature requested by user: ${req.user._id}`);
-    const signatureData = generateUploadSignature(`listings/${req.params.id}`);
+
+    // Verify the listing exists
+    const listing = await getListing(client, listingId);
+    if (!listing) {
+      res.status(404).json({
+        success: false,
+        message: `Listing with id ${listingId} not found.`,
+      });
+      return;
+    }
+
+    // Verify the caller owns the listing
+    if (listing.sellerId !== req.user._id.toString()) {
+      res.status(403).json({
+        success: false,
+        message: 'You do not own this listing.',
+      });
+      return;
+    }
+
+    // Enforce the image cap before handing out a signature
+    const existingCount = Array.isArray(listing.images) ? listing.images.length : 0;
+    if (existingCount >= MAX_IMAGES) {
+      res.status(400).json({
+        success: false,
+        message: `Listing already has ${existingCount} image(s) (max ${MAX_IMAGES}). Remove an image before uploading more.`,
+      });
+      return;
+    }
+
+    const signatureData = generateUploadSignature(`listings/${listingId}`);
 
     res.status(200).json({
       success: true,

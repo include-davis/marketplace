@@ -14,7 +14,7 @@ const listingsRouter = Router();
 listingsRouter.get('/', (req: Request, res: Response) =>
   getAllListingsController(req, res),
 );
-listingsRouter.get('/upload-signature', (req: Request, res: Response) =>
+listingsRouter.get('/:id/upload-signature', (req: Request, res: Response) =>
   getUploadSignatureController(req, res),
 );
 listingsRouter.get('/:id', (req: Request, res: Response) =>
