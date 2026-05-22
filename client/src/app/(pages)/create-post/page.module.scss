@@ -1,0 +1,158 @@
+.field {
+  width: 100%;
+  border-width: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.requiredSymbol {
+  color: var(--red);
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dimensionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dimensionSquare {
+  width: 64px;
+  height: 64px;
+  font-size: 1rem;
+  border: 2px solid var(--pure-black);
+  border-radius: 5px;
+  padding: 16px;
+
+  &::placeholder {
+    text-align: center;
+  }
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.page {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  min-height: calc(100vh - 96px);
+  background-color: var(--white);
+  padding: calc(96px + 32px) 48px 72px;
+  color: var(--black);
+  gap: 80px;
+}
+
+.pageContainer {
+  max-width: 1240px;
+  width: 100%;
+}
+
+.backLink {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  text-decoration: none;
+}
+
+.title {
+  margin-bottom: 24px;
+}
+
+.textFieldBox {
+  width: 100%;
+  border: 2px solid var(--pure-black);
+  border-radius: 5px;
+  padding: 16px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.textAreaField {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.textAreaBox {
+  resize: none;
+  width: 100%;
+  border: 2px solid var(--pure-black);
+  border-radius: 5px;
+  padding: 16px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.twoColumn {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.priceWidth {
+  max-width: 220px;
+}
+
+.actions {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.draftButton {
+  width: 300px;
+  height: 50px;
+  border: 1px solid var(--pure-black);
+  border-radius: 5px;
+  background-color: var(--light-gray);
+  color: var(--white);
+}
+
+.previewButton {
+  width: 300px;
+  height: 50px;
+  border: 1px solid var(--pure-black);
+  border-radius: 5px;
+  background-color: var(--purple);
+  color: var(--white);
+}
+
+@media (max-width: 500px) {
+  .page {
+    max-width: 100%;
+  }
+
+  .twoColumn {
+    flex-direction: column;
+  }
+}
