@@ -1,5 +1,5 @@
 import './_globals/globals.scss';
-import React from 'react';
+import type { ReactNode } from 'react';
 import { Poppins } from 'next/font/google';
 import Navbar from "@/app/components/Navbar/Navbar";
 import Footer from '../components/Footer/Footer';
@@ -14,11 +14,11 @@ const poppins = Poppins({
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en" className={poppins.variable}>
-      <body>        
+      <body>
         <Navbar />
         {children}
         <Footer />
