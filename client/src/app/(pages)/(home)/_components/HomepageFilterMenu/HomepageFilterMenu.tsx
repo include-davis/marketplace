@@ -22,7 +22,6 @@ const PRICE_RANGE_OPTIONS = [
   '$1000+',
 ];
 const SORT_BY_OPTIONS = [
-  'Relevance',
   'Newly Listed',
   'Price: Low to High',
   'Price: High to Low',
