@@ -116,7 +116,9 @@ export async function addListingImages(
     throw new Error(`Listing with id ${id} not found`);
   }
 
-  const existingCount = Array.isArray(listing.images) ? listing.images.length : 0;
+  const existingCount = Array.isArray(listing.images)
+    ? listing.images.length
+    : 0;
   if (existingCount + imagePaths.length > MAX_IMAGES) {
     throw new Error(
       `Cannot add ${imagePaths.length} image(s). Listing already has ${existingCount} image(s) (max ${MAX_IMAGES}).`,

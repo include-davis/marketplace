@@ -219,7 +219,9 @@ export const getUploadSignatureController = async (
     }
 
     // Enforce the image cap before handing out a signature
-    const existingCount = Array.isArray(listing.images) ? listing.images.length : 0;
+    const existingCount = Array.isArray(listing.images)
+      ? listing.images.length
+      : 0;
     if (existingCount >= MAX_IMAGES) {
       res.status(400).json({
         success: false,
