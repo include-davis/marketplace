@@ -9,14 +9,17 @@ function TextField({
   label,
   name,
   type = 'text',
-  placeholder,
+    placeholder,
+    value,
+    onChange,
 }: {
   label: string;
   name: string;
   type?: string;
-  placeholder?: string;
+        placeholder?: string;
+        value: string;
+        onChange: (value: string) => void;
 }) {
-  const [value, setValue] = useState('');
 
   return (
     <div className={styles.field}>
@@ -30,7 +33,7 @@ function TextField({
           type={type}
           value={value}
           placeholder={placeholder}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           className={styles.textFieldBox}
         />
       </div>
@@ -90,6 +93,40 @@ function DimensionField() {
 }
 
 export default function CreatePostPage() {
+    
+    const [title, setTitle] = useState("");
+    const [desc, setDesc] = useState('');
+    const [price, setPrice] = useState('');
+    const [category, setCategory] = useState('');
+    
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        
+        const token = localStorage.getItem('token');
+
+        const res = await fetch('http://localhost:8080/listings', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            title,
+            desc,
+            price: Number(price),
+            category,
+            stock: 1,
+          }),
+        });
+
+      if (!res.ok) {
+        console.error('Failed to create listing');
+        return;
+      }
+
+      console.log('Listing created');
+    };
+    
   return (
     <main className={styles.page}>
       <div className={styles.pageContainer}>
@@ -98,7 +135,7 @@ export default function CreatePostPage() {
           <div className={styles.backLink}>Back</div>
         </Link>
 
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.title}>
             <h2>List an item</h2>
           </div>
@@ -107,7 +144,13 @@ export default function CreatePostPage() {
             <h2 className={styles.sectionTitle}>Product Details</h2>
 
             <div>
-              <TextField label="Title" name="Title" placeholder="Text" />
+              <TextField
+                label="Title"
+                name="Title"
+                placeholder="Text"
+                value={title}
+                onChange={setTitle}
+              />
             </div>
 
             <div className={styles.textAreaField}>
@@ -118,6 +161,8 @@ export default function CreatePostPage() {
                 rows={8}
                 placeholder="Give a brief description"
                 className={styles.textAreaBox}
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
               ></textarea>
             </div>
 
@@ -154,15 +199,17 @@ export default function CreatePostPage() {
                 name="Price"
                 type="number"
                 placeholder="Add price"
+                value={price}
+                onChange={setPrice}
               />
             </div>
           </section>
 
           <div className={styles.actions}>
-            <button type="button" className={styles.draftButton}>
+            <button type="submit" className={styles.draftButton}>
               Save as draft
             </button>
-            <button type="submit" className={styles.previewButton}>
+            <button type="button" className={styles.previewButton}>
               See Preview
             </button>
           </div>
