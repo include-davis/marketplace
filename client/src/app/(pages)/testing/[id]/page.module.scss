@@ -1,0 +1,355 @@
+@use '../../_globals/mixins.scss';
+
+/* ─── Page Layout ─── */
+.page {
+  display: flex;
+  flex-direction: column;
+  padding: 140px 80px 60px 80px;
+  min-height: 100vh;
+}
+
+/* ─── Header ─── */
+.header {
+  margin-bottom: 48px;
+  animation: fadeSlideIn 0.5s ease-out;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--medium-gray);
+  font-weight: 400;
+}
+
+.folderId {
+  color: var(--purple);
+  font-weight: 600;
+  background: var(--light-purple);
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.errorMessage {
+  color: var(--red);
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
+/* ─── Image Grid ─── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* ─── Card ─── */
+.card {
+  all: unset;
+  cursor: pointer;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--pure-white);
+  border: 1px solid var(--light-gray);
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.28s ease;
+  animation: fadeSlideIn 0.45s ease-out both;
+
+  &:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 12px 32px rgba(141, 34, 242, 0.12);
+    border-color: var(--light-purple);
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(0.995);
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+  .card:hover & {
+    transform: scale(1.06);
+  }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(141, 34, 242, 0);
+  opacity: 0;
+  transition:
+    opacity 0.28s ease,
+    background 0.28s ease;
+
+  .card:hover & {
+    opacity: 1;
+    background: rgba(141, 34, 242, 0.35);
+  }
+}
+
+.overlayText {
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  backdrop-filter: blur(2px);
+  transform: translateY(8px);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+
+  .card:hover & {
+    transform: translateY(0);
+  }
+}
+
+.cardMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1px solid var(--light-gray);
+}
+
+.format {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--purple);
+  background: var(--light-purple);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.dimensions {
+  font-size: 0.75rem;
+  color: var(--medium-gray);
+  font-weight: 500;
+}
+
+/* ─── Skeleton Loading ─── */
+.skeletonCard {
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--pure-white);
+  border: 1px solid var(--light-gray);
+}
+
+.skeletonImage {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(
+    110deg,
+    var(--light-gray) 25%,
+    #ececec 37%,
+    var(--light-gray) 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* ─── Empty State ─── */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  color: var(--medium-gray);
+  animation: fadeSlideIn 0.5s ease-out;
+}
+
+.emptyIcon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+/* ─── Lightbox ─── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.lightboxContent {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+}
+
+.lightboxClose {
+  all: unset;
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  font-size: 1.5rem;
+  color: #fff;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.1);
+  }
+}
+
+.lightboxNav {
+  all: unset;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2.5rem;
+  color: #fff;
+  cursor: pointer;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.lightboxPrev {
+  left: 24px;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
+.lightboxNext {
+  right: 24px;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
+.lightboxImageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 85vw;
+  max-height: 85vh;
+  animation: lightboxZoomIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lightboxImage {
+  max-width: 85vw;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.lightboxCounter {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 6px 18px;
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+/* ─── Animations ─── */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes lightboxZoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
