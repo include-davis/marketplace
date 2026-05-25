@@ -10,14 +10,13 @@ export interface CloudinaryImage {
 }
 
 /**
- * Fetch all images stored in a Cloudinary folder whose name matches the given ID.
+ * Fetch all images stored in a Cloudinary folder whose name matches folder name.
  * @param folderId The folder name (typically a listing/data ID).
  * @returns An array of image metadata objects.
  */
 export async function getImagesByFolder(
   folderId: string,
 ): Promise<CloudinaryImage[]> {
-  // Configure lazily so env vars are available (dotenv runs after imports)
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
