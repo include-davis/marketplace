@@ -1,0 +1,85 @@
+.card {
+    display: grid;
+    grid-template-columns: 40px 80px 1fr 120px 40px 40px;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--grey-300);
+    background-color: var(--pure-white);
+    transition: background 0.2s ease;
+  
+    &:hover {
+      background-color: var(--grey-100);
+    }
+  }
+  
+  .imageWrapper {
+    position: relative;
+    width: 80px;
+    height: 64px;
+    overflow: hidden;
+    border-radius: 4px;
+    background-color: var(--grey-100);
+  }
+  
+  .productImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .noImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: var(--grey-600);
+    font-size: 0.75rem;
+  }
+  
+  .statusBadge {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: rgb(0 0 0 / 70%);
+    color: var(--pure-white);
+    font-size: 0.65rem;
+    font-weight: 600;
+  }
+  
+  .content {
+    display: contents;
+  }
+  
+  .title {
+    color: var(--black);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  
+  .priceInput {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid var(--grey-300);
+    border-radius: 6px;
+    font-size: 0.9rem;
+  }
+  
+  .actions {
+    display: contents;
+  }
+  
+  .iconButton {
+    border: none;
+    background: none;
+    color: var(--grey-600);
+    cursor: pointer;
+    font-size: 1rem;
+  
+    &:hover {
+      color: var(--black);
+    }
+  }
