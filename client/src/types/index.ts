@@ -5,6 +5,7 @@ export type Listing = {
   price: number;
   category: string;
   stock: number;
+  createdAt: string;
 };
 
 export type FilterState = {

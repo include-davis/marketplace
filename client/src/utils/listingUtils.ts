@@ -49,6 +49,24 @@ export function getFilteredListings(
           return b.price - a.price;
         }
 
+        if (appliedFilters.sortBy === 'Newly Listed') {
+          // Both listings don't have a creation date
+          if (!a.createdAt && !b.createdAt) {
+            return 0;
+          }
+          // Only 1 listing has a creation date
+          if (!a.createdAt) {
+            return 1;
+          }
+          if (!b.createdAt) {
+            return -1;
+          }
+
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
+
         return 0;
       })
   );
