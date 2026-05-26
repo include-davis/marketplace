@@ -1,12 +1,7 @@
 'use client';
 import styles from './HomepageFilterMenu.module.scss';
 import FilterDropdown from '../FilterDropdown/FilterDropdown';
-
-interface FilterState {
-  categories: Set<string>;
-  priceRanges: Set<string>;
-  sortBy: string | null;
-}
+import { FilterState } from '@/types';
 
 const CATEGORY_OPTIONS = [
   'Electrical Components',

@@ -1,14 +1,6 @@
 import styles from './ProductGrid.module.scss';
 import ProductCard from '../ProductCard/ProductCard';
-
-interface Listing {
-  _id: string;
-  title: string;
-  desc: string;
-  price: number;
-  category: string;
-  stock: number;
-}
+import { Listing } from '@/types';
 
 export default function ProductGrid({
   listings,

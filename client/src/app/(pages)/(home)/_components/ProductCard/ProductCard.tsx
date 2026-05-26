@@ -1,13 +1,5 @@
 import styles from './ProductCard.module.scss';
-
-interface Listing {
-  _id: string;
-  title: string;
-  desc: string;
-  price: number;
-  category: string;
-  stock: number;
-}
+import { Listing } from '@/types';
 
 export default function ProductCard({ listing }: { listing: Listing }) {
   return (

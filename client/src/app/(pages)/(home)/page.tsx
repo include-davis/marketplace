@@ -5,31 +5,10 @@ import { useState, useEffect } from 'react';
 import HomePagination from './_components/HomePagination/HomePagination';
 import HomepageFilterMenu from './_components/HomepageFilterMenu/HomepageFilterMenu';
 import ProductGrid from './_components/ProductGrid/ProductGrid';
-
-interface Listing {
-  _id: string;
-  title: string;
-  desc: string;
-  price: number;
-  category: string;
-  stock: number;
-}
-
-interface FilterState {
-  categories: Set<string>;
-  priceRanges: Set<string>;
-  sortBy: string | null;
-}
+import { Listing, FilterState } from '@/types';
+import { getFilteredListings } from '@/utils/listingUtils';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-const PRICE_RANGE_MAP: Record<string, [number, number]> = {
-  'Under $250': [0, 250],
-  '$250 - $500': [250, 500],
-  '$500 - $750': [500, 750],
-  '$750 - $1000': [750, 1000],
-  '$1000+': [1000, Infinity],
-};
 
 const DEFAULT_FILTERS: FilterState = {
   categories: new Set(),
@@ -107,45 +86,7 @@ export default function Home() {
     setCurrentPage(1);
   };
 
-  // Put each listing through the filters and sort them if necessary
-  const filteredListings = listings
-    // First filter the listings based on which filter options are checked
-    .filter((listing) => {
-      // Category filter
-      if (appliedFilters.categories.size > 0) {
-        if (!appliedFilters.categories.has(listing.category)) {
-          return false;
-        }
-      }
-
-      // Price range filter
-      if (appliedFilters.priceRanges.size > 0) {
-        // The current listing won't be filtered if it falls into ANY
-        // of the selected price ranges
-        const inRange = [...appliedFilters.priceRanges].some((range) => {
-          const [min, max] = PRICE_RANGE_MAP[range];
-          return listing.price >= min && listing.price < max;
-        });
-
-        if (!inRange) {
-          return false;
-        }
-      }
-
-      return true;
-    })
-    // Then sort the filtered listings based on the "Sort By" dropdown
-    .sort((a, b) => {
-      if (appliedFilters.sortBy === 'Price: Low to High') {
-        return a.price - b.price;
-      }
-
-      if (appliedFilters.sortBy === 'Price: High to Low') {
-        return b.price - a.price;
-      }
-
-      return 0;
-    });
+  const filteredListings = getFilteredListings(listings, appliedFilters);
 
   // The number of pages for the Pagination is the number of listings divided
   // by 9, rounded up
