@@ -27,7 +27,6 @@ export async function getListing(client: MongoClient, id: string) {
 /**
  * Create a new listing in the database.
  * @param client: The MongoClient object.
- * @param sellerId: The authenticated user's ID (from JWT).
  * @param title: The title of the new listing.
  * @param desc: A description of the new listing.
  * @param price: The price of the new listing.
@@ -37,7 +36,6 @@ export async function getListing(client: MongoClient, id: string) {
  */
 export async function createListing(
   client: MongoClient,
-  sellerId: string,
   title: string,
   desc: string,
   price: number,
@@ -46,7 +44,7 @@ export async function createListing(
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
-  const doc = { sellerId, title, desc, price, category, stock, images: [] };
+  const doc = { title, desc, price, category, stock, images: [] };
   const result = await myColl.insertOne(doc);
   console.log(`A document was inserted with the _id: ${result.insertedId}`);
   return result.insertedId;

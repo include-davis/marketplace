@@ -73,7 +73,6 @@ export const createListingController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
     const userId: string = req.body.userId;
-    const sellerId: string = req.user._id.toString();
     const title: string = req.body.title;
     const desc: string = req.body.desc;
     const price: number = req.body.price;
@@ -82,7 +81,6 @@ export const createListingController = async (req: Request, res: Response) => {
 
     const record = await createListing(
       client,
-      sellerId,
       title,
       desc,
       price,
@@ -182,4 +180,3 @@ export const deleteListingController = async (req: Request, res: Response) => {
     }
   }
 };
-
