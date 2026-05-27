@@ -9,6 +9,7 @@ import { createMessagesRouter } from './routes/messagesRouter';
 import listingsRouter from './routes/listingsRouter';
 import conversationsRouter from './routes/conversationsRoutes';
 import usersRouter from './routes/usersRouter';
+import imagesRouter from './routes/imagesRouter';
 import authRouter from './auth/authRoutes';
 import { requireAuth } from './auth/middleware';
 import { loadEnvFile } from 'process';
@@ -30,6 +31,7 @@ const app: Application = express();
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(import.meta.dirname, 'uploads')));
+app.use('/testing', express.static(path.join(import.meta.dirname, 'testing')));
 
 // Create HTTP server + Socket.IO — must happen before listen()
 const server = initializeSocket(app);
@@ -76,6 +78,7 @@ app.get('/', (req, res) => {
       listings: '/listings',
       conversations: '/conversations',
       messages: '/messages',
+      images: '/images',
     },
   });
 });
@@ -85,6 +88,7 @@ app.use('/listings', requireAuth, listingsRouter);
 
 app.use('/listings', requireAuth, listingsRouter);
 app.use('/conversations', requireAuth, conversationsRouter);
+app.use('/images', requireAuth, imagesRouter);
 app.use('/users', usersRouter); // routes inside use requireAuth
 app.use('/auth', authRouter);
 

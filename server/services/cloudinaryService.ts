@@ -1,39 +1,55 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
-  api_key: process.env.CLOUDINARY_API_KEY || '',
-  api_secret: process.env.CLOUDINARY_API_SECRET || '',
-});
+let configured = false;
 
 /**
- * Generate signed upload params for the frontend to upload directly to Cloudinary.
- * @param folder - The Cloudinary folder to upload into (e.g. 'listings').
- * @returns An object containing the signature, timestamp, api_key, and cloud_name.
+ * Ensures Cloudinary is configured exactly once.
+ * Called lazily so that dotenv has already loaded env vars by the time this runs.
  */
-export function generateUploadSignature(folder: string = 'listings') {
-  const timestamp = Math.round(new Date().getTime() / 1000);
-
-  const signature = cloudinary.utils.api_sign_request(
-    { timestamp, folder },
-    process.env.CLOUDINARY_API_SECRET || '',
-  );
-
-  return {
-    signature,
-    timestamp,
-    folder,
-    api_key: process.env.CLOUDINARY_API_KEY || '',
+function ensureConfigured() {
+  if (configured) return;
+  cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME || '',
-  };
+    api_key: process.env.CLOUDINARY_API_KEY || '',
+    api_secret: process.env.CLOUDINARY_API_SECRET || '',
+  });
+  configured = true;
 }
 
+/**
+ * Upload an image buffer to Cloudinary.
+ * @param fileBuffer - The raw file data.
+ * @param folder - The Cloudinary folder to upload into (defaults to 'uploads').
+ * @returns An object containing the secure URL and public ID of the uploaded image.
+ */
+export function uploadImage(
+  fileBuffer: Buffer,
+  folder: string = 'uploads',
+): Promise<{ url: string; publicId: string }> {
+  ensureConfigured();
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(
+      { folder, resource_type: 'image' },
+      (error, result) => {
+        if (error || !result) {
+          return reject(error ?? new Error('Cloudinary upload failed'));
+        }
+        resolve({ url: result.secure_url, publicId: result.public_id });
+      },
+    );
+    stream.end(fileBuffer);
+  });
+}
+
+
 export async function deleteListingImage(id: string) {
+  ensureConfigured();
   const result = await cloudinary.uploader.destroy(id);
   return result;
 }
 
 export async function deleteAllListingImages(ids: string[]) {
+  ensureConfigured();
   const deletedImages = [];
   for (const id of ids) {
     const result = await cloudinary.uploader.destroy(id);
