@@ -1,6 +1,6 @@
 // client/src/utils/listings-utils.ts
 
-export type ListingStatus = "active" | "inactive" | "draft" | "completed";
+export type ListingStatus = 'active' | 'inactive' | 'draft' | 'completed';
 
 export type Product = {
   _id: string;

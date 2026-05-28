@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductCard from '../ProductCard/ProductCard';
 import styles from './ProductGrid.module.scss';
-import { Product, ListingStatus } from "@/utils/listings-utils";
+import { Product, ListingStatus } from '@/utils/listings-utils';
 
 export default function ProductGrid({
   products,
@@ -18,8 +18,8 @@ export default function ProductGrid({
     selectedStatus === 'active'
       ? 'Mark Inactive'
       : selectedStatus === 'inactive'
-      ? 'Mark Active'
-      : '';
+        ? 'Mark Active'
+        : '';
 
   return (
     <section>

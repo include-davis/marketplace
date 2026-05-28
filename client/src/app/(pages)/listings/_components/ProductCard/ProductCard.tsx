@@ -1,8 +1,7 @@
-
 import Image from 'next/image';
 import styles from './ProductCard.module.scss';
 // Import the types from the new shared file
-import { Product, ListingStatus } from "@/utils/listings-utils";
+import { Product, ListingStatus } from '@/utils/listings-utils';
 
 export default function ProductCard({
   product,
@@ -17,10 +16,10 @@ export default function ProductCard({
     selectedStatus === 'inactive'
       ? 'INACTIVE'
       : selectedStatus === 'draft'
-      ? 'DRAFT'
-      : selectedStatus === 'completed'
-      ? 'SOLD'
-      : null;
+        ? 'DRAFT'
+        : selectedStatus === 'completed'
+          ? 'SOLD'
+          : null;
 
   return (
     <div className={styles.card}>
