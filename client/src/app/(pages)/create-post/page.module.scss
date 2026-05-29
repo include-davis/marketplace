@@ -144,6 +144,28 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: 8px;
 }
 
+.removeImageButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 24px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: var(--white);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+}
+
 .textAreaField {
   display: flex;
   flex-direction: column;

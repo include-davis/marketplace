@@ -167,6 +167,14 @@ export default function CreatePostPage() {
                       alt={`Upload ${index + 1}`}
                       className={styles.imagePreview}
                     />
+                    <button
+                      type="button"
+                      className={styles.removeImageButton}
+                      onClick={(e) => handleRemoveImage(e, index)}
+                      aria-label={`Remove image ${index + 1}`}
+                    >
+                      &times;
+                    </button>
                   </div>
                 ))}
               </div>
