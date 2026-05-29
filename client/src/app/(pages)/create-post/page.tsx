@@ -177,6 +177,11 @@ export default function CreatePostPage() {
                     </button>
                   </div>
                 ))}
+                {uploadedImages.length < 5 && (
+                  <div className={styles.addMorePlaceholder}>
+                    <span>+</span>
+                  </div>
+                )}
               </div>
             )}
           </section>

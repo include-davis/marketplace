@@ -152,7 +152,7 @@ input[type='number']::-webkit-outer-spin-button {
   height: 24px;
   border: none;
   border-radius: 24px;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--pure-black);
   color: var(--white);
   font-size: 14px;
   line-height: 1;
@@ -162,7 +162,31 @@ input[type='number']::-webkit-outer-spin-button {
   justify-content: center;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.85);
+    background-color: var(--pure-black);
+  }
+}
+
+.addMorePlaceholder {
+  width: 120px;
+  height: 120px;
+  border: 2px solid;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  span {
+    font-size: 32px;
+    color: #ffffffad;
+  }
+
+  &:hover {
+    border-color: #ffffff38;
+
+    span {
+      color: #ffffffad;
+    }
   }
 }
 
