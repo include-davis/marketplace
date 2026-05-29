@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.scss';
@@ -90,6 +90,12 @@ function DimensionField() {
 }
 
 export default function CreatePostPage() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <main className={styles.page}>
       <div className={styles.pageContainer}>
@@ -102,7 +108,25 @@ export default function CreatePostPage() {
           <div className={styles.title}>
             <h2>List an item</h2>
           </div>
-          <section className={styles.uploadPhotosSection}>
+          <section
+            className={styles.uploadPhotosSection}
+            onClick={handleUploadClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleUploadClick();
+              }
+            }}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              style={{ display: 'none' }}
+            />
             <div className={styles.uploadArea}>
               <Image src={'/frame.svg'} alt="Photo" width={32} height={32} />
               <h2>Add up to 5 photos</h2>
