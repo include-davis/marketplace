@@ -91,9 +91,33 @@ function DimensionField() {
 
 export default function CreatePostPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   const handleUploadClick = () => {
-    fileInputRef.current?.click();
+    if (uploadedImages.length < 5) {
+      fileInputRef.current?.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const remaining = 5 - uploadedImages.length;
+    const newFiles = Array.from(files).slice(0, remaining);
+    const newUrls = newFiles.map((file) => URL.createObjectURL(file));
+
+    setUploadedImages((prev) => [...prev, ...newUrls]);
+
+    e.target.value = '';
+  };
+
+  const handleRemoveImage = (e: React.MouseEvent, index: number) => {
+    e.stopPropagation();
+    setUploadedImages((prev) => {
+      URL.revokeObjectURL(prev[index]);
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
   return (
@@ -125,13 +149,28 @@ export default function CreatePostPage() {
               type="file"
               accept="image/*"
               multiple
+              onChange={handleFileChange}
               style={{ display: 'none' }}
             />
-            <div className={styles.uploadArea}>
-              <Image src={'/frame.svg'} alt="Photo" width={32} height={32} />
-              <h2>Add up to 5 photos</h2>
-              <p>Drag or drop</p>
-            </div>
+            {uploadedImages.length === 0 ? (
+              <div className={styles.uploadArea}>
+                <Image src={'/frame.svg'} alt="Photo" width={32} height={32} />
+                <h2>Add up to 5 photos</h2>
+                <p>Drag or drop</p>
+              </div>
+            ) : (
+              <div className={styles.imagePreviewGrid}>
+                {uploadedImages.map((src, index) => (
+                  <div key={src} className={styles.imagePreviewItem}>
+                    <img
+                      src={src}
+                      alt={`Upload ${index + 1}`}
+                      className={styles.imagePreview}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
 
           <section className={styles.section}>
