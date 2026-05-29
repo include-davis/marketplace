@@ -101,14 +101,14 @@ export default function CreatePostPage() {
         <form className={styles.form}>
           <div className={styles.title}>
             <h2>List an item</h2>
-            <section className={styles.uploadPhotosSection}>
-              <div className={styles.uploadArea}>
-                <Image src={'/frame.svg'} alt="Photo" width={32} height={32} />
-                <h2>Add up to 5 photos</h2>
-                <p>Drag or drop</p>
-              </div>
-            </section>
           </div>
+          <section className={styles.uploadPhotosSection}>
+            <div className={styles.uploadArea}>
+              <Image src={'/frame.svg'} alt="Photo" width={32} height={32} />
+              <h2>Add up to 5 photos</h2>
+              <p>Drag or drop</p>
+            </div>
+          </section>
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Product Details</h2>
