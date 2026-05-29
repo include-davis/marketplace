@@ -4,6 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.scss';
+import { submitListing } from './utils/submitListing';
+import { loadEnvFile } from 'process';
+
+loadEnvFile('.env');
 
 function TextField({
   label,
@@ -102,29 +106,13 @@ export default function CreatePostPage() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        const token = localStorage.getItem('token');
-
-        const res = await fetch('http://localhost:8080/listings', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            title,
-            desc,
-            price: Number(price),
-            category,
-            stock: 1,
-          }),
+        await submitListing({
+          title,
+          desc,
+          price,
+          category,
+          stock: 1,
         });
-
-      if (!res.ok) {
-        console.error('Failed to create listing');
-        return;
-      }
-
-      console.log('Listing created');
     };
     
   return (
