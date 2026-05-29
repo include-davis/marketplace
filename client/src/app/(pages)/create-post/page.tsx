@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.scss';
+import CreatePostDropdown from '../(home)/_components/CreatePostDropdown/CreatePostDropdown';
 
 function TextField({
   label,
@@ -126,14 +127,22 @@ export default function CreatePostPage() {
                 <label>
                   Category <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <div></div>
+                <CreatePostDropdown
+                  label="Fastening and Joining"
+                  placeholder="Choose a category"
+                  options={["Fastening and Joining", "Power Transmission", "Electrical and Lightning", "Fabricating", "Sawing and Cutting", "Other"]}
+                />
               </div>
               <div className={styles.dropdownField}>
                 <label>
                   Material Property{' '}
                   <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <div></div>
+                <CreatePostDropdown
+                  label="Mechanical Property"
+                  placeholder="Choose a material property"
+                  options={["Mechanical Property", "Thermal Property", "Electrical Property", "Chemical Property", "Other"]}
+                />
               </div>
             </div>
 
@@ -142,7 +151,11 @@ export default function CreatePostPage() {
                 <label>
                   Condition <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <div></div>
+                <CreatePostDropdown
+                  label="Good"
+                  placeholder="Choose a condition of the item"
+                  options={["New", "Like new", "Good", "Fair", "Poor", "Other"]}
+                />
               </div>
             </div>
 
