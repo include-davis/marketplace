@@ -44,7 +44,7 @@ export async function createListing(
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
-  const doc = { title, desc, price, category, stock };
+  const doc = { title, desc, price, category, stock, createdAt: new Date() };
   const result = await myColl.insertOne(doc);
   console.log(`A document was inserted with the _id: ${result.insertedId}`);
   return result.insertedId;

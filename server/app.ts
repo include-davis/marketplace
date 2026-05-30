@@ -86,9 +86,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/listings', requireAuth, listingsRouter);
-// ... rest of your routes
-
-app.use('/listings', requireAuth, listingsRouter);
 app.use('/conversations', requireAuth, conversationsRouter);
 app.use('/users', usersRouter); // routes inside use requireAuth
 app.use('/auth', authRouter);
