@@ -73,7 +73,11 @@ export default function Navbar() {
           </button>
           {dropdownOpen && (
             <div className={styles.dropdown} id="account-dropdown">
-              <button className={styles.dropdownItem} id="dropdown-about">
+              <button
+                className={styles.dropdownItem}
+                id="dropdown-about"
+                onClick={() => setDropdownOpen(false)}
+              >
                 About
               </button>
               {isAuthenticated ? (
@@ -85,7 +89,11 @@ export default function Navbar() {
                   Logout
                 </button>
               ) : (
-                <Link href="/sign-in" className={styles.dropdownLink}>
+                <Link
+                  href="/sign-in"
+                  className={styles.dropdownLink}
+                  onClick={() => setDropdownOpen(false)}
+                >
                   <button className={styles.dropdownItem} id="dropdown-signin">
                     Sign in
                   </button>
