@@ -1,12 +1,15 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import Image from "next/image";
-import styles from "./Navbar.module.scss";
-import { SearchBar } from "../SearchBar/SearchBar";
-import Option from "../Option/Option";
+import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
+import styles from './Navbar.module.scss';
+import { SearchBar } from '../SearchBar/SearchBar';
+import Option from '../Option/Option';
+import { useAuth } from '@/app/_context/AuthContext';
+import Link from 'next/link';
 
 export default function Navbar() {
+  const { isAuthenticated, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -19,8 +22,8 @@ export default function Navbar() {
         setDropdownOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -65,17 +68,37 @@ export default function Navbar() {
               alt="Menu"
               width={30}
               height={30}
-              className={`${styles.chevron} ${dropdownOpen ? styles.chevronOpen : ""}`}
+              className={`${styles.chevron} ${dropdownOpen ? styles.chevronOpen : ''}`}
             />
           </button>
           {dropdownOpen && (
             <div className={styles.dropdown} id="account-dropdown">
-              <button className={styles.dropdownItem} id="dropdown-about">
+              <button
+                className={styles.dropdownItem}
+                id="dropdown-about"
+                onClick={() => setDropdownOpen(false)}
+              >
                 About
               </button>
-              <button className={styles.dropdownItem} id="dropdown-logout">
-                Logout
-              </button>
+              {isAuthenticated ? (
+                <button
+                  onClick={logout}
+                  className={styles.dropdownItem}
+                  id="dropdown-logout"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link
+                  href="/sign-in"
+                  className={styles.dropdownLink}
+                  onClick={() => setDropdownOpen(false)}
+                >
+                  <button className={styles.dropdownItem} id="dropdown-signin">
+                    Sign in
+                  </button>
+                </Link>
+              )}
             </div>
           )}
         </div>

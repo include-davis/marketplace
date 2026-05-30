@@ -13,6 +13,7 @@ import { requireAuth } from './auth/middleware';
 import { loadEnvFile } from 'process';
 import { initializeSocket, setupSocketHandlers } from './socket';
 import { MessagesService } from './services/messagesService';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 console.log('JWT_SECRET loaded:', !!process.env.JWT_SECRET);
@@ -26,8 +27,14 @@ try {
 }
 
 const app: Application = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  }),
+);
 app.use(express.json());
+app.use(cookieParser());
 
 // Create HTTP server + Socket.IO — must happen before listen()
 const server = initializeSocket(app);
