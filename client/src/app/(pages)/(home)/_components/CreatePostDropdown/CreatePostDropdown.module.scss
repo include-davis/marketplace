@@ -1,8 +1,9 @@
 .dropdown {
-  width: 256px;
-  border: 1px solid var(--black);
+  position: relative;
+  width: 100%;
+  border: 2px solid var(--pure-black);
   border-radius: 5px;
-  overflow: hidden;
+  background-color: var(--white);
 }
 
 .header {
@@ -11,17 +12,17 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 40px;
-  padding: 0 10px;
+  padding: 16px;
   background: none;
   border: none;
   cursor: pointer;
 }
 
 .label {
-    color: gray;
-    font-weight: 300;
-    font-size: 1.125rem;
+  color: gray;
+  font-weight: 400;
+  font-size: 1.125rem;
+  text-align: left;
 }
 
 .arrow {
@@ -29,11 +30,19 @@
 }
 
 .optionsList {
-  padding: 0 12px 8px 12px;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
   gap: 4px;
   list-style: none;
+  border: 2px solid var(--pure-black);
+  border-radius: 5px;
+  background-color: var(--white);
+  z-index: 10;
 }
 
 .optionButton {
@@ -45,13 +54,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 2px 0;
-}
-
-.checkbox {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  padding: 4px 0;
 }
 
 .optionLabel {

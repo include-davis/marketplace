@@ -1,20 +1,22 @@
-"use client";
-import styles from "./CreatePostDropdown.module.scss";
-import React, { useState } from "react";
-import Image from "next/image";
+'use client';
+import styles from './CreatePostDropdown.module.scss';
+import React, { useState } from 'react';
+import Image from 'next/image';
 
 export default function CreatePostDropdown({
   label,
   placeholder,
   options,
+  onChange,
 }: {
-    label: string;
-    placeholder: string;
-    options: string[];
+  label: string;
+  placeholder: string;
+  options: string[];
+  onChange: (option: string) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
-  
+  const [selectedOption, setSelectedOption] = useState('');
+
   const displayText =
     isOpen && !selectedOption ? placeholder : selectedOption || label;
 
@@ -23,6 +25,7 @@ export default function CreatePostDropdown({
   const handleSelect = (option: string) => {
     setSelectedOption(option);
     setIsOpen(false);
+    onChange(option);
   };
 
   return (
@@ -30,8 +33,8 @@ export default function CreatePostDropdown({
       <button type="button" className={styles.header} onClick={toggleOpen}>
         <h2 className={styles.label}>{displayText}</h2>
         <Image
-          src={isOpen ? "/dropdownSymbolDown.svg" : "/dropdownSymbolUp.svg"}
-          alt={isOpen ? "Collapsed" : "Expanded"}
+          src={isOpen ? '/dropdownSymbolDown.svg' : '/dropdownSymbolUp.svg'}
+          alt={isOpen ? 'Collapsed' : 'Expanded'}
           width={10}
           height={6}
           className={styles.arrow}
