@@ -97,24 +97,25 @@ function DimensionField() {
 }
 
 export default function CreatePostPage() {
-    
-    const [title, setTitle] = useState("");
-    const [desc, setDesc] = useState('');
-    const [price, setPrice] = useState('');
-    const [category, setCategory] = useState('');
-    
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        
-        await submitListing({
-          title,
-          desc,
-          price,
-          category,
-          stock: 1,
-        });
-    };
-    
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('');
+  const [materialProperty, setMaterialProperty] = useState('');
+  const [condition, setCondition] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    await submitListing({
+      title,
+      desc,
+      price,
+      category,
+      stock: 1,
+    });
+  };
+
   return (
     <main className={styles.page}>
       <div className={styles.pageContainer}>
@@ -159,14 +160,37 @@ export default function CreatePostPage() {
                 <label>
                   Category <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <div></div>
+                <CreatePostDropdown
+                  label="Fastening and Joining"
+                  placeholder="Choose a category"
+                  options={[
+                    'Fastening and Joining',
+                    'Power Transmission',
+                    'Electrical and Lightning',
+                    'Fabricating',
+                    'Sawing and Cutting',
+                    'Other',
+                  ]}
+                  onChange={setCategory}
+                />
               </div>
               <div className={styles.dropdownField}>
                 <label>
                   Material Property{' '}
                   <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <div></div>
+                <CreatePostDropdown
+                  label="Mechanical Property"
+                  placeholder="Choose a material property"
+                  options={[
+                    'Mechanical Property',
+                    'Thermal Property',
+                    'Electrical Property',
+                    'Chemical Property',
+                    'Other',
+                  ]}
+                  onChange={setMaterialProperty}
+                />
               </div>
             </div>
 
@@ -175,7 +199,12 @@ export default function CreatePostPage() {
                 <label>
                   Condition <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <div></div>
+                <CreatePostDropdown
+                  label="Good"
+                  placeholder="Choose a condition of the item"
+                  options={['New', 'Like new', 'Good', 'Fair', 'Poor', 'Other']}
+                  onChange={setCondition}
+                />
               </div>
             </div>
 
