@@ -26,8 +26,6 @@ export default function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  console.log(isAuthenticated);
-
   return (
     <div>
       <div className={styles.container}>
