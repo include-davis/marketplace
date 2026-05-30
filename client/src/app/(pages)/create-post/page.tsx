@@ -11,11 +11,13 @@ function TextField({
   name,
   type = 'text',
   placeholder,
+  onChange,
 }: {
   label: string;
   name: string;
   type?: string;
   placeholder?: string;
+  onChange: (value: string) => void;
 }) {
   const [value, setValue] = useState('');
 
@@ -91,6 +93,25 @@ function DimensionField() {
 }
 
 export default function CreatePostPage() {
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('');
+  const [materialProperty, setMaterialProperty] = useState('');
+  const [condition, setCondition] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    await submitListing({
+      title,
+      desc,
+      price,
+      category,
+      stock: 1,
+    });
+  };
+
   return (
     <main className={styles.page}>
       <div className={styles.pageContainer}>
@@ -130,7 +151,15 @@ export default function CreatePostPage() {
                 <CreatePostDropdown
                   label="Fastening and Joining"
                   placeholder="Choose a category"
-                  options={["Fastening and Joining", "Power Transmission", "Electrical and Lightning", "Fabricating", "Sawing and Cutting", "Other"]}
+                  options={[
+                    'Fastening and Joining',
+                    'Power Transmission',
+                    'Electrical and Lightning',
+                    'Fabricating',
+                    'Sawing and Cutting',
+                    'Other',
+                  ]}
+                  onChange={setCategory}
                 />
               </div>
               <div className={styles.dropdownField}>
@@ -141,7 +170,14 @@ export default function CreatePostPage() {
                 <CreatePostDropdown
                   label="Mechanical Property"
                   placeholder="Choose a material property"
-                  options={["Mechanical Property", "Thermal Property", "Electrical Property", "Chemical Property", "Other"]}
+                  options={[
+                    'Mechanical Property',
+                    'Thermal Property',
+                    'Electrical Property',
+                    'Chemical Property',
+                    'Other',
+                  ]}
+                  onChange={setMaterialProperty}
                 />
               </div>
             </div>
@@ -154,7 +190,8 @@ export default function CreatePostPage() {
                 <CreatePostDropdown
                   label="Good"
                   placeholder="Choose a condition of the item"
-                  options={["New", "Like new", "Good", "Fair", "Poor", "Other"]}
+                  options={['New', 'Like new', 'Good', 'Fair', 'Poor', 'Other']}
+                  onChange={setCondition}
                 />
               </div>
             </div>
