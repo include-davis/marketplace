@@ -46,8 +46,15 @@ export async function googleCallback(req: Request, res: Response) {
 
     const jwt = signJWT(user._id.toString());
 
-    // If client asks for JSON, return token in body; else redirect to frontend
-    return res.json({ message: 'Login successful', token: jwt });
+    // Send cookie and redirect to frontend
+    res.cookie('auth_token', jwt, {
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    });
+
+    return res.redirect(process.env.FRONTEND_URL!);
   } catch (err) {
     console.log('Google login failed:', err);
     res.status(500).json({ message: 'Google login failed' });

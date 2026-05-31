@@ -16,11 +16,9 @@ export async function requireAuth(
   next: NextFunction,
 ) {
   //Read header - if no token, return 401 unauthorized
-  const header = req.headers.authorization;
-  if (!header) return res.sendStatus(401);
-
-  //Extract token from header, verify it, and find user with id in db
-  const token = header.replace('Bearer ', '');
+  const token = req.cookies.auth_token;
+  if (!token) return res.sendStatus(401);
+  
   try {
     const payload = verifyJWT(token);
     const user = await User.findById(payload.sub);
