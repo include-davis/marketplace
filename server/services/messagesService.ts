@@ -1,27 +1,10 @@
 import { MongoClient, ObjectId } from 'mongodb';
-
-export interface Message {
-  _id?: ObjectId;
-  conversationId: ObjectId;
-  senderId: ObjectId;
-  receiverIds: ObjectId[]; // Changed to array for group chat support
-  message: string;
-  image: string | null;
-  createdAt: Date;
-}
-
-export interface CreateMessageData {
-  conversationId: string;
-  senderId: string;
-  receiverIds: string[]; // Changed to array for group chat support
-  message: string;
-  image?: string | null;
-}
+import type { Message } from '../models/Message';
 
 export class MessagesService {
   private client: MongoClient;
   private dbName: string = 'MarketPlace';
-  private collectionName: string = 'messages';
+  private collectionName: string = 'Messages';
 
   constructor(client: MongoClient) {
     this.client = client;
@@ -52,15 +35,19 @@ export class MessagesService {
   /**
    * Create and store a new message document in MongoDB
    */
-  async createMessage(messageData: CreateMessageData): Promise<Message> {
+  async createMessage(messageData: {
+    conversationId: string;
+    senderId: string;
+    message: string;
+    image?: string | null;
+  }): Promise<Message> {
     try {
       const db = this.client.db(this.dbName);
       const collection = db.collection<Message>(this.collectionName);
 
-      const newMessage: Message = {
+      const newMessage = {
         conversationId: new ObjectId(messageData.conversationId),
         senderId: new ObjectId(messageData.senderId),
-        receiverIds: messageData.receiverIds.map((id) => new ObjectId(id)),
         message: messageData.message,
         image: messageData.image || null,
         createdAt: new Date(),

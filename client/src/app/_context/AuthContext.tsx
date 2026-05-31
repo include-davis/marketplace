@@ -1,10 +1,10 @@
 'use client';
 
-import { UserDoc } from '../../../../server/models/User';
+import { User } from '../../../../server/models/User';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext<{
-  user: UserDoc | null;
+  user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
   refreshAuth: () => Promise<void>;
@@ -12,7 +12,7 @@ const AuthContext = createContext<{
 } | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserDoc | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const [loading, setLoading] = useState(true);
 
