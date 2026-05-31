@@ -2,12 +2,12 @@ import mongoose, { Schema, Types, Model } from 'mongoose';
 
 export type GoogleProvider = {
   sub: string;
-  email?: String;
+  email?: string;
 }
 
 export type User = {
   _id: Types.ObjectId;
-  email: String;
+  email: string;
 
   passwordHash: string | null;
   google: GoogleProvider | null;

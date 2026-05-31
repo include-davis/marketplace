@@ -5,7 +5,7 @@ import {
   getAllListings,
   getListing,
   updateListing,
-} from '../services/listingService.ts';
+} from '../services/listingService';
 
 /**
  *
@@ -43,7 +43,11 @@ export const getAllListingsController = async (req: Request, res: Response) => {
 export const getListingController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
-    const id: string = req.params.id;
+    const id = req.params.id;
+    if (typeof id !== 'string') {
+      throw new Error('Invalid listing ID');
+    }
+
     const record = await getListing(client, id);
     res.status(200).send({
       success: true,
@@ -115,7 +119,11 @@ export const createListingController = async (req: Request, res: Response) => {
 export const updateListingController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
-    const id: string = req.params.id;
+    const id = req.params.id;
+    if (typeof id !== 'string') {
+      throw new Error('Invalid listing ID');
+    }
+
     const userId: string = req.body.userId;
     const title: string = req.body.title;
     const desc: string = req.body.desc;
@@ -160,7 +168,11 @@ export const updateListingController = async (req: Request, res: Response) => {
 export const deleteListingController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
-    const id: string = req.params.id;
+    const id = req.params.id;
+    if (typeof id !== 'string') {
+      throw new Error('Invalid listing ID');
+    }
+
     await deleteListing(client, id);
     res.status(200).json({
       success: true,
