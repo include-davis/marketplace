@@ -90,11 +90,9 @@ app.get('/', (req, res) => {
   });
 });
 
-// app.use('/listings', requireAuth, listingsRouter);
-app.use('/listings', listingsRouter);
+app.use('/listings', requireAuth, listingsRouter);
 app.use('/conversations', requireAuth, conversationsRouter);
-// app.use('/images', requireAuth, imagesRouter);
-app.use('/images', imagesRouter);
+app.use('/images', requireAuth, imagesRouter);
 app.use('/users', usersRouter); // routes inside use requireAuth
 app.use('/auth', authRouter);
 
