@@ -149,7 +149,7 @@ export default function CreatePostPage() {
                   Category <span className={styles.requiredSymbol}>*</span>
                 </label>
                 <CreatePostDropdown
-                  label="Fastening and Joining"
+                  label="Choose a category"
                   placeholder="Choose a category"
                   options={[
                     'Fastening and Joining',
@@ -168,7 +168,7 @@ export default function CreatePostPage() {
                   <span className={styles.requiredSymbol}>*</span>
                 </label>
                 <CreatePostDropdown
-                  label="Mechanical Property"
+                  label="Choose a material property"
                   placeholder="Choose a material property"
                   options={[
                     'Mechanical Property',
@@ -188,7 +188,7 @@ export default function CreatePostPage() {
                   Condition <span className={styles.requiredSymbol}>*</span>
                 </label>
                 <CreatePostDropdown
-                  label="Good"
+                  label="Choose a condition of the item"
                   placeholder="Choose a condition of the item"
                   options={['New', 'Like new', 'Good', 'Fair', 'Poor', 'Other']}
                   onChange={setCondition}
