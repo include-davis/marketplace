@@ -2,9 +2,9 @@
 
 import styles from './page.module.scss';
 import { useState, useEffect } from 'react';
-import HomePagination from './_components/HomePagination/HomePagination';
-import HomepageFilterMenu from './_components/HomepageFilterMenu/HomepageFilterMenu';
-import ProductGrid from './_components/ProductGrid/ProductGrid';
+import HomePagination from '../_components/HomePagination/HomePagination';
+import HomepageFilterMenu from '../_components/HomepageFilterMenu/HomepageFilterMenu';
+import ProductGrid from '../_components/ProductGrid/ProductGrid';
 import { Listing, FilterState } from '@/types';
 import { getFilteredListings } from '@/utils/listingUtils';
 import useFetch from '@/app/_hooks/useFetch';

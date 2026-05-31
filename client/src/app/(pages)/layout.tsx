@@ -1,8 +1,6 @@
-import './_globals/globals.scss';
+import '@/app/_globals/globals.scss';
 import React from 'react';
 import { Poppins } from 'next/font/google';
-import Navbar from '@/app/_components/Navbar/Navbar';
-import Footer from '../_components/Footer/Footer';
 import { AuthProvider } from '../_context/AuthContext';
 
 const poppins = Poppins({
@@ -20,11 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable}>
       <body>
-        <AuthProvider>
-          <Navbar />
-          {children}
-          <Footer />
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
