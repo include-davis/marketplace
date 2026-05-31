@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export default function useFetch(resource: string) {
-  const [result, setResult] = useState();
+export default function useFetch<T>(resource: string) {
+  const [result, setResult] = useState<T>();
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
 

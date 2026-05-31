@@ -9,7 +9,7 @@ export default function ProductGrid({
 }: {
   listings: Listing[];
   loading: boolean;
-  error: string | null;
+  error?: string | null;
 }) {
   if (loading) {
     return <div className={styles.message}>Loading listings...</div>;
