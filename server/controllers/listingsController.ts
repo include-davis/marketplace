@@ -122,7 +122,6 @@ export const updateListingController = async (req: Request, res: Response) => {
     const price: number = req.body.price;
     const category: string = req.body.category;
     const stock: number = req.body.stock;
-    const images = req.body.images;
 
     const record = await updateListing(
       client,
@@ -132,7 +131,6 @@ export const updateListingController = async (req: Request, res: Response) => {
       price,
       category,
       stock,
-      images,
     );
 
     res.status(200).json({
