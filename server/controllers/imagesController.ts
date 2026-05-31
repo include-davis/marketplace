@@ -1,11 +1,16 @@
 import type { Request, Response } from 'express';
 import { uploadImage } from '../services/cloudinaryService.ts';
 
-const ALLOWED_FOLDERS = ['listings', 'chat', 'avatars', 'uploads'];
+const ALLOWED_FOLDERS = [
+  'listings',
+  'listingimages',
+  'chat',
+  'avatars',
+  'uploads',
+];
 
 export const uploadImageController = async (req: Request, res: Response) => {
   try {
-    // Multer attaches the file to req.file
     if (!req.file) {
       res.status(400).json({
         success: false,

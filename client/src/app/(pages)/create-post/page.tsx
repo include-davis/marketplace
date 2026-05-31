@@ -140,42 +140,21 @@ export default function CreatePostPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (imageFiles.length === 0) {
+      alert('Please add at least one image before previewing.');
+      return;
+    }
+
     try {
-      // 1. Create the listing via POST /listings (no images yet)
-      const listingBody = {
-        title,
-        desc: description,
-        price: Number(price),
-        category: '',
-        stock: 1,
-      };
+      const uploadId = `listingimg-${Date.now()}`;
+      const folder = `listingimages/${uploadId}`;
 
-      const listingRes = await fetch(`${API_BASE}/listings`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(listingBody),
-      });
-
-      const listingCt = listingRes.headers.get('content-type') ?? '';
-      if (!listingCt.includes('application/json')) {
-        throw new Error(`Failed to create listing (${listingRes.status})`);
-      }
-      const listingData = await listingRes.json();
-      if (!listingRes.ok || !listingData.success) {
-        throw new Error(listingData.message ?? 'Failed to create listing');
-      }
-
-      const listingId = listingData.data;
-      console.log('Listing created with id:', listingId);
-
-      // 2. Upload each image into a folder named after the listing ID
       const uploadedImages: { url: string; publicId: string }[] = [];
 
       for (const file of imageFiles) {
         const form = new FormData();
         form.append('file', file);
-        form.append('folder', `listings/${listingId}`);
+        form.append('folder', folder);
 
         const res = await fetch(`${API_BASE}/images/upload`, {
           method: 'POST',
@@ -194,34 +173,7 @@ export default function CreatePostPage() {
         uploadedImages.push(data.data);
       }
 
-      console.log('All images uploaded:', uploadedImages);
-
-      // 3. Update the listing with the uploaded image URLs
-      if (uploadedImages.length > 0) {
-        const updateRes = await fetch(`${API_BASE}/listings/${listingId}`, {
-          method: 'PUT',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...listingBody, images: uploadedImages }),
-        });
-
-        const updateCt = updateRes.headers.get('content-type') ?? '';
-        if (!updateCt.includes('application/json')) {
-          throw new Error(
-            `Failed to update listing with images (${updateRes.status})`,
-          );
-        }
-        const updateData = await updateRes.json();
-        if (!updateRes.ok || !updateData.success) {
-          throw new Error(
-            updateData.message ?? 'Failed to attach images to listing',
-          );
-        }
-      }
-
-      alert(`Listing created successfully! ID: ${listingId}`);
-
-      // TODO: router.push(`/listing/${listingId}`) once preview page exists
+      alert(`Images uploaded successfully!`);
     } catch (err) {
       console.error('Submit error:', err);
       alert(err instanceof Error ? err.message : 'Something went wrong');
