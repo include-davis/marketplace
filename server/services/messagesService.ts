@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId } from 'mongodb';
 
-export interface Message {
+export type Message = {
   _id?: ObjectId;
   conversationId: ObjectId;
   senderId: ObjectId;
@@ -10,7 +10,7 @@ export interface Message {
   createdAt: Date;
 }
 
-export interface CreateMessageData {
+export type CreateMessageData = {
   conversationId: string;
   senderId: string;
   receiverIds: string[]; // Changed to array for group chat support
