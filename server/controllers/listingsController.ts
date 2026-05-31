@@ -82,6 +82,7 @@ export const createListingController = async (req: Request, res: Response) => {
     const price: number = req.body.price;
     const category: string = req.body.category;
     const stock: number = req.body.stock;
+    const images: string[] = req.body.images;
 
     const record = await createListing(
       client,
@@ -90,6 +91,7 @@ export const createListingController = async (req: Request, res: Response) => {
       price,
       category,
       stock,
+      images,
     );
 
     res.status(200).json({
@@ -130,6 +132,7 @@ export const updateListingController = async (req: Request, res: Response) => {
     const price: number = req.body.price;
     const category: string = req.body.category;
     const stock: number = req.body.stock;
+    const images: string[] = req.body.images;
 
     const record = await updateListing(
       client,
@@ -139,6 +142,7 @@ export const updateListingController = async (req: Request, res: Response) => {
       price,
       category,
       stock,
+      images,
     );
 
     res.status(200).json({

@@ -5,7 +5,7 @@ import {
   createListingController,
   updateListingController,
   deleteListingController,
-} from '../controllers/listingsController.ts';
+} from '../controllers/listingsController';
 
 const listingsRouter = Router();
 

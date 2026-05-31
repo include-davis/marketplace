@@ -10,6 +10,7 @@ export type Listing = {
   stock: number;
   createdAt: Date;
   updatedAt: Date;
+  images: string[];
 };
 
 const listingSchema = new Schema<Listing>();
