@@ -3,13 +3,6 @@ import { uploadImage } from '../services/cloudinaryService.ts';
 
 const ALLOWED_FOLDERS = ['listings', 'chat', 'avatars', 'uploads'];
 
-/**
- * Handles image upload via multipart form data.
- * Expects multer middleware to have parsed `req.file`.
- *
- * Body fields:
- *   folder (optional) – Cloudinary sub-folder; defaults to 'uploads'.
- */
 export const uploadImageController = async (req: Request, res: Response) => {
   try {
     // Multer attaches the file to req.file
@@ -21,9 +14,12 @@ export const uploadImageController = async (req: Request, res: Response) => {
       return;
     }
 
-    // Validate folder against allow-list, default to 'uploads'
+    // Validate folder against allow-list (prefix match for sub-folders), default to 'uploads'
     const folder: string =
-      req.body.folder && ALLOWED_FOLDERS.includes(req.body.folder)
+      req.body.folder &&
+      ALLOWED_FOLDERS.some(
+        (f) => req.body.folder === f || req.body.folder.startsWith(`${f}/`),
+      )
         ? req.body.folder
         : 'uploads';
 

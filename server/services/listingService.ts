@@ -68,19 +68,22 @@ export async function updateListing(
   price: number,
   category: string,
   stock: number,
+  images?: { url: string; publicId: string }[],
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
   const filter = { _id: new ObjectId(id) };
-  const updateDoc = {
-    $set: {
-      title,
-      desc,
-      price,
-      category,
-      stock,
-    },
+  const setFields: Record<string, unknown> = {
+    title,
+    desc,
+    price,
+    category,
+    stock,
   };
+  if (images !== undefined) {
+    setFields.images = images;
+  }
+  const updateDoc = { $set: setFields };
   const result = await myColl.updateOne(filter, updateDoc);
   return result;
 }

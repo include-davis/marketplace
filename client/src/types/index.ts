@@ -6,6 +6,7 @@ export type Listing = {
   category: string;
   stock: number;
   createdAt: string;
+  images?: { url: string; publicId: string }[];
 };
 
 export type FilterState = {
