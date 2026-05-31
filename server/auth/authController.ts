@@ -37,3 +37,8 @@ export async function login(req: Request, res: Response) {
   const token = signJWT(user.id);
   res.json({ message: 'Login successful', token });
 }
+
+export async function logout(req: Request, res: Response) {
+  res.clearCookie('auth_token');
+  res.json({ success: true });
+}
