@@ -113,6 +113,8 @@ export default function CreatePostPage() {
       materialProperty,
       condition,
     });
+
+    window.alert(`${title} has been saved as a new draft.`)
   };
 
   return (
