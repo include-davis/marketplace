@@ -103,7 +103,7 @@ export default function CreatePostPage() {
   return (
     <main className={styles.page}>
       <div className={styles.pageContainer}>
-        <Link href="/home" className={styles.back}>
+        <Link href="/sell/active" className={styles.back}>
           <Image src={'/back_arrow.svg'} alt="<" width={32} height={32} />
           <div className={styles.backLink}>Back</div>
         </Link>
