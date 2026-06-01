@@ -29,13 +29,15 @@ export default function Navbar() {
   return (
     <div className={styles.container}>
       <div className={styles.logoSection}>
-        <Image
-          src="/Navbar/Hashtag.svg"
-          alt="Include"
-          width={41}
-          height={42}
-          className={styles.logo}
-        />
+        <Link href="/">
+          <Image
+            src="/Navbar/Hashtag.svg"
+            alt="Include"
+            width={41}
+            height={42}
+            className={styles.logo}
+          />
+        </Link>
       </div>
       <div className={styles.searchBarSection}>
         <SearchBar />
