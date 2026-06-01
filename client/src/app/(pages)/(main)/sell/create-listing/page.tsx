@@ -102,7 +102,7 @@ export default function CreatePostPage() {
   const [condition, setCondition] = useState('');
   const { postResource, pending, error } = usePost('/listings');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitDraft = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     await postResource({
@@ -125,7 +125,7 @@ export default function CreatePostPage() {
           <div className={styles.backLink}>Back</div>
         </Link>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmitDraft}>
           <div className={styles.title}>
             <h2>List an item</h2>
           </div>
