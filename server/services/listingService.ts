@@ -41,10 +41,11 @@ export async function createListing(
   price: number,
   category: string,
   stock: number,
+  images: string[],
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
-  const doc = { title, desc, price, category, stock };
+  const doc = { title, desc, price, category, stock, createdAt: new Date(), images };
   const result = await myColl.insertOne(doc);
   console.log(`A document was inserted with the _id: ${result.insertedId}`);
   return result.insertedId;
@@ -68,6 +69,7 @@ export async function updateListing(
   price: number,
   category: string,
   stock: number,
+  images: string[],
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
@@ -79,6 +81,7 @@ export async function updateListing(
       price,
       category,
       stock,
+      images,
     },
   };
   const result = await myColl.updateOne(filter, updateDoc);
@@ -96,4 +99,38 @@ export async function deleteListing(client: MongoClient, id: string) {
   const filter = { _id: new ObjectId(id) };
   const deleteResult = await myColl.deleteOne(filter);
   return deleteResult;
+}
+
+export async function addListingImages(
+  client: MongoClient,
+  id: string,
+  imagePaths: string[],
+) {
+  const MAX_IMAGES = 5;
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const filter = { _id: new ObjectId(id) };
+
+  // Fetch the listing to check the current image count
+  const listing = await myColl.findOne(filter);
+  if (!listing) {
+    throw new Error(`Listing with id ${id} not found`);
+  }
+
+  const existingCount = Array.isArray(listing.images)
+    ? listing.images.length
+    : 0;
+  if (existingCount + imagePaths.length > MAX_IMAGES) {
+    throw new Error(
+      `Cannot add ${imagePaths.length} image(s). Listing already has ${existingCount} image(s) (max ${MAX_IMAGES}).`,
+    );
+  }
+
+  const imagePush = {
+    $push: {
+      images: { $each: imagePaths },
+    },
+  };
+  const result = await myColl.updateOne(filter, imagePush as any);
+  return result;
 }
