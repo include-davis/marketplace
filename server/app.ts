@@ -9,6 +9,7 @@ import { createMessagesRouter } from './routes/messagesRouter';
 import listingsRouter from './routes/listingsRouter';
 import conversationsRouter from './routes/conversationsRoutes';
 import usersRouter from './routes/usersRouter';
+import cloudinaryRouter from './routes/cloudinaryRouter';
 import imagesRouter from './routes/imagesRouter';
 import authRouter from './auth/authRoutes';
 import { requireAuth } from './auth/middleware';
@@ -95,6 +96,7 @@ app.use('/conversations', requireAuth, conversationsRouter);
 app.use('/images', requireAuth, imagesRouter);
 app.use('/users', usersRouter); // routes inside use requireAuth
 app.use('/auth', authRouter);
+app.use('/images', cloudinaryRouter);
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

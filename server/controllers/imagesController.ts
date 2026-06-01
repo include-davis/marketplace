@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { uploadImage } from '../services/cloudinaryService.ts';
+import { uploadImage } from '../services/cloudinaryService';
 
 const ALLOWED_FOLDERS = ['listings', 'chat', 'avatars', 'uploads'];
 
