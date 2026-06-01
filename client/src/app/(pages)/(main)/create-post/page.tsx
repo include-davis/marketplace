@@ -11,16 +11,16 @@ function TextField({
   name,
   type = 'text',
   placeholder,
+  value,
   onChange,
 }: {
   label: string;
   name: string;
   type?: string;
   placeholder?: string;
+  value: string;
   onChange: (value: string) => void;
 }) {
-  const [value, setValue] = useState('');
-
   return (
     <div className={styles.field}>
       <label htmlFor={name}>
@@ -33,7 +33,7 @@ function TextField({
           type={type}
           value={value}
           placeholder={placeholder}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           className={styles.textFieldBox}
         />
       </div>
@@ -100,18 +100,6 @@ export default function CreatePostPage() {
   const [materialProperty, setMaterialProperty] = useState('');
   const [condition, setCondition] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    await submitListing({
-      title,
-      desc,
-      price,
-      category,
-      stock: 1,
-    });
-  };
-
   return (
     <main className={styles.page}>
       <div className={styles.pageContainer}>
@@ -129,7 +117,13 @@ export default function CreatePostPage() {
             <h2 className={styles.sectionTitle}>Product Details</h2>
 
             <div>
-              <TextField label="Title" name="Title" placeholder="Text" />
+              <TextField
+                label="Title"
+                name="Title"
+                placeholder="Text"
+                value={title}
+                onChange={setTitle}
+              />
             </div>
 
             <div className={styles.textAreaField}>
@@ -140,6 +134,8 @@ export default function CreatePostPage() {
                 rows={8}
                 placeholder="Give a brief description"
                 className={styles.textAreaBox}
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
               ></textarea>
             </div>
 
@@ -204,6 +200,8 @@ export default function CreatePostPage() {
                 name="Price"
                 type="number"
                 placeholder="Add price"
+                value={price}
+                onChange={setPrice}
               />
             </div>
           </section>
