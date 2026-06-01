@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.scss';
 import CreatePostDropdown from './_components/CreatePostDropdown/CreatePostDropdown';
+import usePost from '@/app/_hooks/usePost';
 
 function TextField({
   label,
@@ -99,6 +100,22 @@ export default function CreatePostPage() {
   const [category, setCategory] = useState('');
   const [materialProperty, setMaterialProperty] = useState('');
   const [condition, setCondition] = useState('');
+  const { postResource, pending, error } = usePost('/listings');
+
+  const handleSubmitDraft = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    await postResource({
+      title,
+      desc,
+      price,
+      category,
+      materialProperty,
+      condition,
+    });
+
+    window.alert(`${title} has been saved as a new draft.`)
+  };
 
   return (
     <main className={styles.page}>
@@ -108,7 +125,7 @@ export default function CreatePostPage() {
           <div className={styles.backLink}>Back</div>
         </Link>
 
-        <form className={styles.form}>
+        <form className={styles.form} onSubmit={handleSubmitDraft}>
           <div className={styles.title}>
             <h2>List an item</h2>
           </div>
@@ -207,10 +224,10 @@ export default function CreatePostPage() {
           </section>
 
           <div className={styles.actions}>
-            <button type="button" className={styles.draftButton}>
+            <button type="submit" className={styles.draftButton}>
               Save as draft
             </button>
-            <button type="submit" className={styles.previewButton}>
+            <button type="button" className={styles.previewButton}>
               See Preview
             </button>
           </div>

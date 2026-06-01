@@ -29,13 +29,15 @@ export default function Navbar() {
   return (
     <div className={styles.container}>
       <div className={styles.logoSection}>
-        <Image
-          src="/Navbar/Hashtag.svg"
-          alt="Include"
-          width={41}
-          height={42}
-          className={styles.logo}
-        />
+        <Link href="/">
+          <Image
+            src="/Navbar/Hashtag.svg"
+            alt="Include"
+            width={41}
+            height={42}
+            className={styles.logo}
+          />
+        </Link>
       </div>
       <div className={styles.searchBarSection}>
         <SearchBar />
@@ -44,9 +46,10 @@ export default function Navbar() {
         <Option
           src="/Navbar/material-symbols-light_sell-outline.svg"
           label="Sell"
+          href="/sell/active"
         />
-        <Option src="/Navbar/famicons_bag-outline.svg" label="Buy" />
-        <Option src="/Navbar/line-md_chat.svg" label="Chat" />
+        <Option src="/Navbar/famicons_bag-outline.svg" label="Buy" href="/" />
+        <Option src="/Navbar/line-md_chat.svg" label="Chat" href="/chat" />
       </div>
       <div className={styles.accountSection} ref={dropdownRef}>
         <button
