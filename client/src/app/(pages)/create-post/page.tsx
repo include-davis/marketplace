@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.scss';
-import CreatePostDropdown from '../(home)/_components/CreatePostDropdown/CreatePostDropdown';
+import CreatePostDropdown from './_components/CreatePostDropdown/CreatePostDropdown';
 
 function TextField({
   label,
