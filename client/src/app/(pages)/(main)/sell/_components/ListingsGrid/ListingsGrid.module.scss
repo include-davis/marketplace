@@ -48,6 +48,52 @@
   width: 128px;
 }
 
+.soldOpacity {
+  opacity: 0.5;
+}
+
+.inactiveBadge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--inactive-gray);
+  color: var(--white);
+  width: 100px;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.draftBadge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--purple);
+  color: var(--white);
+  width: 100px;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.soldBadge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--darker-gray);
+  color: var(--white);
+  width: 100px;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
 .listingTitle {
   text-decoration: none;
   width: 200px;

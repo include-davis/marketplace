@@ -9,8 +9,15 @@ import Trash from '@/../public/listings/trash.svg';
 import DownArrow from '@/../public/listings/down_arrow.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FilterType } from '../../_utils/listings-utils';
 
-export default function ListingsGrid({ listings }: { listings: Listing[] }) {
+export default function ListingsGrid({
+  listings,
+  view,
+}: {
+  listings: Listing[];
+  view: FilterType;
+}) {
   return (
     <div className={styles.listingsGrid}>
       <div className={styles.gridHeader}>
@@ -23,13 +30,19 @@ export default function ListingsGrid({ listings }: { listings: Listing[] }) {
         <h4>--</h4>
       </div>
       {listings.map((listing) => (
-        <SellerListing listing={listing as Listing} />
+        <SellerListing listing={listing as Listing} view={view} />
       ))}
     </div>
   );
 }
 
-function SellerListing({ listing }: { listing: Listing }) {
+function SellerListing({
+  listing,
+  view,
+}: {
+  listing: Listing;
+  view: FilterType;
+}) {
   const [isSelected, setIsSelected] = useState(false);
   const hasImage = listing.images.length !== 0;
   return (
@@ -46,10 +59,16 @@ function SellerListing({ listing }: { listing: Listing }) {
               alt={listing.title}
               width={128}
               height={128}
+              className={view === 'completed' ? styles.soldOpacity : undefined}
             />
           ) : (
             <Image src={CameraOff} alt="Camera off" />
           )}
+          {view === 'inactive' && (
+            <div className={styles.inactiveBadge}>INACTIVE</div>
+          )}
+          {view === 'drafts' && <div className={styles.draftBadge}>DRAFT</div>}
+          {view === 'completed' && <div className={styles.soldBadge}>SOLD</div>}
         </Link>
         <Link className={styles.listingTitle} href={`listings/${listing._id}`}>
           <h4>{listing.title}</h4>
