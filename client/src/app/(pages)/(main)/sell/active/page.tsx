@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styles from './page.module.scss';
-import RightArrow from '../../../../../../public/rightArrow.svg';
+import RightArrow from '@/../public/rightArrow.svg';
 import Listings from '../_components/Listings/Listings';
 
 export default function Active() {
