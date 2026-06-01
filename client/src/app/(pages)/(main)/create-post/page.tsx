@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.scss';
-import { submitListing } from './utils/submitListing';
 import CreatePostDropdown from './_components/CreatePostDropdown/CreatePostDropdown';
 import usePost from '@/app/_hooks/usePost';
 
@@ -111,7 +110,8 @@ export default function CreatePostPage() {
       desc,
       price,
       category,
-      stock: 1,
+      materialProperty,
+      condition,
     });
   };
 
