@@ -5,7 +5,7 @@ import {
   getAllListings,
   getListing,
   updateListing,
-} from '../services/listingService.ts';
+} from '../services/listingService';
 
 /**
  *
@@ -43,7 +43,11 @@ export const getAllListingsController = async (req: Request, res: Response) => {
 export const getListingController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
-    const id: string = req.params.id;
+    const id = req.params.id;
+    if (typeof id !== 'string') {
+      throw new Error('Invalid listing ID');
+    }
+
     const record = await getListing(client, id);
     res.status(200).send({
       success: true,
@@ -78,6 +82,7 @@ export const createListingController = async (req: Request, res: Response) => {
     const price: number = req.body.price;
     const category: string = req.body.category;
     const stock: number = req.body.stock;
+    const images: string[] = req.body.images;
 
     const record = await createListing(
       client,
@@ -86,6 +91,7 @@ export const createListingController = async (req: Request, res: Response) => {
       price,
       category,
       stock,
+      images,
     );
 
     res.status(200).json({
@@ -115,13 +121,18 @@ export const createListingController = async (req: Request, res: Response) => {
 export const updateListingController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
-    const id: string = req.params.id;
+    const id = req.params.id;
+    if (typeof id !== 'string') {
+      throw new Error('Invalid listing ID');
+    }
+
     const userId: string = req.body.userId;
     const title: string = req.body.title;
     const desc: string = req.body.desc;
     const price: number = req.body.price;
     const category: string = req.body.category;
     const stock: number = req.body.stock;
+    const images: string[] = req.body.images;
 
     const record = await updateListing(
       client,
@@ -131,6 +142,7 @@ export const updateListingController = async (req: Request, res: Response) => {
       price,
       category,
       stock,
+      images,
     );
 
     res.status(200).json({
@@ -160,7 +172,11 @@ export const updateListingController = async (req: Request, res: Response) => {
 export const deleteListingController = async (req: Request, res: Response) => {
   const client = req.app.locals.client;
   try {
-    const id: string = req.params.id;
+    const id = req.params.id;
+    if (typeof id !== 'string') {
+      throw new Error('Invalid listing ID');
+    }
+
     await deleteListing(client, id);
     res.status(200).json({
       success: true,
