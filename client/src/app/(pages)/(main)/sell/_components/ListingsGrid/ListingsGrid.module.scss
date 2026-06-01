@@ -1,0 +1,140 @@
+.listingsGrid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 36px;
+}
+
+.gridHeader {
+  padding-left: 256px;
+  padding-right: 120px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+
+.infoHeaders {
+  display: flex;
+  gap: 54px;
+}
+
+.listingTitleHeader {
+  width: 200px;
+}
+
+.sellerListing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listingInfo {
+  display: flex;
+  gap: 54px;
+  align-items: center;
+}
+
+.imageContainer {
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  height: 128px;
+  width: 128px;
+}
+
+.soldOpacity {
+  opacity: 0.5;
+}
+
+.inactiveBadge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--inactive-gray);
+  color: var(--white);
+  width: 100px;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.draftBadge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--purple);
+  color: var(--white);
+  width: 100px;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.soldBadge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: var(--darker-gray);
+  color: var(--white);
+  width: 100px;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.listingTitle {
+  text-decoration: none;
+  width: 200px;
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--black);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.inputMoneySign {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-weight: 600;
+}
+
+.priceInput {
+  width: 120px;
+  border: 1px solid var(--black);
+  border-radius: 5px;
+  padding: 10px;
+  padding-left: 24px;
+  font-size: 1rem;
+}
+
+.listingActions {
+  display: flex;
+  gap: 88px;
+}
+
+.actionButton {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
