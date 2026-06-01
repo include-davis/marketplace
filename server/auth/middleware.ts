@@ -1,5 +1,5 @@
 import { verifyJWT } from './jwt';
-import { User } from '../models/User';
+import { UserDocument } from '../models/User';
 import type { Request, Response, NextFunction } from 'express';
 
 declare global {
@@ -21,7 +21,7 @@ export async function requireAuth(
   
   try {
     const payload = verifyJWT(token);
-    const user = await User.findById(payload.sub);
+    const user = await UserDocument.findById(payload.sub);
     if (!user) return res.sendStatus(401);
 
     //Attach user to request

@@ -2,11 +2,12 @@
 
 import styles from './page.module.scss';
 import { useState, useEffect } from 'react';
-import HomePagination from './_components/HomePagination/HomePagination';
-import HomepageFilterMenu from './_components/HomepageFilterMenu/HomepageFilterMenu';
-import ProductGrid from './_components/ProductGrid/ProductGrid';
+import HomePagination from '../_components/HomePagination/HomePagination';
+import HomepageFilterMenu from '../_components/HomepageFilterMenu/HomepageFilterMenu';
+import ProductGrid from '../_components/ProductGrid/ProductGrid';
 import { Listing, FilterState } from '@/types';
 import { getFilteredListings } from '@/utils/listingUtils';
+import useFetch from '@/app/_hooks/useFetch';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -18,38 +19,15 @@ const DEFAULT_FILTERS: FilterState = {
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [listings, setListings] = useState<Listing[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [pendingFilters, setPendingFilters] =
     useState<FilterState>(DEFAULT_FILTERS);
   const [appliedFilters, setAppliedFilters] =
     useState<FilterState>(DEFAULT_FILTERS);
 
-  useEffect(() => {
-    const fetchListings = async () => {
-      try {
-        const response = await fetch(`${BACKEND_URL}/listings`);
+  const { result: listings, loading, error } = useFetch<Listing[]>('/listings');
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch listings: ${response.status}`);
-        }
-
-        const json = await response.json();
-        setListings(json.data);
-      } catch (e: unknown) {
-        if (e instanceof Error) {
-          setError(e.message);
-        } else {
-          setError('An unknown error occurred.');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchListings();
-  }, []);
+  if (loading) return <div>Loading listings...</div>;
+  if (error) return <div>Error fetching listings.</div>;
 
   // Handler for keeping track of the checked options in the
   // "Category" dropdown
@@ -86,7 +64,7 @@ export default function Home() {
     setCurrentPage(1);
   };
 
-  const filteredListings = getFilteredListings(listings, appliedFilters);
+  const filteredListings = getFilteredListings(listings || [], appliedFilters);
 
   // The number of pages for the Pagination is the number of listings divided
   // by 9, rounded up
@@ -95,7 +73,7 @@ export default function Home() {
   // Figure out which listings to display based on the current page number
   const currentListings = filteredListings.slice(
     (currentPage - 1) * 9,
-    (currentPage - 1) * 9 + 9
+    (currentPage - 1) * 9 + 9,
   );
 
   return (
