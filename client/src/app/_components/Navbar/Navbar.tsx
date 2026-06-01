@@ -44,9 +44,10 @@ export default function Navbar() {
         <Option
           src="/Navbar/material-symbols-light_sell-outline.svg"
           label="Sell"
+          href="/sell/active"
         />
-        <Option src="/Navbar/famicons_bag-outline.svg" label="Buy" />
-        <Option src="/Navbar/line-md_chat.svg" label="Chat" />
+        <Option src="/Navbar/famicons_bag-outline.svg" label="Buy" href="/" />
+        <Option src="/Navbar/line-md_chat.svg" label="Chat" href="/chat" />
       </div>
       <div className={styles.accountSection} ref={dropdownRef}>
         <button
