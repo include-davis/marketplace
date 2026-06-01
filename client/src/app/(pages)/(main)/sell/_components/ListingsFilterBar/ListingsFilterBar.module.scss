@@ -17,6 +17,8 @@
 .filterItem {
   display: flex;
   justify-content: space-between;
+  color: var(--black);
+  text-decoration: none;
 }
 
 .filterItemSelected {

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { FilterItem, FilterType } from '../../_utils/listings-utils';
 import styles from './ListingsFilterBar.module.scss';
 
@@ -38,9 +39,9 @@ function ListingsFilterItem({
     item.name.charAt(0).toUpperCase() + item.name.slice(1);
 
   return (
-    <div className={`${styles.filterItem} ${selected && styles.filterItemSelected}`}>
+    <Link href={`/sell/${item.name}`} className={`${styles.filterItem} ${selected && styles.filterItemSelected}`}>
       <span className={styles.filterItemName}>{capitalizedName}</span>
       <span className={styles.filterItemCount}>{item.count}</span>
-    </div>
+    </Link>
   );
 }
