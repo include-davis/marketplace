@@ -1,0 +1,86 @@
+[
+  {
+    "_id": "384921083921",
+    "userId": "jfklasjklfsda",
+    "title": "Listing 1",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 2,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock1.jpg"]
+  },
+  {
+    "_id": "384921083921",
+    "userId": "jfklasjklfsda",
+    "title": "Listing 2",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock2.jpg"]
+  },
+  {
+    "_id": "384921083921",
+    "userId": "jfklasjklfsda",
+    "title": "Listing 3",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock3.jpg"]
+  },
+  {
+    "_id": "384921083921",
+    "userId": "jfklasjklfsda",
+    "title": "Listing 4",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock4.jpg"]
+  },
+  {
+    "_id": "384921083921",
+    "userId": "jfklasjklfsda",
+    "title": "Listing 5",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock5.jpg"]
+  },
+  {
+    "_id": "384921083921",
+    "userId": "jfklasjklfsda",
+    "title": "Listing 6",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock6.jpg"]
+  },
+  {
+    "_id": "384921083921",
+    "userId": "jfklasjklfsda",
+    "title": "Listing 7",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock7.jpg"]
+  }
+]

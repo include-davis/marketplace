@@ -1,5 +1,5 @@
 import { verifyJWT } from './jwt';
-import { User } from '../models/User';
+import { UserDocument } from '../models/User';
 import type { Request, Response, NextFunction } from 'express';
 
 declare global {
@@ -16,14 +16,12 @@ export async function requireAuth(
   next: NextFunction,
 ) {
   //Read header - if no token, return 401 unauthorized
-  const header = req.headers.authorization;
-  if (!header) return res.sendStatus(401);
-
-  //Extract token from header, verify it, and find user with id in db
-  const token = header.replace('Bearer ', '');
+  const token = req.cookies.auth_token;
+  if (!token) return res.sendStatus(401);
+  
   try {
     const payload = verifyJWT(token);
-    const user = await User.findById(payload.sub);
+    const user = await UserDocument.findById(payload.sub);
     if (!user) return res.sendStatus(401);
 
     //Attach user to request
