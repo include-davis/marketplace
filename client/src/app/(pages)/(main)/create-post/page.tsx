@@ -4,20 +4,23 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.scss';
+import CreatePostDropdown from './_components/CreatePostDropdown/CreatePostDropdown';
 
 function TextField({
   label,
   name,
   type = 'text',
   placeholder,
+  value,
+  onChange,
 }: {
   label: string;
   name: string;
   type?: string;
   placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
 }) {
-  const [value, setValue] = useState('');
-
   return (
     <div className={styles.field}>
       <label htmlFor={name}>
@@ -30,7 +33,7 @@ function TextField({
           type={type}
           value={value}
           placeholder={placeholder}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => onChange(e.target.value)}
           className={styles.textFieldBox}
         />
       </div>
@@ -90,10 +93,17 @@ function DimensionField() {
 }
 
 export default function CreatePostPage() {
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('');
+  const [materialProperty, setMaterialProperty] = useState('');
+  const [condition, setCondition] = useState('');
+
   return (
     <main className={styles.page}>
       <div className={styles.pageContainer}>
-        <Link href="/home" className={styles.back}>
+        <Link href="/sell/active" className={styles.back}>
           <Image src={'/back_arrow.svg'} alt="<" width={32} height={32} />
           <div className={styles.backLink}>Back</div>
         </Link>
@@ -107,7 +117,13 @@ export default function CreatePostPage() {
             <h2 className={styles.sectionTitle}>Product Details</h2>
 
             <div>
-              <TextField label="Title" name="Title" placeholder="Text" />
+              <TextField
+                label="Title"
+                name="Title"
+                placeholder="Text"
+                value={title}
+                onChange={setTitle}
+              />
             </div>
 
             <div className={styles.textAreaField}>
@@ -118,6 +134,8 @@ export default function CreatePostPage() {
                 rows={8}
                 placeholder="Give a brief description"
                 className={styles.textAreaBox}
+                value={desc}
+                onChange={(e) => setDesc(e.target.value)}
               ></textarea>
             </div>
 
@@ -126,14 +144,37 @@ export default function CreatePostPage() {
                 <label>
                   Category <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <div></div>
+                <CreatePostDropdown
+                  label="Choose a category"
+                  placeholder="Choose a category"
+                  options={[
+                    'Fastening and Joining',
+                    'Power Transmission',
+                    'Electrical and Lightning',
+                    'Fabricating',
+                    'Sawing and Cutting',
+                    'Other',
+                  ]}
+                  onChange={setCategory}
+                />
               </div>
               <div className={styles.dropdownField}>
                 <label>
                   Material Property{' '}
                   <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <div></div>
+                <CreatePostDropdown
+                  label="Choose a material property"
+                  placeholder="Choose a material property"
+                  options={[
+                    'Mechanical Property',
+                    'Thermal Property',
+                    'Electrical Property',
+                    'Chemical Property',
+                    'Other',
+                  ]}
+                  onChange={setMaterialProperty}
+                />
               </div>
             </div>
 
@@ -142,7 +183,12 @@ export default function CreatePostPage() {
                 <label>
                   Condition <span className={styles.requiredSymbol}>*</span>
                 </label>
-                <div></div>
+                <CreatePostDropdown
+                  label="Choose a condition of the item"
+                  placeholder="Choose a condition of the item"
+                  options={['New', 'Like new', 'Good', 'Fair', 'Poor', 'Other']}
+                  onChange={setCondition}
+                />
               </div>
             </div>
 
@@ -154,6 +200,8 @@ export default function CreatePostPage() {
                 name="Price"
                 type="number"
                 placeholder="Add price"
+                value={price}
+                onChange={setPrice}
               />
             </div>
           </section>
