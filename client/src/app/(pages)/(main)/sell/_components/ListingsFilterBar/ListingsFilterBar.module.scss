@@ -1,0 +1,24 @@
+.listingsFilterBar {
+  width: 300px;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 2px solid var(--black);
+  border-radius: 5px;
+  background-color: var(--light-gray);
+}
+
+.listingsFilterHeading {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.filterItem {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filterItemSelected {
+  opacity: 0.5;
+}

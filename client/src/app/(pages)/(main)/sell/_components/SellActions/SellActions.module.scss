@@ -1,0 +1,15 @@
+.sellActions {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
+
+.selectAction {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.selectAllLabel {
+  user-select: none;
+}

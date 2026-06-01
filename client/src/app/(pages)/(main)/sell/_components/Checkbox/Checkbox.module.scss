@@ -1,0 +1,19 @@
+.checkboxWrapper {
+  // border: 1px solid blue;
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+
+.checkbox {
+  appearance: none;
+  height: 24px;
+  width: 24px;
+}
+
+.checkboxImage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
