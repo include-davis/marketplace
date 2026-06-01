@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-import { getImagesByFolder } from '../services/cloudinaryService.ts';
+import { getImagesByFolder } from '../services/cloudinaryService';
 
 /**
  * Get all images from folder
@@ -8,9 +8,9 @@ import { getImagesByFolder } from '../services/cloudinaryService.ts';
  */
 export const getImagesController = async (req: Request, res: Response) => {
   try {
-    const id: string = req.params.id;
+    const id: string | undefined | string[] = req.params.id;
 
-    if (!id || id.trim().length === 0) {
+    if (!id || typeof id !== 'string' || id.trim().length === 0) {
       res.status(400).json({
         success: false,
         message: 'Image folder ID is required.',

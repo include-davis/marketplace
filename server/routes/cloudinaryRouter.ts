@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from 'express';
-import { getImagesController } from '../controllers/cloudinaryController.ts';
+import { getImagesController } from '../controllers/cloudinaryController';
 
 const cloudinaryRouter = Router();
 

@@ -17,10 +17,20 @@ export interface CloudinaryImage {
 export async function getImagesByFolder(
   folderId: string,
 ): Promise<CloudinaryImage[]> {
+  const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+  const apiKey = process.env.CLOUDINARY_API_KEY;
+  const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+  if (!cloudName || !apiKey || !apiSecret) {
+    throw new Error(
+      'Failed to read Cloudinary cloud name, API key, or API secret',
+    );
+  }
+
   cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: cloudName,
+    api_key: apiKey,
+    api_secret: apiSecret,
   });
 
   const result = await cloudinary.search
@@ -90,7 +100,6 @@ export function uploadImage(
     stream.end(fileBuffer);
   });
 }
-
 
 export async function deleteListingImage(id: string) {
   ensureConfigured();

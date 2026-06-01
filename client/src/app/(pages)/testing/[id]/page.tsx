@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import styles from './page.module.scss';
+import useFetch from '@/app/_hooks/useFetch';
 
 interface CloudinaryImage {
   url: string;
@@ -17,35 +18,19 @@ interface CloudinaryImage {
 export default function ImageGalleryPage() {
   const params = useParams();
   const id = params.id as string;
-
-  const [images, setImages] = useState<CloudinaryImage[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (!id) return;
+  const {
+    result,
+    error,
+    loading,
+  }: {
+    result: CloudinaryImage[] | undefined;
+    error: string | undefined;
+    loading: boolean;
+  } = useFetch(`/images/${id}`);
 
-    const fetchImages = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch(`http://localhost:4000/images/${id}`);
-        const json = await res.json();
-        if (json.success) {
-          setImages(json.data);
-        } else {
-          setError(json.message || 'Failed to load images.');
-        }
-      } catch {
-        setError('Could not connect to the server.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchImages();
-  }, [id]);
+  const images = result ? result : [];
 
   const openLightbox = (index: number) => setLightboxIndex(index);
   const closeLightbox = () => setLightboxIndex(null);

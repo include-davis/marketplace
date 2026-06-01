@@ -1,6 +1,6 @@
 import { Router, type Request, type Response } from 'express';
 import multer from 'multer';
-import { uploadImageController } from '../controllers/imagesController.ts';
+import { uploadImageController } from '../controllers/imagesController';
 
 // Store files in memory as Buffers (no disk writes needed)
 const upload = multer({ storage: multer.memoryStorage() });
