@@ -8,10 +8,9 @@ import CameraOff from '@/../public/listings/camera_off.svg';
 import Trash from '@/../public/listings/trash.svg';
 import DownArrow from '@/../public/listings/down_arrow.svg';
 import Image from 'next/image';
-import MOCK_LISTINGS from '@/mocks/mock_listings.json';
 import Link from 'next/link';
 
-export default function ListingsGrid() {
+export default function ListingsGrid({ listings }: { listings: Listing[] }) {
   return (
     <div className={styles.listingsGrid}>
       <div className={styles.gridHeader}>
@@ -23,7 +22,7 @@ export default function ListingsGrid() {
         </div>
         <h4>--</h4>
       </div>
-      {MOCK_LISTINGS.map((listing) => (
+      {listings.map((listing) => (
         <SellerListing listing={listing as Listing} />
       ))}
     </div>
