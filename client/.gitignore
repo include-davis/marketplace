@@ -16,7 +16,11 @@
 # next.js
 /.next/
 /out/
+<<<<<<< HEAD
 /client
+=======
+/client/.next/
+>>>>>>> 7556eee4dc7d99230721a034594a8cf4fd392bdb
 
 # production
 /build

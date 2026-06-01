@@ -209,8 +209,22 @@ input[type='number']::-webkit-outer-spin-button {
 .twoColumn {
   display: flex;
   flex-direction: row;
+  width: 100%;
   gap: 24px;
 }
+
+.dropdownField {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.halfWidth {
+  width: calc(50% - 12px);
+}
+
 
 .priceWidth {
   max-width: 220px;

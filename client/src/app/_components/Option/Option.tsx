@@ -1,19 +1,20 @@
-"use client";
+'use client';
 
-import styles from "./Option.module.scss";
-import Image from "next/image";
+import Link from 'next/link';
+import styles from './Option.module.scss';
+import Image from 'next/image';
 
 export default function Option({
   src,
   label,
-  onClick,
+  href,
 }: {
   src: string;
   label: string;
-  onClick?: () => void;
+  href: string;
 }) {
   return (
-    <button className={styles.buttonContainer} onClick={onClick}>
+    <Link className={styles.buttonContainer} href={href}>
       <Image
         src={src}
         alt={label}
@@ -22,6 +23,6 @@ export default function Option({
         className={styles.buttonImage}
       />
       <span className={styles.buttonText}>{label}</span>
-    </button>
+    </Link>
   );
 }
