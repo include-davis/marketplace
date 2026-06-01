@@ -7,7 +7,8 @@ export type Listing = {
   desc: string;
   price: number;
   category: string;
-  stock: number;
+  materialProperty: string;
+  condition: string;
   createdAt: Date;
   updatedAt: Date;
   images: string[];

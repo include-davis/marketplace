@@ -6,6 +6,7 @@ import Image from 'next/image';
 import styles from './page.module.scss';
 import { submitListing } from './utils/submitListing';
 import CreatePostDropdown from './_components/CreatePostDropdown/CreatePostDropdown';
+import usePost from '@/app/_hooks/usePost';
 
 function TextField({
   label,
@@ -100,11 +101,12 @@ export default function CreatePostPage() {
   const [category, setCategory] = useState('');
   const [materialProperty, setMaterialProperty] = useState('');
   const [condition, setCondition] = useState('');
+  const { postResource, pending, error } = usePost('/listings');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await submitListing({
+    await postResource({
       title,
       desc,
       price,

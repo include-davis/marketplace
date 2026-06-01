@@ -40,12 +40,22 @@ export async function createListing(
   desc: string,
   price: number,
   category: string,
-  stock: number,
+  materialProperty: string,
+  condition: string,
   images: string[],
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
-  const doc = { title, desc, price, category, stock, createdAt: new Date(), images };
+  const doc = {
+    title,
+    desc,
+    price,
+    category,
+    materialProperty,
+    condition,
+    createdAt: new Date(),
+    images,
+  };
   const result = await myColl.insertOne(doc);
   console.log(`A document was inserted with the _id: ${result.insertedId}`);
   return result.insertedId;
@@ -68,7 +78,8 @@ export async function updateListing(
   desc: string,
   price: number,
   category: string,
-  stock: number,
+  materialProperty: string,
+  condition: string,
   images: string[],
 ) {
   const myDB = client.db('MarketPlace');
@@ -80,7 +91,8 @@ export async function updateListing(
       desc,
       price,
       category,
-      stock,
+      materialProperty,
+      condition,
       images,
     },
   };
