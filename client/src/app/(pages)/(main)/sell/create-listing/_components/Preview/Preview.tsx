@@ -80,6 +80,7 @@ function DimensionField({
 export default function Preview({
   setShowPreview,
   title,
+  previewUrls,
   desc,
   category,
   materialProperty,
@@ -89,6 +90,7 @@ export default function Preview({
 }: {
   setShowPreview: Dispatch<SetStateAction<boolean>>;
   title: string;
+  previewUrls: string[];
   desc: string;
   category: string;
   materialProperty: string;
@@ -103,6 +105,18 @@ export default function Preview({
         <div className={styles.previewPanel}>
           <div className={styles.title}>
             <h2>List an item</h2>
+          </div>
+          <div className={styles.images}>
+            {previewUrls.map((src, index) => (
+              <div className={styles.imageContainer}>
+                <Image
+                  src={src}
+                  alt={`Upload ${index + 1}`}
+                  width={296}
+                  height={296}
+                />
+              </div>
+            ))}
           </div>
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Product Details</h2>

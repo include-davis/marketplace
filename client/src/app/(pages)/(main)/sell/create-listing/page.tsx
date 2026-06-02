@@ -210,199 +210,205 @@ export default function CreatePostPage() {
   };
 
   return (
-    <main className={styles.page}>
-      <div className={styles.pageContainer}>
-        <Link href="/sell/active" className={styles.back}>
-          <Image src={'/back_arrow.svg'} alt="<" width={32} height={32} />
-          <div className={styles.backLink}>Back</div>
-        </Link>
-
-        <form
-          className={styles.form}
-          onSubmit={async (e) => {
-            await handleSubmitDraft(e);
-            await handleUploadImages(e);
-            handleAddImages();
-          }}
-        >
-          <div className={styles.title}>
-            <h2>List an item</h2>
-          </div>
-          <section
-            className={styles.uploadPhotosSection}
-            onClick={handleUploadClick}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleUploadClick();
-              }
+    <main className={styles.pageWrapper}>
+      <div className={styles.page}>
+        <div className={styles.pageContainer}>
+          <Link href="/sell/active" className={styles.back}>
+            <Image src={'/back_arrow.svg'} alt="<" width={32} height={32} />
+            <div className={styles.backLink}>Back</div>
+          </Link>
+          <form
+            className={styles.form}
+            onSubmit={async (e) => {
+              await handleSubmitDraft(e);
+              await handleUploadImages(e);
+              handleAddImages();
             }}
           >
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-            />
-            {previewUrls.length === 0 ? (
-              <div className={styles.uploadArea}>
-                <Image src={'/frame.svg'} alt="Photo" width={32} height={32} />
-                <h2>Add up to 5 photos</h2>
-                <p>Drag or drop</p>
-              </div>
-            ) : (
-              <div className={styles.imagePreviewGrid}>
-                {previewUrls.map((src, index) => (
-                  <div key={src} className={styles.imagePreviewItem}>
-                    <img
-                      src={src}
-                      alt={`Upload ${index + 1}`}
-                      className={styles.imagePreview}
-                    />
-                    <button
-                      type="button"
-                      className={styles.removeImageButton}
-                      onClick={(e) => handleRemoveImage(e, index)}
-                      aria-label={`Remove image ${index + 1}`}
-                    >
-                      &times;
-                    </button>
-                  </div>
-                ))}
-                {previewUrls.length < 5 && (
-                  <div className={styles.addMorePlaceholder}>
-                    <span>+</span>
-                  </div>
-                )}
-              </div>
-            )}
-          </section>
-
-          <section className={styles.section}>
-            <h2 className={styles.sectionTitle}>Product Details</h2>
-
-            <div>
-              <TextField
-                label="Title"
-                name="Title"
-                placeholder="Text"
-                value={title}
-                onChange={setTitle}
-              />
+            <div className={styles.title}>
+              <h2>List an item</h2>
             </div>
-
-            <div className={styles.textAreaField}>
-              <label htmlFor="Description">
-                Description <span className={styles.requiredSymbol}>*</span>
-              </label>
-              <textarea
-                rows={8}
-                placeholder="Give a brief description"
-                className={styles.textAreaBox}
-                value={desc}
-                onChange={(e) => setDesc(e.target.value)}
-              ></textarea>
-            </div>
-
-            <div className={styles.twoColumn}>
-              <div className={styles.dropdownField}>
-                <label>
-                  Category <span className={styles.requiredSymbol}>*</span>
-                </label>
-                <CreatePostDropdown
-                  label="Choose a category"
-                  placeholder="Choose a category"
-                  options={[
-                    'Fastening and Joining',
-                    'Power Transmission',
-                    'Electrical and Lightning',
-                    'Fabricating',
-                    'Sawing and Cutting',
-                    'Other',
-                  ]}
-                  onChange={setCategory}
-                />
-              </div>
-              <div className={styles.dropdownField}>
-                <label>
-                  Material Property{' '}
-                  <span className={styles.requiredSymbol}>*</span>
-                </label>
-                <CreatePostDropdown
-                  label="Choose a material property"
-                  placeholder="Choose a material property"
-                  options={[
-                    'Mechanical Property',
-                    'Thermal Property',
-                    'Electrical Property',
-                    'Chemical Property',
-                    'Other',
-                  ]}
-                  onChange={setMaterialProperty}
-                />
-              </div>
-            </div>
-
-            <div className={styles.halfWidth}>
-              <div className={styles.dropdownField}>
-                <label>
-                  Condition <span className={styles.requiredSymbol}>*</span>
-                </label>
-                <CreatePostDropdown
-                  label="Choose a condition of the item"
-                  placeholder="Choose a condition of the item"
-                  options={['New', 'Like new', 'Good', 'Fair', 'Poor', 'Other']}
-                  onChange={setCondition}
-                />
-              </div>
-            </div>
-
-            <DimensionField
-              dimensions={dimensions}
-              onChange={handleDimensionChange}
-            />
-
-            <div className={styles.priceWidth}>
-              <TextField
-                label="Price"
-                name="Price"
-                type="number"
-                placeholder="Add price"
-                value={price}
-                onChange={setPrice}
-              />
-            </div>
-          </section>
-
-          <div className={styles.actions}>
-            <button type="submit" className={styles.draftButton}>
-              Save as draft
-            </button>
-            <button
-              type="button"
-              className={styles.previewButton}
-              onClick={() => {
-                setShowPreview(true);
-                window.scrollTo({
-                  top: 0,
-                  left: 0,
-                  behavior: 'auto', // 'auto' ensures an instant jump instead of smooth scrolling
-                });
+            <section
+              className={styles.uploadPhotosSection}
+              onClick={handleUploadClick}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleUploadClick();
+                }
               }}
             >
-              See Preview
-            </button>
-          </div>
-        </form>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+              />
+              {previewUrls.length === 0 ? (
+                <div className={styles.uploadArea}>
+                  <Image
+                    src={'/frame.svg'}
+                    alt="Photo"
+                    width={32}
+                    height={32}
+                  />
+                  <h2>Add up to 5 photos</h2>
+                  <p>Drag or drop</p>
+                </div>
+              ) : (
+                <div className={styles.imagePreviewGrid}>
+                  {previewUrls.map((src, index) => (
+                    <div key={src} className={styles.imagePreviewItem}>
+                      <img
+                        src={src}
+                        alt={`Upload ${index + 1}`}
+                        className={styles.imagePreview}
+                      />
+                      <button
+                        type="button"
+                        className={styles.removeImageButton}
+                        onClick={(e) => handleRemoveImage(e, index)}
+                        aria-label={`Remove image ${index + 1}`}
+                      >
+                        &times;
+                      </button>
+                    </div>
+                  ))}
+                  {previewUrls.length < 5 && (
+                    <div className={styles.addMorePlaceholder}>
+                      <span>+</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </section>
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>Product Details</h2>
+              <div>
+                <TextField
+                  label="Title"
+                  name="Title"
+                  placeholder="Text"
+                  value={title}
+                  onChange={setTitle}
+                />
+              </div>
+              <div className={styles.textAreaField}>
+                <label htmlFor="Description">
+                  Description <span className={styles.requiredSymbol}>*</span>
+                </label>
+                <textarea
+                  rows={8}
+                  placeholder="Give a brief description"
+                  className={styles.textAreaBox}
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
+                ></textarea>
+              </div>
+              <div className={styles.twoColumn}>
+                <div className={styles.dropdownField}>
+                  <label>
+                    Category <span className={styles.requiredSymbol}>*</span>
+                  </label>
+                  <CreatePostDropdown
+                    label="Choose a category"
+                    placeholder="Choose a category"
+                    options={[
+                      'Fastening and Joining',
+                      'Power Transmission',
+                      'Electrical and Lightning',
+                      'Fabricating',
+                      'Sawing and Cutting',
+                      'Other',
+                    ]}
+                    onChange={setCategory}
+                  />
+                </div>
+                <div className={styles.dropdownField}>
+                  <label>
+                    Material Property{' '}
+                    <span className={styles.requiredSymbol}>*</span>
+                  </label>
+                  <CreatePostDropdown
+                    label="Choose a material property"
+                    placeholder="Choose a material property"
+                    options={[
+                      'Mechanical Property',
+                      'Thermal Property',
+                      'Electrical Property',
+                      'Chemical Property',
+                      'Other',
+                    ]}
+                    onChange={setMaterialProperty}
+                  />
+                </div>
+              </div>
+              <div className={styles.halfWidth}>
+                <div className={styles.dropdownField}>
+                  <label>
+                    Condition <span className={styles.requiredSymbol}>*</span>
+                  </label>
+                  <CreatePostDropdown
+                    label="Choose a condition of the item"
+                    placeholder="Choose a condition of the item"
+                    options={[
+                      'New',
+                      'Like new',
+                      'Good',
+                      'Fair',
+                      'Poor',
+                      'Other',
+                    ]}
+                    onChange={setCondition}
+                  />
+                </div>
+              </div>
+              <DimensionField
+                dimensions={dimensions}
+                onChange={handleDimensionChange}
+              />
+              <div className={styles.priceWidth}>
+                <TextField
+                  label="Price"
+                  name="Price"
+                  type="number"
+                  placeholder="Add price"
+                  value={price}
+                  onChange={setPrice}
+                />
+              </div>
+            </section>
+            <div className={styles.actions}>
+              <button type="submit" className={styles.draftButton}>
+                Save as draft
+              </button>
+              <button
+                type="button"
+                className={styles.previewButton}
+                onClick={() => {
+                  setShowPreview(true);
+                  window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'auto', // 'auto' ensures an instant jump instead of smooth scrolling
+                  });
+                }}
+              >
+                See Preview
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
       {showPreview && (
         <Preview
           setShowPreview={setShowPreview}
           title={title}
+          previewUrls={previewUrls}
           desc={desc}
           category={category}
           materialProperty={materialProperty}

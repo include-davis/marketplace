@@ -36,7 +36,7 @@
 }
 
 .preview {
-  position: absolute;
+  grid-area: 1 / 1;
   height: 100%;
   width: 100%;
   top: 0;
@@ -71,12 +71,23 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  gap: 80px;
-  box-shadow: 0 40px 87px 0 rgba(0, 0, 0, 0.25), 0 158px 158px 0 rgba(0, 0, 0, 0.25);
+  gap: 28px;
+  box-shadow:
+    0 40px 87px 0 rgba(0, 0, 0, 0.25),
+    0 158px 158px 0 rgba(0, 0, 0, 0.25);
 }
 
-.title {
-  margin-bottom: 24px;
+.images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.imageContainer {
+  height: 296px;
+  width: 296px;
+  border-radius: 7px;
+  overflow: hidden;
 }
 
 .textFieldBox {

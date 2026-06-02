@@ -41,16 +41,20 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
+.pageWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
 .page {
+  grid-area: 1 / 1;
   display: flex;
-  flex-direction: row;
   justify-content: center;
   min-height: calc(100vh - 96px);
   background-color: var(--white);
   padding: calc(96px + 32px) 48px 72px;
   color: var(--black);
   gap: 80px;
-  position: relative;
 }
 
 .pageContainer {
@@ -225,7 +229,6 @@ input[type='number']::-webkit-outer-spin-button {
 .halfWidth {
   width: calc(50% - 12px);
 }
-
 
 .priceWidth {
   max-width: 220px;
