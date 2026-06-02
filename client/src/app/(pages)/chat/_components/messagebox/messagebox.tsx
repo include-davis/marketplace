@@ -1,15 +1,16 @@
 'use client';
 import Image from 'next/image';
 import { User } from '../../../../../../../server/models/User';
-import styles from './messagesbox.module.scss';
+import styles from './MessageBox.module.scss';
 import useFetch from '@/app/_hooks/useFetch';
 
-interface MessageBoxProps {
+export default function MessageBox({
+  otherUserId,
+  conversationId,
+}: {
   otherUserId: string;
   conversationId: string;
-}
-
-const MessageBox = ({ otherUserId, conversationId }: MessageBoxProps) => {
+}) {
   const {
     result: user,
     loading,
@@ -39,6 +40,4 @@ const MessageBox = ({ otherUserId, conversationId }: MessageBoxProps) => {
       </div>
     </div>
   );
-};
-
-export default MessageBox;
+}

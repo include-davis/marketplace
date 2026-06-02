@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import MessagesGrid from '../_components/messagesgrid/messagesgrid';
+import ConversationGrid from '../_components/ConversationGrid/ConversationGrid';
 import styles from './page.module.scss';
 import LeftArrow from '@/../public/leftArrow.svg';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ export default function Chat() {
           <span>Back to Listings</span>
         </Link>
       </div>
-      <MessagesGrid />
+      <ConversationGrid />
     </div>
   );
 }
