@@ -2,17 +2,17 @@ import { useState } from 'react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export default function usePost<T>(resource: string) {
+export default function usePut<T>(resource: string) {
   const [pending, setPending] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  async function postResource(object: T, params?: string) {
+  async function modifyResource(object: T, params?: string) {
     setPending(true);
     try {
       const response = await fetch(
         `${BACKEND_URL}${resource}${params ? '/' + params : ''}`,
         {
-          method: 'POST',
+          method: 'PUT',
           credentials: 'include',
           body: JSON.stringify(object),
           headers: {
@@ -22,7 +22,7 @@ export default function usePost<T>(resource: string) {
       );
 
       if (!response.ok) {
-        throw new Error(`Failed to post to ${resource}: ${response.status}`);
+        throw new Error(`Failed to put to ${resource}: ${response.status}`);
       }
 
       const data = await response.json();
@@ -38,5 +38,5 @@ export default function usePost<T>(resource: string) {
     }
   }
 
-  return { postResource, pending, error };
+  return { modifyResource, pending, error };
 }

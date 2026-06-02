@@ -12,6 +12,7 @@ export type Listing = {
   createdAt: Date;
   updatedAt: Date;
   images: string[];
+  status: string;
 };
 
 const listingSchema = new Schema<Listing>();
