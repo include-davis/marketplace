@@ -30,7 +30,11 @@ export default function ListingsGrid({
         <h4>--</h4>
       </div>
       {listings.map((listing) => (
-        <SellerListing listing={listing as Listing} view={view} />
+        <SellerListing
+          listing={listing as Listing}
+          view={view}
+          key={listing._id.toString()}
+        />
       ))}
     </div>
   );
