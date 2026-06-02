@@ -75,13 +75,14 @@ export default function Navbar() {
         </button>
         {dropdownOpen && (
           <div className={styles.dropdown} id="account-dropdown">
-            <button
+            <Link
               className={styles.dropdownItem}
               id="dropdown-about"
+              href="/about"
               onClick={() => setDropdownOpen(false)}
             >
               About
-            </button>
+            </Link>
             {isAuthenticated ? (
               <button
                 onClick={logout}
