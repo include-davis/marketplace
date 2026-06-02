@@ -93,7 +93,7 @@ export default function CreatePostPage() {
   // Image state — keep both raw Files (for upload) and blob URLs (for preview)
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
-  const [uploadedImages, setUploadedImages] = useState<string[]>();
+  const uploadedImages = useRef<string[]>([]);
 
   // Form field state (lifted from child components)
   const [title, setTitle] = useState('');
@@ -171,9 +171,7 @@ export default function CreatePostPage() {
         newUploadedImages.push(res.data.url);
       }
 
-      setUploadedImages(newUploadedImages);
-
-      alert(`Images uploaded successfully!`);
+      uploadedImages.current = newUploadedImages;
     } catch (err) {
       console.error('Submit error:', err);
       alert(err instanceof Error ? err.message : 'Something went wrong');
@@ -194,8 +192,6 @@ export default function CreatePostPage() {
     });
 
     listingId.current = listingResponse.data;
-
-    window.alert(`${title} has been saved as a new draft.`);
   };
 
   const handleAddImages = async () => {
@@ -203,11 +199,11 @@ export default function CreatePostPage() {
       throw new Error('Invalid listing ID. Could not add images');
     }
     const addImageResponse = await postResource(
-      { images: uploadedImages },
+      { images: uploadedImages.current },
       `${listingId.current}/images`,
     );
 
-    console.log('images have been added to listing', listingId.current);
+    alert(`Listing ${title} has successfully been saved.`);
   };
 
   return (
