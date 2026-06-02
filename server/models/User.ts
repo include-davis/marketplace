@@ -3,7 +3,7 @@ import mongoose, { Schema, Types, Model } from 'mongoose';
 export type GoogleProvider = {
   sub: string;
   email?: string;
-}
+};
 
 export type User = {
   _id: Types.ObjectId;
@@ -16,7 +16,7 @@ export type User = {
 
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 const googleSchema = new Schema<GoogleProvider>(
   {
@@ -58,11 +58,5 @@ const userSchema = new Schema<User>(
 userSchema.index({ email: 1 }, { unique: true });
 */
 
-<<<<<<< HEAD
-export const User: Model<UserDoc> =
-  mongoose.models.User || mongoose.model<UserDoc>('User', userSchema);
-=======
 export const UserDocument: Model<User> =
   mongoose.models.User || mongoose.model<User>('User', userSchema);
-
->>>>>>> 148d6a345e5542ceb8164895eab438967d622906
