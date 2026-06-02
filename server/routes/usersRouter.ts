@@ -7,5 +7,5 @@ const router = Router();
 // All user routes require authentication
 router.use(requireAuth);
 router.get('/me', getMe);
-router.get('/:id', getUserDocument) //gets the entire user document of a user NOT in the session
+router.get('/:id', getUserDocument); //gets the entire user document of a user by ID
 export default router;
