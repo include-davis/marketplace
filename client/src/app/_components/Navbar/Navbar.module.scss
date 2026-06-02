@@ -54,6 +54,13 @@
   transition: color 0.2s ease;
 }
 
+.userIcon {
+  height: 54px;
+  width: 54px;
+  border-radius: 200px;
+  overflow: hidden;
+}
+
 .chevron {
   transition: transform 0.2s ease;
 }

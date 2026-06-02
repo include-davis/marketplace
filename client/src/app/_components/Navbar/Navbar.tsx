@@ -58,13 +58,19 @@ export default function Navbar() {
           aria-label="Account menu"
           id="account-menu-toggle"
         >
-          <Image
-            src="/Navbar/userIcon.svg"
-            alt="Menu"
-            width={100}
-            height={100}
-            className={styles.accountIcon}
-          />
+          <div className={styles.userIcon}>
+            <Image
+              src={
+                isAuthenticated
+                  ? '/mock/mock_user_icon.png'
+                  : '/Navbar/userIcon.svg'
+              }
+              alt="Menu"
+              width={54}
+              height={54}
+              className={styles.accountIcon}
+            />
+          </div>
           <Image
             src="/Navbar/chevron.svg"
             alt="Menu"
