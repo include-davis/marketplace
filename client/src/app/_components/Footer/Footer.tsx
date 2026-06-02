@@ -17,10 +17,10 @@ export default function Footer() {
           />
         </div>
         <div className={styles.rightPanel}>
-          <a href="/">
+          <a href="/faq">
             <p className={styles.text}>Terms and Conditions</p>
           </a>
-          <a href="/">
+          <a href="/faq">
             <p className={styles.text}>FAQ</p>
           </a>
         </div>
