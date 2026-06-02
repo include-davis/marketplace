@@ -41,9 +41,14 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
+.pageWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
 .page {
+  grid-area: 1 / 1;
   display: flex;
-  flex-direction: row;
   justify-content: center;
   min-height: calc(100vh - 96px);
   background-color: var(--white);
@@ -225,7 +230,6 @@ input[type='number']::-webkit-outer-spin-button {
   width: calc(50% - 12px);
 }
 
-
 .priceWidth {
   max-width: 220px;
 }
@@ -243,6 +247,7 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: 5px;
   background-color: var(--light-gray);
   color: var(--white);
+  font-size: 0.875rem;
 }
 
 .previewButton {
@@ -252,6 +257,7 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: 5px;
   background-color: var(--purple);
   color: var(--white);
+  font-size: 0.875rem;
 }
 
 @media (max-width: 500px) {
