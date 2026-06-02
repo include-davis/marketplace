@@ -32,7 +32,7 @@ const MessagesGrid = () => {
       {conversations.map((convo) => (
         <MessageBox
           key={convo.convoid}
-          otherUserId="69913c48319b26c59692cf27"
+          otherUserId="69cb1158039ab28790c904d9"
           conversationId={convo.convoid}
         />
       ))}

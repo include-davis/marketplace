@@ -1,6 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { User } from '../../../../../../../server/models/User';
 import styles from './messagesbox.module.scss';
+import useFetch from '@/app/_hooks/useFetch';
 
 interface MessageBoxProps {
   otherUserId: string;
@@ -8,32 +9,15 @@ interface MessageBoxProps {
 }
 
 const MessageBox = ({ otherUserId, conversationId }: MessageBoxProps) => {
-  const [userName, setUsername] = useState<String>('');
+  const {
+    result: user,
+    loading,
+    error,
+  } = useFetch<User>(`/users/${otherUserId}`);
 
-  useEffect(() => {
-    const getOtherUserName = async (): Promise<void> => {
-      try {
-        const url: string = `http://localhost:3000/users/${otherUserId}`;
+  if (loading || error || !user) return;
 
-        const response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            Authorization: 'Bearer {auth token here}',
-          },
-        });
-
-        const result = await response.json();
-
-        setUsername(result);
-      } catch (err) {
-      } finally {
-      }
-    };
-
-    getOtherUserName();
-  }, []);
-
-  const placeholderuserName = 'placeholder';
+  const username = user.email;
 
   return (
     <div className={styles['message-box']} data-id={conversationId}>
@@ -45,7 +29,7 @@ const MessageBox = ({ otherUserId, conversationId }: MessageBoxProps) => {
 
       <div className={styles.content}>
         <div className={styles['top-row']}>
-          <span className={styles.username}>{placeholderuserName}</span>
+          <span className={styles.username}>{username}</span>
           <span className={styles.time}>{}</span>
         </div>
 
