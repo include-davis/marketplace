@@ -6,17 +6,26 @@ export default function usePost<T>(resource: string) {
   const [pending, setPending] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  async function postResource(object: T) {
+  async function postResource(object: T, params?: string) {
     setPending(true);
     try {
-      const response = await fetch(`${BACKEND_URL}${resource}`, {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify(object),
-        headers: {
-          'Content-Type': 'application/json',
+      console.log(
+        'start postResource to',
+        `${BACKEND_URL}${resource}${params ? '/' + params : ''}`,
+        'with object',
+        object,
+      );
+      const response = await fetch(
+        `${BACKEND_URL}${resource}${params ? '/' + params : ''}`,
+        {
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify(object),
+          headers: {
+            'Content-Type': 'application/json',
+          },
         },
-      });
+      );
 
       if (!response.ok) {
         throw new Error(`Failed to post to ${resource}: ${response.status}`);

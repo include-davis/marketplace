@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import {
+  addListingImages,
   createListing,
   deleteListing,
   getAllListings,
@@ -83,7 +84,7 @@ export const createListingController = async (req: Request, res: Response) => {
     const category: string = req.body.category;
     const materialProperty: string = req.body.materialProperty;
     const condition: string = req.body.condition;
-    const images: string[] = req.body.images;
+    const images: string[] = req.body.images ?? [];
 
     const record = await createListing(
       client,
@@ -148,6 +149,40 @@ export const updateListingController = async (req: Request, res: Response) => {
       condition,
       images,
     );
+
+    res.status(200).json({
+      success: true,
+      data: record,
+    });
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: e.message,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "couldn't get error message",
+      });
+    }
+  }
+};
+
+export const addListingImageController = async (
+  req: Request,
+  res: Response,
+) => {
+  const client = req.app.locals.client;
+  console.log("start addListingImageController with body", req.body)
+  try {
+    const id = req.params.id;
+    if (typeof id !== 'string') {
+      throw new Error('Invalid listing ID');
+    }
+    const images: string[] = req.body.images;
+
+    const record = await addListingImages(client, id, images);
 
     res.status(200).json({
       success: true,

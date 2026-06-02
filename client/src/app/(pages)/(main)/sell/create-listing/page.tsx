@@ -93,6 +93,7 @@ export default function CreatePostPage() {
   // Image state — keep both raw Files (for upload) and blob URLs (for preview)
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<string[]>();
 
   // Form field state (lifted from child components)
   const [title, setTitle] = useState('');
@@ -101,7 +102,7 @@ export default function CreatePostPage() {
   const [category, setCategory] = useState('');
   const [materialProperty, setMaterialProperty] = useState('');
   const [condition, setCondition] = useState('');
-  const listingId = useRef<number | null>(null);
+  const listingId = useRef<string | null>(null);
   const { postResource, pending, error } = usePost('/listings');
   const {
     postImage,
@@ -163,12 +164,14 @@ export default function CreatePostPage() {
         ? `listings/${listingId.current}`
         : `listings`;
 
-      const uploadedImages: { url: string; publicId: string }[] = [];
+      const newUploadedImages = [];
 
       for (const file of imageFiles) {
         const res = await postImage(file, folder);
-        uploadedImages.push(res.data);
+        newUploadedImages.push(res.data.url);
       }
+
+      setUploadedImages(newUploadedImages);
 
       alert(`Images uploaded successfully!`);
     } catch (err) {
@@ -187,11 +190,24 @@ export default function CreatePostPage() {
       category,
       materialProperty,
       condition,
+      images: [],
     });
 
     listingId.current = listingResponse.data;
 
     window.alert(`${title} has been saved as a new draft.`);
+  };
+
+  const handleAddImages = async () => {
+    if (!listingId.current) {
+      throw new Error('Invalid listing ID. Could not add images');
+    }
+    const addImageResponse = await postResource(
+      { images: uploadedImages },
+      `${listingId.current}/images`,
+    );
+
+    console.log('images have been added to listing', listingId.current);
   };
 
   return (
@@ -206,7 +222,8 @@ export default function CreatePostPage() {
           className={styles.form}
           onSubmit={async (e) => {
             await handleSubmitDraft(e);
-            handleUploadImages(e);
+            await handleUploadImages(e);
+            handleAddImages();
           }}
         >
           <div className={styles.title}>

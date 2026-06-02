@@ -138,11 +138,15 @@ export async function addListingImages(
     );
   }
 
+  console.log("start pushing image paths", imagePaths);
+
   const imagePush = {
     $push: {
       images: { $each: imagePaths },
     },
   };
+  console.log("imagePush", imagePush)
   const result = await myColl.updateOne(filter, imagePush as any);
+  console.log("update result", result);
   return result;
 }

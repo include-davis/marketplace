@@ -1,6 +1,6 @@
 import styles from './ProductGrid.module.scss';
 import ProductCard from '../ProductCard/ProductCard';
-import { Listing } from '@/types';
+import { Listing } from '@/../../server/models/Listing';
 
 export default function ProductGrid({
   listings,
@@ -26,7 +26,7 @@ export default function ProductGrid({
   return (
     <div className={styles.grid}>
       {listings.map((listing) => (
-        <ProductCard key={listing._id} listing={listing} />
+        <ProductCard key={listing._id.toString()} listing={listing} />
       ))}
     </div>
   );
