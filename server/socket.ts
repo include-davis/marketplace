@@ -43,11 +43,10 @@ export const setupSocketHandlers = (
       async (data: {
         conversationId: string;
         senderId: string;
-        receiverIds: string[];
         message: string;
         image?: string | null;
       }) => {
-        const { conversationId, senderId, receiverIds, message, image } = data;
+        const { conversationId, senderId, message, image } = data;
 
         if (!messagesService) {
           socket.emit('error', { message: 'Database not available' });
@@ -69,23 +68,14 @@ export const setupSocketHandlers = (
           });
           return;
         }
-        for (const receiverId of receiverIds) {
-          if (!isValidObjectId(receiverId)) {
-            socket.emit('error', {
-              message: `Invalid receiverId: must be 24-character hex string, got "${receiverId}" (${receiverId.length} chars)`,
-            });
-            return;
-          }
-        }
 
         try {
-          const newMessage = await messagesService.createMessage({
+          const newMessage = await messagesService.createMessage(
             conversationId,
             senderId,
-            receiverIds,
             message,
             image,
-          });
+          );
           // Broadcast saved message (with _id + createdAt) to everyone in the room
           io.to(conversationId).emit('receive_message', newMessage);
         } catch (err) {

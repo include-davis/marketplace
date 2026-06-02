@@ -36,13 +36,9 @@
   border-radius: 18px;
   padding: 8px 16px;
   font-family: var(--font2);
-  font-size: 1.875rem;
+  font-size: 1rem;
   font-weight: 400;
   color: var(--black);
-
-  &::placeholder {
-    color: var(--dark-gray);
-  }
 }
 
 .sendButton {

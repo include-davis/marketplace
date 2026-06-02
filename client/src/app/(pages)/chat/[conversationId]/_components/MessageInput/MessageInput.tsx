@@ -51,7 +51,6 @@ export default function MessageInput({
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-        placeholder="Message..."
         className={styles.textInput}
       />
 

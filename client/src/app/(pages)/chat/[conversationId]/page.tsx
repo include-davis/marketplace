@@ -1,15 +1,15 @@
 'use client';
 
-import styles from "./page.module.scss"
+import styles from './page.module.scss';
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
 import ChatWindow from './_components/ChatWindow/ChatWindow';
 import type { Message, ServerMessage } from '@/types/messaging';
 import Navbar from '@/app/_components/Navbar/Navbar';
-import ConversationGrid from "../_components/ConversationGrid/ConversationGrid";
-import Link from "next/link";
-import Image from "next/image";
+import ConversationGrid from '../_components/ConversationGrid/ConversationGrid';
+import Link from 'next/link';
+import Image from 'next/image';
 import LeftArrow from '@/../public/leftArrow.svg';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
@@ -35,7 +35,7 @@ export default function ChatPage() {
 
   // Store localStorage values in state to avoid hydration mismatch
   const [currentUserId, setCurrentUserId] = useState('');
-  const [receiverIds, setReceiverIds] = useState<string[]>([]);
+  const [receiverId, setReceiverIds] = useState('');
   const [token, setToken] = useState('');
   const [productName, setProductName] = useState('Product Name');
   const [productImage, setProductImage] = useState<string | null>(null);
@@ -111,17 +111,12 @@ export default function ChatPage() {
       socketRef.current.emit('send_message', {
         conversationId,
         senderId: currentUserId,
-        receiverIds,
         message: data.text,
         image: null,
       });
     },
-    [conversationId, currentUserId, receiverIds],
+    [conversationId, currentUserId, receiverId],
   );
-
-  const handleBack = () => {
-    router.back();
-  };
 
   return (
     <div className={styles.page}>
@@ -141,7 +136,6 @@ export default function ChatPage() {
           productName={productName}
           productImage={productImage}
           otherUserAvatar={otherUserAvatar}
-          onBack={handleBack}
         />
       </div>
     </div>

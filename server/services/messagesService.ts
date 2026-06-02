@@ -35,21 +35,21 @@ export class MessagesService {
   /**
    * Create and store a new message document in MongoDB
    */
-  async createMessage(messageData: {
-    conversationId: string;
-    senderId: string;
-    message: string;
-    image?: string | null;
-  }): Promise<Message> {
+  async createMessage(
+    conversationId: string,
+    senderId: string,
+    message: string,
+    image?: string | null,
+  ): Promise<Message> {
     try {
       const db = this.client.db(this.dbName);
       const collection = db.collection<Message>(this.collectionName);
 
       const newMessage = {
-        conversationId: new ObjectId(messageData.conversationId),
-        senderId: new ObjectId(messageData.senderId),
-        message: messageData.message,
-        image: messageData.image || null,
+        conversationId: new ObjectId(conversationId),
+        senderId: new ObjectId(senderId),
+        message: message,
+        image: image || null,
         createdAt: new Date(),
       };
 

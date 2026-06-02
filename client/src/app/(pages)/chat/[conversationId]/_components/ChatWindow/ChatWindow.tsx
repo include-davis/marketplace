@@ -14,7 +14,6 @@ export default function ChatWindow({
   productName = 'Product Name',
   productImage,
   otherUserAvatar,
-  onBack,
 }: {
   messages: Message[];
   currentUserId: string;
@@ -22,7 +21,6 @@ export default function ChatWindow({
   productName?: string;
   productImage?: string | null;
   otherUserAvatar?: string | null;
-  onBack?: () => void;
 }) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -34,15 +32,6 @@ export default function ChatWindow({
     <div className={styles.chatPage}>
       {/* Header */}
       <div className={styles.header}>
-        <button onClick={onBack} className={styles.backButton}>
-          <Image
-            src="/messaging/back-arrow.svg"
-            alt="Back"
-            width={24}
-            height={45}
-          />
-          <span>Back</span>
-        </button>
         <span className={styles.productName}>{productName}</span>
       </div>
 
