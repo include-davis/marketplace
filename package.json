@@ -3,6 +3,10 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+<<<<<<< HEAD
     "sass": "^1.99.0"
+=======
+    "cloudinary": "^2.10.0"
+>>>>>>> 148d6a345e5542ceb8164895eab438967d622906
   }
 }

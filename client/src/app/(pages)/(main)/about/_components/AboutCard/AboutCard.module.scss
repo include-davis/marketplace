@@ -1,0 +1,16 @@
+.aboutCard {
+  height: 296px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background-color: var(--darker-gray);
+  border-radius: 5px;
+  color: var(--white);
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}

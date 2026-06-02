@@ -2,17 +2,21 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import path from 'path';
 import type { Application } from 'express';
 import { startMongoClient } from './services/mongoService';
 import { createMessagesRouter } from './routes/messagesRouter';
 import listingsRouter from './routes/listingsRouter';
 import conversationsRouter from './routes/conversationsRoutes';
 import usersRouter from './routes/usersRouter';
+import cloudinaryRouter from './routes/cloudinaryRouter';
+import imagesRouter from './routes/imagesRouter';
 import authRouter from './auth/authRoutes';
 import { requireAuth } from './auth/middleware';
 import { loadEnvFile } from 'process';
 import { initializeSocket, setupSocketHandlers } from './socket';
 import { MessagesService } from './services/messagesService';
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 console.log('JWT_SECRET loaded:', !!process.env.JWT_SECRET);
@@ -26,8 +30,16 @@ try {
 }
 
 const app: Application = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  }),
+);
 app.use(express.json());
+app.use('/uploads', express.static(path.join(import.meta.dirname, 'uploads')));
+app.use('/testing', express.static(path.join(import.meta.dirname, 'testing')));
+app.use(cookieParser());
 
 // Create HTTP server + Socket.IO — must happen before listen()
 const server = initializeSocket(app);
@@ -74,17 +86,17 @@ app.get('/', (req, res) => {
       listings: '/listings',
       conversations: '/conversations',
       messages: '/messages',
+      images: '/images',
     },
   });
 });
 
-app.use('/listings', requireAuth, listingsRouter);
-// ... rest of your routes
-
-app.use('/listings', requireAuth, listingsRouter);
+app.use('/listings', listingsRouter);
 app.use('/conversations', requireAuth, conversationsRouter);
+app.use('/images', requireAuth, imagesRouter);
 app.use('/users', usersRouter); // routes inside use requireAuth
 app.use('/auth', authRouter);
+app.use('/images', cloudinaryRouter);
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

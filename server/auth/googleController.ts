@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import axios from 'axios';
-import { User } from '../models/User';
+import { UserDocument } from '../models/User';
 import { signJWT } from './jwt';
 
 const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
@@ -34,10 +34,10 @@ export async function googleCallback(req: Request, res: Response) {
 
     const { sub, email } = profileRes.data;
 
-    let user = await User.findOne({ email });
+    let user = await UserDocument.findOne({ email });
 
     if (!user) {
-      user = await User.create({
+      user = await UserDocument.create({
         email,
         google: { sub, email },
         isEmailVerified: true,
@@ -46,8 +46,15 @@ export async function googleCallback(req: Request, res: Response) {
 
     const jwt = signJWT(user._id.toString());
 
-    // If client asks for JSON, return token in body; else redirect to frontend
-    return res.json({ message: 'Login successful', token: jwt });
+    // Send cookie and redirect to frontend
+    res.cookie('auth_token', jwt, {
+      httpOnly: true,
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    });
+
+    return res.redirect(process.env.FRONTEND_URL!);
   } catch (err) {
     console.log('Google login failed:', err);
     res.status(500).json({ message: 'Google login failed' });

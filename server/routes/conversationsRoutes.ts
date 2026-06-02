@@ -2,7 +2,7 @@
 import { Router, type Request, type Response } from 'express';
 import {
   addConversationController,
-  getConversationsByUserController,
+  getConversationByListingController,
 } from '../controllers/conversationsControllers';
 
 const conversationsRouter = Router();
@@ -12,9 +12,9 @@ conversationsRouter.post('/', (req: Request, res: Response) => {
   addConversationController(req, res);
 });
 
-conversationsRouter.get('/:userid', (req: Request, res: Response) => {
-  //gets all conversations by username
-  getConversationsByUserController(req, res);
+conversationsRouter.get('/:listingId', (req: Request, res: Response) => {
+  //gets conversation by listing id
+  getConversationByListingController(req, res);
 });
 
 //gets all conversations by user
