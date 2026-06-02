@@ -1,11 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './page.module.scss';
 import CreatePostDropdown from './_components/CreatePostDropdown/CreatePostDropdown';
 import usePost from '@/app/_hooks/usePost';
+import usePostImage from '@/app/_hooks/usePostImage';
+
+const API_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8080';
 
 function TextField({
   label,
@@ -42,22 +45,13 @@ function TextField({
   );
 }
 
-function DimensionField() {
-  const [dimensions, setDimensions] = useState({
-    length: '',
-    width: '',
-    height: '',
-  });
-
-  const handleChange = (
-    field: 'length' | 'width' | 'height',
-    value: string,
-  ) => {
-    setDimensions((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+function DimensionField({
+  dimensions,
+  onChange,
+}: {
+  dimensions: { length: string; width: string; height: string };
+  onChange: (field: 'length' | 'width' | 'height', value: string) => void;
+}) {
   return (
     <div className={styles.field}>
       <label>Item Dimensions (in meters)</label>
@@ -67,7 +61,7 @@ function DimensionField() {
           inputMode="decimal"
           placeholder="#"
           value={dimensions.length}
-          onChange={(e) => handleChange('length', e.target.value)}
+          onChange={(e) => onChange('length', e.target.value)}
           className={styles.dimensionSquare}
         />
         <Image src={'/dimensions_x.svg'} alt="x" width={32} height={32} />
@@ -76,7 +70,7 @@ function DimensionField() {
           inputMode="decimal"
           placeholder="#"
           value={dimensions.width}
-          onChange={(e) => handleChange('width', e.target.value)}
+          onChange={(e) => onChange('width', e.target.value)}
           className={styles.dimensionSquare}
         />
         <Image src={'/dimensions_x.svg'} alt="x" width={32} height={32} />
@@ -85,7 +79,7 @@ function DimensionField() {
           inputMode="decimal"
           placeholder="#"
           value={dimensions.height}
-          onChange={(e) => handleChange('height', e.target.value)}
+          onChange={(e) => onChange('height', e.target.value)}
           className={styles.dimensionSquare}
         />
       </div>
@@ -94,18 +88,99 @@ function DimensionField() {
 }
 
 export default function CreatePostPage() {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Image state — keep both raw Files (for upload) and blob URLs (for preview)
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
+  // Form field state (lifted from child components)
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [materialProperty, setMaterialProperty] = useState('');
   const [condition, setCondition] = useState('');
+  const listingId = useRef<number | null>(null);
   const { postResource, pending, error } = usePost('/listings');
+  const {
+    postImage,
+    pending: imageUploadPending,
+    error: imageUploadError,
+  } = usePostImage();
+  const [dimensions, setDimensions] = useState({
+    length: '',
+    width: '',
+    height: '',
+  });
+
+  const handleUploadClick = () => {
+    if (imageFiles.length < 5) {
+      fileInputRef.current?.click();
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+
+    const remaining = 5 - imageFiles.length;
+    const newFiles = Array.from(files).slice(0, remaining);
+    const newUrls = newFiles.map((file) => URL.createObjectURL(file));
+
+    setImageFiles((prev) => [...prev, ...newFiles]);
+    setPreviewUrls((prev) => [...prev, ...newUrls]);
+
+    e.target.value = '';
+  };
+
+  const handleRemoveImage = (e: React.MouseEvent, index: number) => {
+    e.stopPropagation();
+    setPreviewUrls((prev) => {
+      URL.revokeObjectURL(prev[index]);
+      return prev.filter((_, i) => i !== index);
+    });
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleDimensionChange = (
+    field: 'length' | 'width' | 'height',
+    value: string,
+  ) => {
+    setDimensions((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleUploadImages = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (imageFiles.length === 0) {
+      alert('Please add at least one image before previewing.');
+      return;
+    }
+
+    try {
+      const folder = listingId.current
+        ? `listings/${listingId.current}`
+        : `listings`;
+
+      const uploadedImages: { url: string; publicId: string }[] = [];
+
+      for (const file of imageFiles) {
+        const res = await postImage(file, folder);
+        uploadedImages.push(res.data);
+      }
+
+      alert(`Images uploaded successfully!`);
+    } catch (err) {
+      console.error('Submit error:', err);
+      alert(err instanceof Error ? err.message : 'Something went wrong');
+    }
+  };
 
   const handleSubmitDraft = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await postResource({
+    const listingResponse = await postResource({
       title,
       desc,
       price,
@@ -114,7 +189,9 @@ export default function CreatePostPage() {
       condition,
     });
 
-    window.alert(`${title} has been saved as a new draft.`)
+    listingId.current = listingResponse.data;
+
+    window.alert(`${title} has been saved as a new draft.`);
   };
 
   return (
@@ -125,10 +202,69 @@ export default function CreatePostPage() {
           <div className={styles.backLink}>Back</div>
         </Link>
 
-        <form className={styles.form} onSubmit={handleSubmitDraft}>
+        <form
+          className={styles.form}
+          onSubmit={async (e) => {
+            await handleSubmitDraft(e);
+            handleUploadImages(e);
+          }}
+        >
           <div className={styles.title}>
             <h2>List an item</h2>
           </div>
+          <section
+            className={styles.uploadPhotosSection}
+            onClick={handleUploadClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleUploadClick();
+              }
+            }}
+          >
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+            {previewUrls.length === 0 ? (
+              <div className={styles.uploadArea}>
+                <Image src={'/frame.svg'} alt="Photo" width={32} height={32} />
+                <h2>Add up to 5 photos</h2>
+                <p>Drag or drop</p>
+              </div>
+            ) : (
+              <div className={styles.imagePreviewGrid}>
+                {previewUrls.map((src, index) => (
+                  <div key={src} className={styles.imagePreviewItem}>
+                    <img
+                      src={src}
+                      alt={`Upload ${index + 1}`}
+                      className={styles.imagePreview}
+                    />
+                    <button
+                      type="button"
+                      className={styles.removeImageButton}
+                      onClick={(e) => handleRemoveImage(e, index)}
+                      aria-label={`Remove image ${index + 1}`}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+                {previewUrls.length < 5 && (
+                  <div className={styles.addMorePlaceholder}>
+                    <span>+</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Product Details</h2>
@@ -209,7 +345,10 @@ export default function CreatePostPage() {
               </div>
             </div>
 
-            <DimensionField />
+            <DimensionField
+              dimensions={dimensions}
+              onChange={handleDimensionChange}
+            />
 
             <div className={styles.priceWidth}>
               <TextField

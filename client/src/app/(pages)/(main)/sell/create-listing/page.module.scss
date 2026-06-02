@@ -88,13 +88,106 @@ input[type='number']::-webkit-outer-spin-button {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 8px;
 }
 
 .section {
   display: flex;
   flex-direction: column;
   gap: 80px;
+}
+
+.uploadPhotosSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--white);
+  font-size: 16px;
+  background-color: #1f1f1f;
+  border: 2px solid #1f1f1f;
+  border-radius: 8px;
+  padding: 96px;
+  height: 296px;
+  margin-bottom: 80px;
+  cursor: pointer;
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.imagePreviewGrid {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.imagePreviewItem {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.imagePreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.removeImageButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 24px;
+  background-color: var(--pure-black);
+  color: var(--white);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: var(--pure-black);
+  }
+}
+
+.addMorePlaceholder {
+  width: 120px;
+  height: 120px;
+  border: 2px solid;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  span {
+    font-size: 32px;
+    color: #ffffffad;
+  }
+
+  &:hover {
+    border-color: #ffffff38;
+
+    span {
+      color: #ffffffad;
+    }
+  }
 }
 
 .textAreaField {

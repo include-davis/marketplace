@@ -1,15 +1,14 @@
 'use client';
 
 import styles from './page.module.scss';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import HomePagination from '../_components/HomePagination/HomePagination';
 import HomepageFilterMenu from '../_components/HomepageFilterMenu/HomepageFilterMenu';
 import ProductGrid from '../_components/ProductGrid/ProductGrid';
-import { Listing, FilterState } from '@/types';
+import {  FilterState } from '@/types';
 import { getFilteredListings } from '@/utils/listingUtils';
 import useFetch from '@/app/_hooks/useFetch';
-
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+import { Listing } from '../../../../../../server/models/Listing';
 
 const DEFAULT_FILTERS: FilterState = {
   categories: new Set(),

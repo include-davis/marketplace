@@ -2,24 +2,24 @@ import { useState } from 'react';
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export default function usePost<T>(resource: string) {
+export default function usePostImage<T>() {
   const [pending, setPending] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  async function postResource(object: T) {
+  async function postImage(file: File, folder: string) {
     setPending(true);
     try {
-      const response = await fetch(`${BACKEND_URL}${resource}`, {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('folder', folder);
+      const response = await fetch(`${BACKEND_URL}/images/upload`, {
         method: 'POST',
         credentials: 'include',
-        body: JSON.stringify(object),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: formData,
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to post to ${resource}: ${response.status}`);
+        throw new Error(`Failed to post new file upload: ${response.status}`);
       }
 
       const data = await response.json();
@@ -35,5 +35,5 @@ export default function usePost<T>(resource: string) {
     }
   }
 
-  return { postResource, pending, error };
+  return { postImage, pending, error };
 }
