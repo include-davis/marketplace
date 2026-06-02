@@ -1,0 +1,43 @@
+'use client';
+import Image from 'next/image';
+import { User } from '../../../../../../../server/models/User';
+import styles from './MessageBox.module.scss';
+import useFetch from '@/app/_hooks/useFetch';
+
+export default function MessageBox({
+  otherUserId,
+  conversationId,
+}: {
+  otherUserId: string;
+  conversationId: string;
+}) {
+  const {
+    result: user,
+    loading,
+    error,
+  } = useFetch<User>(`/users/${otherUserId}`);
+
+  if (loading || error || !user) return;
+
+  const username = user.email;
+
+  return (
+    <div className={styles.messageBox} data-id={conversationId}>
+      <div className={styles.userIconWrapper}>
+        <Image
+          src="/Navbar/userIcon.svg"
+          alt="avatar"
+          className={styles.avatar}
+          width={54}
+          height={54}
+        />
+      </div>
+
+      <div className={styles.content}>
+        <span className={styles.username}>{username}</span>
+
+        <p className={styles.message}>{'placeholder (last sent message)'}</p>
+      </div>
+    </div>
+  );
+}

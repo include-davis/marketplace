@@ -31,6 +31,20 @@ export async function getConversationByListing(
   return record;
 }
 
+export async function getConversationByUser(
+  client: MongoClient,
+  userId: string,
+) {
+  const db: Db = client.db('MarketPlace');
+  const collection: Collection = db.collection('Conversations');
+  const record = await collection
+    .find({
+      $or: [{ user1id: userId }, { user2id: userId }],
+    })
+    .toArray();
+  return record;
+}
+
 export async function updateConversationUpdated(
   client: MongoClient,
   listingId: string,
