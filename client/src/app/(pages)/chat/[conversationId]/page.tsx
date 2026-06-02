@@ -132,16 +132,18 @@ export default function ChatPage() {
           <span>Back to Listings</span>
         </Link>
       </div>
-      <ConversationGrid />
-      <ChatWindow
-        messages={messages}
-        currentUserId={currentUserId}
-        onSend={handleSend}
-        productName={productName}
-        productImage={productImage}
-        otherUserAvatar={otherUserAvatar}
-        onBack={handleBack}
-      />
+      <div className={styles.pageContent}>
+        <ConversationGrid />
+        <ChatWindow
+          messages={messages}
+          currentUserId={currentUserId}
+          onSend={handleSend}
+          productName={productName}
+          productImage={productImage}
+          otherUserAvatar={otherUserAvatar}
+          onBack={handleBack}
+        />
+      </div>
     </div>
   );
 }
