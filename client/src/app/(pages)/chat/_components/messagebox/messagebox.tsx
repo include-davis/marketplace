@@ -20,7 +20,7 @@ const MessageBox = ({ otherUserId, conversationId }: MessageBoxProps) => {
   const username = user.email;
 
   return (
-    <div className={styles['message-box']} data-id={conversationId}>
+    <div className={styles.messageBox} data-id={conversationId}>
       <img
         src={'https://i.pravatar.cc/100'} //placeholder
         alt="avatar"
@@ -28,14 +28,9 @@ const MessageBox = ({ otherUserId, conversationId }: MessageBoxProps) => {
       />
 
       <div className={styles.content}>
-        <div className={styles['top-row']}>
-          <span className={styles.username}>{username}</span>
-          <span className={styles.time}>{}</span>
-        </div>
+        <span className={styles.username}>{username}</span>
 
-        <div className={styles.message}>
-          {'placeholder (last sent message)'}
-        </div>
+        <p className={styles.message}>{'placeholder (last sent message)'}</p>
       </div>
     </div>
   );

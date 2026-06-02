@@ -1,4 +1,4 @@
-.message-box {
+.messageBox {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -13,19 +13,11 @@
 
   box-sizing: border-box;
 
-  border: 1px solid #e5e5e5; // full border
-  // rounded corners (optional but looks better)
-
-  background-color: #fff;
-
+  border-bottom: 1px solid var(--black);
   cursor: pointer;
-  transition:
-    background 0.15s ease,
-    box-shadow 0.15s ease;
 
   &:hover {
-    background-color: #f7f7f7;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    background-color: var(--pure-white);
   }
 }
 
@@ -45,26 +37,12 @@
   min-width: 0;
 }
 
-.top-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
 .username {
   font-weight: 600;
-  font-size: 14px;
-}
-
-.time {
-  font-size: 12px;
-  color: #888;
 }
 
 .message {
-  font-size: 14px;
-  color: #444;
+  font-size: 0.875rem;
 
   overflow: hidden;
   text-overflow: ellipsis;
