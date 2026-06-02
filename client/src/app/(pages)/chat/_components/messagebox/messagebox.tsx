@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 import { User } from '../../../../../../../server/models/User';
 import styles from './messagesbox.module.scss';
 import useFetch from '@/app/_hooks/useFetch';
@@ -21,11 +22,15 @@ const MessageBox = ({ otherUserId, conversationId }: MessageBoxProps) => {
 
   return (
     <div className={styles.messageBox} data-id={conversationId}>
-      <img
-        src={'https://i.pravatar.cc/100'} //placeholder
-        alt="avatar"
-        className={styles.avatar}
-      />
+      <div className={styles.userIconWrapper}>
+        <Image
+          src="/Navbar/userIcon.svg"
+          alt="avatar"
+          className={styles.avatar}
+          width={54}
+          height={54}
+        />
+      </div>
 
       <div className={styles.content}>
         <span className={styles.username}>{username}</span>

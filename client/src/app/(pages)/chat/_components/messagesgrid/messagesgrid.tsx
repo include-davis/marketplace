@@ -31,7 +31,7 @@ const MessagesGrid = () => {
     <div className={styles['message-list']}>
       {conversations.map((convo) => (
         <MessageBox
-          key={convo.convoid}
+          key={convo._id}
           otherUserId="69cb1158039ab28790c904d9"
           conversationId={convo.convoid}
         />
