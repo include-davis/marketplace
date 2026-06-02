@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import styles from './ProductCard.module.scss';
 import { Listing } from '@/../../server/models/Listing';
+import Link from 'next/link';
 
 export default function ProductCard({ listing }: { listing: Listing }) {
   const hasImage = listing.images.length !== 0;
 
   return (
-    <div className={styles.card}>
+    <Link href={`listing/${listing._id}`} className={styles.card}>
       {hasImage ? (
         <Image
           src={listing.images[0]}
@@ -23,6 +24,6 @@ export default function ProductCard({ listing }: { listing: Listing }) {
         <h2 className={styles.title}>{listing.title}</h2>
         <h2 className={styles.price}>${listing.price}</h2>
       </div>
-    </div>
+    </Link>
   );
 }

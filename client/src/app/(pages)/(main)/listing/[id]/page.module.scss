@@ -1,0 +1,104 @@
+.page {
+  padding: 64px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 54px;
+}
+
+.pageHeader {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  text-decoration: none;
+  color: var(--black);
+}
+
+.pageContent {
+  display: flex;
+  gap: 10px;
+}
+
+.imageSection {
+  display: flex;
+  gap: 10px;
+}
+
+.imageWheel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wheelImageWrapper {
+  height: 144px;
+  width: 144px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.mainImageWrapperWrapper {
+  display: flex;
+  width: 460px;
+  height: 460px;
+}
+
+.mainImageWrapper {
+  flex: 1;
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.mainImage {
+  object-fit: cover;
+}
+
+.infoSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.infoBox {
+  padding: 32px 20px;
+  background-color: var(--light-gray);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+}
+
+.infoPair {
+  display: flex;
+  gap: 16px;
+}
+
+.infoPair > .infoBox {
+  flex: 1;
+}
+
+.infoBoxShort {
+  height: 54px;
+  padding: 0 20px;
+  justify-content: center;
+}
+
+.messageButton {
+  width: 300px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--black);
+  border-radius: 5px;
+  background-color: var(--purple);
+  color: var(--white);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
