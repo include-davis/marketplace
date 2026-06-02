@@ -52,6 +52,7 @@ function DimensionField({
           placeholder="#"
           value={dimensions.length}
           className={styles.dimensionSquare}
+          readOnly
         />
         <Image src={'/dimensions_x.svg'} alt="x" width={32} height={32} />
         <input
@@ -60,6 +61,7 @@ function DimensionField({
           placeholder="#"
           value={dimensions.width}
           className={styles.dimensionSquare}
+          readOnly
         />
         <Image src={'/dimensions_x.svg'} alt="x" width={32} height={32} />
         <input
@@ -68,6 +70,7 @@ function DimensionField({
           placeholder="#"
           value={dimensions.height}
           className={styles.dimensionSquare}
+          readOnly
         />
       </div>
     </div>
