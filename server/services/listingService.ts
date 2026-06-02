@@ -43,6 +43,7 @@ export async function createListing(
   materialProperty: string,
   condition: string,
   images: string[],
+  status: string,
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
@@ -55,6 +56,7 @@ export async function createListing(
     condition,
     createdAt: new Date(),
     images,
+    status,
   };
   const result = await myColl.insertOne(doc);
   console.log(`A document was inserted with the _id: ${result.insertedId}`);
@@ -100,6 +102,23 @@ export async function updateListing(
   return result;
 }
 
+export async function updateListingStatus(
+  client: MongoClient,
+  id: string,
+  status: string,
+) {
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const filter = { _id: new ObjectId(id) };
+  const updateDoc = {
+    $set: {
+      status,
+    },
+  };
+  const result = await myColl.updateOne(filter, updateDoc);
+  return result;
+}
+
 /**
  * Delete a single Listing from the database.
  * @param client: The MongoClient object.
@@ -138,15 +157,15 @@ export async function addListingImages(
     );
   }
 
-  console.log("start pushing image paths", imagePaths);
+  console.log('start pushing image paths', imagePaths);
 
   const imagePush = {
     $push: {
       images: { $each: imagePaths },
     },
   };
-  console.log("imagePush", imagePush)
+  console.log('imagePush', imagePush);
   const result = await myColl.updateOne(filter, imagePush as any);
-  console.log("update result", result);
+  console.log('update result', result);
   return result;
 }

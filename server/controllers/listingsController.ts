@@ -6,6 +6,7 @@ import {
   getAllListings,
   getListing,
   updateListing,
+  updateListingStatus,
 } from '../services/listingService';
 
 /**
@@ -85,6 +86,7 @@ export const createListingController = async (req: Request, res: Response) => {
     const materialProperty: string = req.body.materialProperty;
     const condition: string = req.body.condition;
     const images: string[] = req.body.images ?? [];
+    const status: string = req.body.status;
 
     const record = await createListing(
       client,
@@ -95,6 +97,7 @@ export const createListingController = async (req: Request, res: Response) => {
       materialProperty,
       condition,
       images,
+      status,
     );
 
     res.status(200).json({
@@ -169,12 +172,46 @@ export const updateListingController = async (req: Request, res: Response) => {
   }
 };
 
+export const updateListingStatusController = async (
+  req: Request,
+  res: Response,
+) => {
+  const client = req.app.locals.client;
+  try {
+    const id = req.params.id;
+    if (typeof id !== 'string') {
+      throw new Error('Invalid listing ID');
+    }
+
+    const status: string = req.body.status;
+
+    const record = await updateListingStatus(client, id, status);
+
+    res.status(200).json({
+      success: true,
+      data: record,
+    });
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: e.message,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "couldn't get error message",
+      });
+    }
+  }
+};
+
 export const addListingImageController = async (
   req: Request,
   res: Response,
 ) => {
   const client = req.app.locals.client;
-  console.log("start addListingImageController with body", req.body)
+  console.log('start addListingImageController with body', req.body);
   try {
     const id = req.params.id;
     if (typeof id !== 'string') {

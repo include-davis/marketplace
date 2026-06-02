@@ -6,6 +6,7 @@ import {
   updateListingController,
   deleteListingController,
   addListingImageController,
+  updateListingStatusController,
 } from '../controllers/listingsController';
 import { requireAuth } from '../auth/middleware';
 
@@ -29,6 +30,9 @@ listingsRouter.post('/:id/images', (req: Request, res: Response) =>
 );
 listingsRouter.put('/:id', (req: Request, res: Response) =>
   updateListingController(req, res),
+);
+listingsRouter.put('/:id/status', (req: Request, res: Response) =>
+  updateListingStatusController(req, res),
 );
 listingsRouter.delete('/:id', (req: Request, res: Response) =>
   deleteListingController(req, res),

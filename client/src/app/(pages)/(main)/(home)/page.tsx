@@ -5,7 +5,7 @@ import { useState } from 'react';
 import HomePagination from '../_components/HomePagination/HomePagination';
 import HomepageFilterMenu from '../_components/HomepageFilterMenu/HomepageFilterMenu';
 import ProductGrid from '../_components/ProductGrid/ProductGrid';
-import {  FilterState } from '@/types';
+import { FilterState } from '@/types';
 import { getFilteredListings } from '@/utils/listingUtils';
 import useFetch from '@/app/_hooks/useFetch';
 import { Listing } from '../../../../../../server/models/Listing';
@@ -24,6 +24,9 @@ export default function Home() {
     useState<FilterState>(DEFAULT_FILTERS);
 
   const { result: listings, loading, error } = useFetch<Listing[]>('/listings');
+  const activeListings = listings?.filter(
+    (listing) => listing.status === 'active',
+  );
 
   if (loading) return <div>Loading listings...</div>;
   if (error) return <div>Error fetching listings.</div>;
@@ -63,7 +66,10 @@ export default function Home() {
     setCurrentPage(1);
   };
 
-  const filteredListings = getFilteredListings(listings || [], appliedFilters);
+  const filteredListings = getFilteredListings(
+    activeListings || [],
+    appliedFilters,
+  );
 
   // The number of pages for the Pagination is the number of listings divided
   // by 9, rounded up

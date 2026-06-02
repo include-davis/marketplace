@@ -189,6 +189,7 @@ export default function CreatePostPage() {
       materialProperty,
       condition,
       images: [],
+      status: 'drafts',
     });
 
     listingId.current = listingResponse.data;
