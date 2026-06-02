@@ -5,6 +5,7 @@ import CreateStaticPostDropdown from '../CreateStaticPostDropdown/CreateStaticPo
 import Image from 'next/image';
 import usePost from '@/app/_hooks/usePost';
 import usePostImage from '@/app/_hooks/usePostImage';
+import { useRouter } from 'next/navigation';
 
 function TextField({
   label,
@@ -104,6 +105,7 @@ export default function Preview({
   dimensions: { length: string; width: string; height: string };
   price: string;
 }) {
+  const router = useRouter();
   const { postResource, pending, error } = usePost('/listings');
   const {
     postImage,
@@ -165,7 +167,8 @@ export default function Preview({
       `${listingId.current}/images`,
     );
 
-    alert(`Listing ${title} has successfully been saved.`);
+    alert(`Listing ${title} has successfully been posted.`);
+    router.push('/sell/active');
   };
 
   return (

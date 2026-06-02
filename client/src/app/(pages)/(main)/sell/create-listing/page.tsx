@@ -8,6 +8,7 @@ import CreatePostDropdown from './_components/CreatePostDropdown/CreatePostDropd
 import usePost from '@/app/_hooks/usePost';
 import usePostImage from '@/app/_hooks/usePostImage';
 import Preview from './_components/Preview/Preview';
+import { useRouter } from 'next/navigation';
 
 const API_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8080';
 
@@ -89,6 +90,7 @@ function DimensionField({
 }
 
 export default function CreatePostPage() {
+  const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showPreview, setShowPreview] = useState(false);
 
@@ -206,7 +208,8 @@ export default function CreatePostPage() {
       `${listingId.current}/images`,
     );
 
-    alert(`Listing ${title} has successfully been saved.`);
+    alert(`Listing ${title} has successfully been saved as a draft.`);
+    router.push('/sell/drafts');
   };
 
   return (
