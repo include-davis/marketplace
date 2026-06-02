@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express';
-
+import { getUserById } from '../services/usersService';
 /**
  * GET /users/me
  * Returns the current authenticated user's info (no password).
@@ -18,4 +18,37 @@ export async function getMe(req: Request, res: Response): Promise<void> {
     isEmailVerified: user.isEmailVerified,
     createdAt: user.createdAt,
   });
+}
+
+export async function getUserDocument(
+  req: Request,
+  res: Response,
+): Promise<void> {
+  const client = req.app.locals.client;
+
+  try {
+    const userid: string | string[] | undefined = req.params.id;
+
+    if (typeof userid !== 'string') {
+      throw new Error('Invalid username');
+    }
+
+    const record = await getUserById(client, userid);
+    res.status(200).json({
+      success: true,
+      data: record,
+    });
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: e.message,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "couldn't get error message",
+      });
+    }
+  }
 }

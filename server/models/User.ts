@@ -1,13 +1,13 @@
 import mongoose, { Schema, Types, Model } from 'mongoose';
 
-export interface GoogleProvider {
+export type GoogleProvider = {
   sub: string;
-  email?: String;
-}
+  email?: string;
+};
 
-export interface UserDoc {
+export type User = {
   _id: Types.ObjectId;
-  email: String;
+  email: string;
 
   passwordHash: string | null;
   google: GoogleProvider | null;
@@ -16,7 +16,7 @@ export interface UserDoc {
 
   createdAt: Date;
   updatedAt: Date;
-}
+};
 
 const googleSchema = new Schema<GoogleProvider>(
   {
@@ -26,7 +26,7 @@ const googleSchema = new Schema<GoogleProvider>(
   { _id: false },
 );
 
-const userSchema = new Schema<UserDoc>(
+const userSchema = new Schema<User>(
   {
     email: {
       type: String,
@@ -58,6 +58,5 @@ const userSchema = new Schema<UserDoc>(
 userSchema.index({ email: 1 }, { unique: true });
 */
 
-export const User: Model<UserDoc> =
-  mongoose.models.User || mongoose.model<UserDoc>('User', userSchema);
-
+export const UserDocument: Model<User> =
+  mongoose.models.User || mongoose.model<User>('User', userSchema);

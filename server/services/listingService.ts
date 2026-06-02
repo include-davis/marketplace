@@ -40,11 +40,24 @@ export async function createListing(
   desc: string,
   price: number,
   category: string,
-  stock: number,
+  materialProperty: string,
+  condition: string,
+  images: string[],
+  status: string,
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
-  const doc = { title, desc, price, category, stock };
+  const doc = {
+    title,
+    desc,
+    price,
+    category,
+    materialProperty,
+    condition,
+    createdAt: new Date(),
+    images,
+    status,
+  };
   const result = await myColl.insertOne(doc);
   console.log(`A document was inserted with the _id: ${result.insertedId}`);
   return result.insertedId;
@@ -67,7 +80,9 @@ export async function updateListing(
   desc: string,
   price: number,
   category: string,
-  stock: number,
+  materialProperty: string,
+  condition: string,
+  images: string[],
 ) {
   const myDB = client.db('MarketPlace');
   const myColl = myDB.collection('Listings');
@@ -78,7 +93,26 @@ export async function updateListing(
       desc,
       price,
       category,
-      stock,
+      materialProperty,
+      condition,
+      images,
+    },
+  };
+  const result = await myColl.updateOne(filter, updateDoc);
+  return result;
+}
+
+export async function updateListingStatus(
+  client: MongoClient,
+  id: string,
+  status: string,
+) {
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const filter = { _id: new ObjectId(id) };
+  const updateDoc = {
+    $set: {
+      status,
     },
   };
   const result = await myColl.updateOne(filter, updateDoc);
@@ -96,4 +130,42 @@ export async function deleteListing(client: MongoClient, id: string) {
   const filter = { _id: new ObjectId(id) };
   const deleteResult = await myColl.deleteOne(filter);
   return deleteResult;
+}
+
+export async function addListingImages(
+  client: MongoClient,
+  id: string,
+  imagePaths: string[],
+) {
+  const MAX_IMAGES = 5;
+  const myDB = client.db('MarketPlace');
+  const myColl = myDB.collection('Listings');
+  const filter = { _id: new ObjectId(id) };
+
+  // Fetch the listing to check the current image count
+  const listing = await myColl.findOne(filter);
+  if (!listing) {
+    throw new Error(`Listing with id ${id} not found`);
+  }
+
+  const existingCount = Array.isArray(listing.images)
+    ? listing.images.length
+    : 0;
+  if (existingCount + imagePaths.length > MAX_IMAGES) {
+    throw new Error(
+      `Cannot add ${imagePaths.length} image(s). Listing already has ${existingCount} image(s) (max ${MAX_IMAGES}).`,
+    );
+  }
+
+  console.log('start pushing image paths', imagePaths);
+
+  const imagePush = {
+    $push: {
+      images: { $each: imagePaths },
+    },
+  };
+  console.log('imagePush', imagePush);
+  const result = await myColl.updateOne(filter, imagePush as any);
+  console.log('update result', result);
+  return result;
 }

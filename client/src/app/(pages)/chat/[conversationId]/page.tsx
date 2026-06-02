@@ -1,10 +1,16 @@
 'use client';
 
+import styles from "./page.module.scss"
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
 import ChatWindow from './_components/ChatWindow/ChatWindow';
 import type { Message, ServerMessage } from '@/types/messaging';
+import Navbar from '@/app/_components/Navbar/Navbar';
+import ConversationGrid from "../_components/ConversationGrid/ConversationGrid";
+import Link from "next/link";
+import Image from "next/image";
+import LeftArrow from '@/../public/leftArrow.svg';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
@@ -118,14 +124,24 @@ export default function ChatPage() {
   };
 
   return (
-    <ChatWindow
-      messages={messages}
-      currentUserId={currentUserId}
-      onSend={handleSend}
-      productName={productName}
-      productImage={productImage}
-      otherUserAvatar={otherUserAvatar}
-      onBack={handleBack}
-    />
+    <div className={styles.page}>
+      <Navbar />
+      <div className={styles.chatPageHeader}>
+        <Link href="/" className={styles.headerLink}>
+          <Image src={LeftArrow} alt="<" />
+          <span>Back to Listings</span>
+        </Link>
+      </div>
+      <ConversationGrid />
+      <ChatWindow
+        messages={messages}
+        currentUserId={currentUserId}
+        onSend={handleSend}
+        productName={productName}
+        productImage={productImage}
+        otherUserAvatar={otherUserAvatar}
+        onBack={handleBack}
+      />
+    </div>
   );
 }

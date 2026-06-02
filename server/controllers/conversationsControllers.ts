@@ -1,7 +1,8 @@
 import type { Request, Response } from 'express';
 import {
   addConversation,
-  getConversationByUser
+  getConversationByListing,
+  getConversationByUser,
 } from '../services/conversationService';
 
 export const addConversationController = async (
@@ -15,6 +16,7 @@ export const addConversationController = async (
       client,
       req.body.user1id,
       req.body.user2id,
+      req.body.listingId,
     );
     res.status(200).json({
       success: true,
@@ -35,25 +37,20 @@ export const addConversationController = async (
   }
 };
 
-
-export const getConversationsByUserController = async (
+export async function getConversationByListingController(
   req: Request,
   res: Response,
-) => {
+) {
   const client = req.app.locals.client;
 
   try {
+    const listingId: string | string[] | undefined = req.params.listingId;
 
-    const userid: string | string[] | undefined = req.params.userid
-
-    if (typeof userid !== "string") {
-      throw new Error("Invalid username");
+    if (typeof listingId !== 'string') {
+      throw new Error('Invalid listing ID');
     }
 
-    const record = await getConversationByUser(
-      client,
-      userid
-    );
+    const record = await getConversationByListing(client, listingId);
     res.status(200).json({
       success: true,
       data: record,
@@ -71,4 +68,37 @@ export const getConversationsByUserController = async (
       });
     }
   }
-};
+}
+
+export async function getConversationByUserController(
+  req: Request,
+  res: Response,
+) {
+  const client = req.app.locals.client;
+
+  try {
+    const userId: string | string[] | undefined = req.params.userId;
+
+    if (typeof userId !== 'string') {
+      throw new Error('Invalid user ID');
+    }
+
+    const record = await getConversationByUser(client, userId);
+    res.status(200).json({
+      success: true,
+      data: record,
+    });
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: e.message,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "couldn't get error message",
+      });
+    }
+  }
+}

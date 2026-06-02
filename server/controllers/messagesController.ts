@@ -1,4 +1,4 @@
-import type { Application, Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { MessagesService } from '../services/messagesService';
 import { ObjectId } from 'mongodb';
 import { fileURLToPath } from 'url';
@@ -27,7 +27,10 @@ export class MessagesController {
         return;
       }
 
-      if (!ObjectId.isValid(conversationId)) {
+      if (
+        typeof conversationId !== 'string' ||
+        !ObjectId.isValid(conversationId)
+      ) {
         res.status(400).json({ error: 'Invalid conversationId format' });
         return;
       }
@@ -48,22 +51,13 @@ export class MessagesController {
    */
   createMessage = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { conversationId, senderId, receiverIds, message, image } =
-        req.body;
+      const { conversationId, senderId, message, image } = req.body;
 
       // Validate required fields
-      if (!conversationId || !senderId || !receiverIds) {
+      if (!conversationId || !senderId) {
         res.status(400).json({
           error:
-            'Missing required fields: conversationId, senderId, and receiverIds are required',
-        });
-        return;
-      }
-
-      // Validate receiverIds is an array
-      if (!Array.isArray(receiverIds) || receiverIds.length === 0) {
-        res.status(400).json({
-          error: 'receiverIds must be a non-empty array',
+            'Missing required fields: conversationId and senderId are required',
         });
         return;
       }
@@ -87,16 +81,6 @@ export class MessagesController {
         return;
       }
 
-      // Validate all receiverIds are valid ObjectIds
-      for (const receiverId of receiverIds) {
-        if (!ObjectId.isValid(receiverId)) {
-          res
-            .status(400)
-            .json({ error: `Invalid receiverId format: ${receiverId}` });
-          return;
-        }
-      }
-
       // If message is provided, validate it's a non-empty string
       if (
         message &&
@@ -109,7 +93,6 @@ export class MessagesController {
       const newMessage = await this.messagesService.createMessage({
         conversationId,
         senderId,
-        receiverIds,
         message: message ? message.trim() : '',
         image: image || null,
       });

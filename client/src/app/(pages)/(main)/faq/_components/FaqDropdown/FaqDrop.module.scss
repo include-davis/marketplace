@@ -1,0 +1,36 @@
+.faqDropdown {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--darker-gray);
+  border-radius: 5px;
+  color: var(--white);
+}
+
+.faqHeader {
+  padding: 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
+
+.icon {
+  transition: transform 0.2s ease;
+}
+
+.iconOpen {
+  transform: rotate(-180deg);
+}
+
+.faqContent {
+  padding: 16px;
+  padding-bottom: 44px;
+}

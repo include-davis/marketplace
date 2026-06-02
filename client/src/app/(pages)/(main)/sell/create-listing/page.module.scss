@@ -1,0 +1,271 @@
+.field {
+  width: 100%;
+  border-width: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.requiredSymbol {
+  color: var(--red);
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.dimensionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dimensionSquare {
+  width: 64px;
+  height: 64px;
+  font-size: 1rem;
+  border: 2px solid var(--pure-black);
+  border-radius: 5px;
+  padding: 16px;
+
+  &::placeholder {
+    text-align: center;
+  }
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.pageWrapper {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.page {
+  grid-area: 1 / 1;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 96px);
+  background-color: var(--white);
+  padding: calc(96px + 32px) 48px 72px;
+  color: var(--black);
+  gap: 80px;
+}
+
+.pageContainer {
+  max-width: 1240px;
+  width: 100%;
+}
+
+.backLink {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+  text-decoration: none;
+}
+
+.title {
+  margin-bottom: 24px;
+}
+
+.textFieldBox {
+  width: 100%;
+  border: 2px solid var(--pure-black);
+  border-radius: 5px;
+  padding: 16px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.uploadPhotosSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--white);
+  font-size: 16px;
+  background-color: #1f1f1f;
+  border: 2px solid #1f1f1f;
+  border-radius: 8px;
+  padding: 96px;
+  height: 296px;
+  margin-bottom: 80px;
+  cursor: pointer;
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.imagePreviewGrid {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.imagePreviewItem {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.imagePreview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.removeImageButton {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 24px;
+  background-color: var(--pure-black);
+  color: var(--white);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: var(--pure-black);
+  }
+}
+
+.addMorePlaceholder {
+  width: 120px;
+  height: 120px;
+  border: 2px solid;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  span {
+    font-size: 32px;
+    color: #ffffffad;
+  }
+
+  &:hover {
+    border-color: #ffffff38;
+
+    span {
+      color: #ffffffad;
+    }
+  }
+}
+
+.textAreaField {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.textAreaBox {
+  resize: none;
+  width: 100%;
+  border: 2px solid var(--pure-black);
+  border-radius: 5px;
+  padding: 16px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.twoColumn {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 24px;
+}
+
+.dropdownField {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.halfWidth {
+  width: calc(50% - 12px);
+}
+
+.priceWidth {
+  max-width: 220px;
+}
+
+.actions {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.draftButton {
+  width: 300px;
+  height: 50px;
+  border: 1px solid var(--pure-black);
+  border-radius: 5px;
+  background-color: var(--light-gray);
+  color: var(--white);
+  font-size: 0.875rem;
+}
+
+.previewButton {
+  width: 300px;
+  height: 50px;
+  border: 1px solid var(--pure-black);
+  border-radius: 5px;
+  background-color: var(--purple);
+  color: var(--white);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 500px) {
+  .page {
+    max-width: 100%;
+  }
+
+  .twoColumn {
+    flex-direction: column;
+  }
+}
