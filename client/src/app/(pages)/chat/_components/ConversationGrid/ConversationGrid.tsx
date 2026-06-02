@@ -2,7 +2,7 @@
 import styles from './ConversationGrid.module.scss';
 import useFetch from '@/app/_hooks/useFetch';
 import { Conversation } from '@/../../../server/models/Conversation';
-import MessageBox from '../MessageBox/messagebox';
+import MessageBox from '../MessageBox/MessageBox';
 
 export default function ConversationGrid() {
   const currentUserId = '6a136cd69cfa424e14e2d67c';
