@@ -1,0 +1,12 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  gap: 12px 28px;
+}
+
+.message {
+  font-size: 1rem;
+  color: var(--black);
+  width: 100%;
+  text-align: center;
+}

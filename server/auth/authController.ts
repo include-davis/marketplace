@@ -1,18 +1,18 @@
 import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
-import { User } from '../models/User';
+import { UserDocument } from '../models/User';
 import { signJWT } from './jwt';
 
 export async function register(req: Request, res: Response) {
   const { email, password } = req.body;
 
-  const existing = await User.findOne({ email });
+  const existing = await UserDocument.findOne({ email });
   if (existing) return res.status(409).json({ message: 'Email in use' });
 
   const hash = await bcrypt.hash(password, 12);
 
   //Create user in db
-  const user = await User.create({
+  const user = await UserDocument.create({
     email,
     passwordHash: hash,
     isEmailVerified: false,
@@ -27,7 +27,7 @@ export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
 
   //load user and password hash from db, if no user or no hash, return 401 unauthorized. Then compare password to hash, if invalid return 401. If valid, issue JWT with user's id in payload and send to client
-  const user = await User.findOne({ email }).select('+passwordHash');
+  const user = await UserDocument.findOne({ email }).select('+passwordHash');
   if (!user || !user.passwordHash)
     return res.status(401).json({ message: 'Invalid credentials' });
 
@@ -36,4 +36,9 @@ export async function login(req: Request, res: Response) {
 
   const token = signJWT(user.id);
   res.json({ message: 'Login successful', token });
+}
+
+export async function logout(req: Request, res: Response) {
+  res.clearCookie('auth_token');
+  res.json({ success: true });
 }

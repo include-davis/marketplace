@@ -1,0 +1,32 @@
+@use '@/app/_globals/mixins.scss';
+
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 54px 100px 20px 100px;
+}
+
+.searchHeading {
+  margin: 0 0 72px 0;
+}
+
+.contentRow {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+}
+
+.listingsArea {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 16px;
+  min-width: 0;
+  align-self: stretch;
+}
+
+.paginationWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

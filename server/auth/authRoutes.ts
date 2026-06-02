@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { googleCallback } from './googleController';
-import { register, login } from './authController';
-import { requireAuth } from './middleware';
+import { register, login, logout } from './authController';
 
 const router = Router();
 
 //Public routes
 router.post('/register', register);
 router.post('/login', login);
+router.post('/logout', logout);
 
 //Google OAuth: redirect to Google, then callback exchanges code for token
 router.get('/google', (req, res) => {

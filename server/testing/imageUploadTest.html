@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Upload Test</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0f1117;
+        --surface: #1a1d27;
+        --surface-2: #232735;
+        --border: #2e3344;
+        --text: #e4e6f0;
+        --text-dim: #8b8fa3;
+        --accent: #6c5ce7;
+        --accent-glow: rgba(108, 92, 231, 0.25);
+        --success: #00c853;
+        --success-bg: rgba(0, 200, 83, 0.1);
+        --error: #ff5252;
+        --error-bg: rgba(255, 82, 82, 0.1);
+        --warn: #ffab40;
+        --warn-bg: rgba(255, 171, 64, 0.1);
+        --radius: 10px;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 2rem;
+      }
+
+      h1 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+
+      .subtitle {
+        color: var(--text-dim);
+        font-size: 0.85rem;
+        margin-bottom: 2rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        max-width: 960px;
+        margin: 0 auto;
+      }
+
+      @media (max-width: 700px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+      }
+
+      .card-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-dim);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .card-title .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      /* ── Form inputs ─────────────────────────────────── */
+      label {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--text-dim);
+        margin-bottom: 0.3rem;
+      }
+
+      input[type='text'],
+      input[type='email'],
+      input[type='password'],
+      select {
+        width: 100%;
+        padding: 0.55rem 0.75rem;
+        font-size: 0.85rem;
+        font-family: inherit;
+        background: var(--surface-2);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-glow);
+      }
+
+      .field + .field {
+        margin-top: 0.75rem;
+      }
+
+      /* ── Buttons ──────────────────────────────────────── */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        padding: 0.55rem 1.2rem;
+        font-size: 0.82rem;
+        font-family: inherit;
+        font-weight: 600;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          transform 0.1s,
+          box-shadow 0.2s;
+      }
+
+      .btn:active {
+        transform: scale(0.97);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .btn-primary:hover {
+        background: #7c6ef0;
+        box-shadow: 0 0 12px var(--accent-glow);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--accent);
+        border: 1px solid var(--accent);
+      }
+
+      .btn-outline:hover {
+        background: var(--accent-glow);
+      }
+
+      .btn-danger {
+        background: var(--error);
+        color: #fff;
+      }
+
+      .btn-danger:hover {
+        background: #ff6e6e;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      /* ── Token badge ─────────────────────────────────── */
+      .token-status {
+        margin-top: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.78rem;
+        font-family: 'Courier New', monospace;
+        word-break: break-all;
+      }
+
+      .token-status.has-token {
+        background: var(--success-bg);
+        border: 1px solid rgba(0, 200, 83, 0.25);
+        color: var(--success);
+      }
+
+      .token-status.no-token {
+        background: var(--warn-bg);
+        border: 1px solid rgba(255, 171, 64, 0.25);
+        color: var(--warn);
+      }
+
+      /* ── Dropzone ────────────────────────────────────── */
+      .dropzone {
+        border: 2px dashed var(--border);
+        border-radius: var(--radius);
+        padding: 2rem 1rem;
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        position: relative;
+      }
+
+      .dropzone:hover,
+      .dropzone.dragover {
+        border-color: var(--accent);
+        background: var(--accent-glow);
+      }
+
+      .dropzone input[type='file'] {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .dropzone-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      /* ── Preview ─────────────────────────────────────── */
+      .preview-wrap {
+        margin-top: 1rem;
+        display: none;
+      }
+
+      .preview-wrap.visible {
+        display: block;
+      }
+
+      .preview-wrap img {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
+
+      .file-info {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-top: 0.4rem;
+      }
+
+      /* ── Log ─────────────────────────────────────────── */
+      .log-panel {
+        grid-column: 1 / -1;
+      }
+
+      #log {
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 0.75rem 1rem;
+        max-height: 320px;
+        overflow-y: auto;
+        font-family: 'Courier New', monospace;
+        font-size: 0.78rem;
+        line-height: 1.6;
+      }
+
+      .log-entry {
+        padding: 0.2rem 0;
+        border-bottom: 1px solid rgba(46, 51, 68, 0.5);
+      }
+
+      .log-entry:last-child {
+        border-bottom: none;
+      }
+
+      .log-time {
+        color: var(--text-dim);
+        margin-right: 0.5rem;
+      }
+
+      .log-ok {
+        color: var(--success);
+      }
+
+      .log-err {
+        color: var(--error);
+      }
+
+      .log-info {
+        color: var(--accent);
+      }
+
+      .log-warn {
+        color: var(--warn);
+      }
+
+      /* ── Spinner ─────────────────────────────────────── */
+      .spinner {
+        display: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── Result image ────────────────────────────────── */
+      .result-image {
+        margin-top: 1rem;
+        display: none;
+      }
+
+      .result-image.visible {
+        display: block;
+      }
+
+      .result-image img {
+        max-width: 100%;
+        max-height: 240px;
+        border-radius: 6px;
+        border: 1px solid var(--success);
+        box-shadow: 0 0 16px var(--success-bg);
+      }
+
+      .result-image .result-url {
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        margin-top: 0.4rem;
+        word-break: break-all;
+      }
+
+      .result-image .result-url a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      .result-image .result-url a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="max-width: 960px; margin: 0 auto">
+      <h1>🖼️ Image Upload Test</h1>
+      <p class="subtitle">
+        Test the <code>POST /images/upload</code> endpoint — auth validation,
+        file validation, and Cloudinary upload.
+      </p>
+    </div>
+
+    <div class="grid">
+      <!-- ── Auth Card ──────────────────────────────────── -->
+      <div class="card">
+        <div class="card-title"><span class="dot"></span> Authentication</div>
+
+        <div class="field">
+          <label for="apiBase">API Base URL (leave empty when served from Express)</label>
+          <input
+            type="text"
+            id="apiBase"
+            value=""
+            placeholder="Leave empty for same-origin"
+          />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="user@example.com" />
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" />
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="loginBtn">Login</button>
+          <button class="btn btn-outline" id="registerBtn">Register</button>
+        </div>
+
+        <div class="field" style="margin-top: 1rem">
+          <label for="manualToken">Or paste a JWT directly</label>
+          <input
+            type="text"
+            id="manualToken"
+            placeholder="eyJhbGciOiJIUzI1NiIs..."
+          />
+          <button
+            class="btn btn-outline"
+            id="setTokenBtn"
+            style="margin-top: 0.5rem"
+          >
+            Set Token
+          </button>
+        </div>
+
+        <div id="tokenStatus" class="token-status no-token">
+          No token — login or paste one above
+        </div>
+      </div>
+
+      <!-- ── Upload Card ────────────────────────────────── -->
+      <div class="card">
+        <div class="card-title"><span class="dot"></span> Upload Image</div>
+
+        <div class="field">
+          <label for="folder">Cloudinary Folder</label>
+          <select id="folder">
+            <option value="">Default (uploads)</option>
+            <option value="listings">listings</option>
+            <option value="chat">chat</option>
+            <option value="avatars">avatars</option>
+            <option value="invalid_folder">❌ invalid_folder (test reject)</option>
+          </select>
+        </div>
+
+        <div
+          class="dropzone"
+          id="dropzone"
+          role="button"
+          aria-label="Choose or drop an image"
+        >
+          <input type="file" id="fileInput" accept="image/*" />
+          <div class="dropzone-icon">📁</div>
+          <div>Drop an image here or <strong>click to browse</strong></div>
+        </div>
+
+        <div class="preview-wrap" id="previewWrap">
+          <img id="previewImg" alt="Preview" />
+          <div class="file-info" id="fileInfo"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="uploadBtn" disabled>
+            <span class="spinner" id="uploadSpinner"></span>
+            Upload
+          </button>
+          <button class="btn btn-danger" id="testNoFileBtn">
+            Test: No File
+          </button>
+          <button class="btn btn-danger" id="testNoAuthBtn">
+            Test: No Auth
+          </button>
+        </div>
+
+        <div class="result-image" id="resultWrap">
+          <img id="resultImg" alt="Uploaded" />
+          <div class="result-url" id="resultUrl"></div>
+        </div>
+      </div>
+
+      <!-- ── Log Card ───────────────────────────────────── -->
+      <div class="card log-panel">
+        <div class="card-title">
+          <span class="dot"></span> Request / Response Log
+          <button
+            class="btn btn-outline"
+            id="clearLogBtn"
+            style="margin-left: auto; padding: 0.3rem 0.7rem; font-size: 0.7rem"
+          >
+            Clear
+          </button>
+        </div>
+        <div id="log"></div>
+      </div>
+    </div>
+
+    <script>
+      // ── State ────────────────────────────────────────────
+      let token = '';
+      let selectedFile = null;
+
+      // ── DOM refs ─────────────────────────────────────────
+      const $ = (id) => document.getElementById(id);
+      const apiBase = $('apiBase');
+      const emailEl = $('email');
+      const passwordEl = $('password');
+      const loginBtn = $('loginBtn');
+      const registerBtn = $('registerBtn');
+      const manualToken = $('manualToken');
+      const setTokenBtn = $('setTokenBtn');
+      const tokenStatus = $('tokenStatus');
+      const folderEl = $('folder');
+      const dropzone = $('dropzone');
+      const fileInput = $('fileInput');
+      const previewWrap = $('previewWrap');
+      const previewImg = $('previewImg');
+      const fileInfo = $('fileInfo');
+      const uploadBtn = $('uploadBtn');
+      const uploadSpinner = $('uploadSpinner');
+      const testNoFileBtn = $('testNoFileBtn');
+      const testNoAuthBtn = $('testNoAuthBtn');
+      const resultWrap = $('resultWrap');
+      const resultImg = $('resultImg');
+      const resultUrl = $('resultUrl');
+      const logEl = $('log');
+      const clearLogBtn = $('clearLogBtn');
+
+      // ── Logging ──────────────────────────────────────────
+      function log(msg, level = 'info') {
+        const time = new Date().toLocaleTimeString();
+        const div = document.createElement('div');
+        div.className = 'log-entry';
+        div.innerHTML = `<span class="log-time">[${time}]</span><span class="log-${level}">${escapeHtml(msg)}</span>`;
+        logEl.prepend(div);
+      }
+
+      function escapeHtml(str) {
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+      }
+
+      clearLogBtn.addEventListener('click', () => {
+        logEl.innerHTML = '';
+      });
+
+      // ── Token management ─────────────────────────────────
+      function setToken(t) {
+        token = t;
+        if (t) {
+          tokenStatus.className = 'token-status has-token';
+          tokenStatus.textContent = `✓ Token set: ${t.slice(0, 24)}…`;
+        } else {
+          tokenStatus.className = 'token-status no-token';
+          tokenStatus.textContent = 'No token — login or paste one above';
+        }
+      }
+
+      // ── Auth requests ────────────────────────────────────
+      async function authRequest(endpoint) {
+        const base = apiBase.value.replace(/\/+$/, '');
+        const email = emailEl.value.trim();
+        const password = passwordEl.value;
+
+        if (!email || !password) {
+          log('Email and password are required', 'warn');
+          return;
+        }
+
+        log(`POST ${endpoint} — email: ${email}`, 'info');
+
+        try {
+          const res = await fetch(`${base}${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await res.json();
+
+          if (res.ok && data.token) {
+            setToken(data.token);
+            log(`${endpoint} succeeded — token received`, 'ok');
+          } else {
+            log(
+              `${endpoint} failed (${res.status}): ${data.message || JSON.stringify(data)}`,
+              'err',
+            );
+          }
+        } catch (e) {
+          log(`Network error: ${e.message}`, 'err');
+        }
+      }
+
+      loginBtn.addEventListener('click', () => authRequest('/auth/login'));
+      registerBtn.addEventListener('click', () => authRequest('/auth/register'));
+
+      setTokenBtn.addEventListener('click', () => {
+        const t = manualToken.value.trim();
+        if (!t) {
+          log('No token entered', 'warn');
+          return;
+        }
+        setToken(t);
+        log('Token set manually', 'ok');
+      });
+
+      // ── File selection ───────────────────────────────────
+      function handleFile(file) {
+        if (!file) return;
+        if (!file.type.startsWith('image/')) {
+          log(`Rejected "${file.name}" — not an image (${file.type})`, 'warn');
+          return;
+        }
+        selectedFile = file;
+        const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+        fileInfo.textContent = `${file.name}  •  ${file.type}  •  ${sizeMB} MB`;
+        previewImg.src = URL.createObjectURL(file);
+        previewWrap.classList.add('visible');
+        uploadBtn.disabled = false;
+        log(`Selected file: ${file.name} (${sizeMB} MB)`, 'info');
+      }
+
+      fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+
+      dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+      });
+      dropzone.addEventListener('dragleave', () =>
+        dropzone.classList.remove('dragover'),
+      );
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        handleFile(e.dataTransfer.files[0]);
+      });
+
+      // ── Upload request ───────────────────────────────────
+      async function doUpload({ file, authToken, label }) {
+        const base = apiBase.value.replace(/\/+$/, '');
+        const url = `${base}/images/upload`;
+        const folder = folderEl.value;
+
+        const form = new FormData();
+        if (file) form.append('file', file);
+        if (folder) form.append('folder', folder);
+
+        const headers = {};
+        if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+
+        log(`▶ ${label}`, 'info');
+        log(`  POST ${url}  |  folder=${folder || '(default)'}  |  auth=${authToken ? 'yes' : 'NO'}`, 'info');
+
+        uploadBtn.disabled = true;
+        uploadSpinner.style.display = 'inline-block';
+
+        try {
+          const res = await fetch(url, {
+            method: 'POST',
+            headers,
+            body: form,
+          });
+
+          let data;
+          const ct = res.headers.get('content-type') || '';
+          if (ct.includes('application/json')) {
+            data = await res.json();
+          } else {
+            data = { raw: await res.text() };
+          }
+
+          if (res.ok && data.success) {
+            log(`✓ Upload succeeded (${res.status})`, 'ok');
+            log(`  url: ${data.data.url}`, 'ok');
+            log(`  publicId: ${data.data.publicId}`, 'ok');
+
+            // Show result image
+            resultImg.src = data.data.url;
+            resultUrl.innerHTML = `<a href="${data.data.url}" target="_blank">${data.data.url}</a><br/>publicId: ${escapeHtml(data.data.publicId)}`;
+            resultWrap.classList.add('visible');
+          } else {
+            log(`✗ Upload failed (${res.status}): ${data.message || JSON.stringify(data)}`, 'err');
+            resultWrap.classList.remove('visible');
+          }
+        } catch (e) {
+          log(`✗ Network error: ${e.message}`, 'err');
+        } finally {
+          uploadBtn.disabled = !selectedFile;
+          uploadSpinner.style.display = 'none';
+        }
+      }
+
+      // Normal upload
+      uploadBtn.addEventListener('click', () => {
+        if (!selectedFile) {
+          log('No file selected', 'warn');
+          return;
+        }
+        if (!token) {
+          log('No auth token — login first', 'warn');
+          return;
+        }
+        doUpload({
+          file: selectedFile,
+          authToken: token,
+          label: 'Upload with valid auth + file',
+        });
+      });
+
+      // Test: send request with no file attached
+      testNoFileBtn.addEventListener('click', () => {
+        if (!token) {
+          log('No auth token — login first (testing "no file" still needs auth)', 'warn');
+          return;
+        }
+        doUpload({
+          file: null,
+          authToken: token,
+          label: 'TEST: No file (expect 400)',
+        });
+      });
+
+      // Test: send request with no auth header
+      testNoAuthBtn.addEventListener('click', () => {
+        doUpload({
+          file: selectedFile,
+          authToken: null,
+          label: 'TEST: No auth token (expect 401)',
+        });
+      });
+
+      // ── Init log ─────────────────────────────────────────
+      log('Test page loaded — login or paste a token, then pick an image', 'info');
+    </script>
+  </body>
+</html>

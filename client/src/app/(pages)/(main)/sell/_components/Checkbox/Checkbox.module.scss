@@ -1,0 +1,19 @@
+.checkboxWrapper {
+  height: 24px;
+  width: 24px;
+  position: relative;
+}
+
+.checkbox {
+  appearance: none;
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+}
+
+.checkboxImage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
