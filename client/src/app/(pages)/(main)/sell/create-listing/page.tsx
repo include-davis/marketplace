@@ -6,6 +6,7 @@ import Image from 'next/image';
 import styles from './page.module.scss';
 import CreatePostDropdown from './_components/CreatePostDropdown/CreatePostDropdown';
 import usePost from '@/app/_hooks/usePost';
+import usePostImage from '@/app/_hooks/usePostImage';
 
 const API_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8080';
 
@@ -100,7 +101,13 @@ export default function CreatePostPage() {
   const [category, setCategory] = useState('');
   const [materialProperty, setMaterialProperty] = useState('');
   const [condition, setCondition] = useState('');
+  const listingId = useRef<number | null>(null);
   const { postResource, pending, error } = usePost('/listings');
+  const {
+    postImage,
+    pending: imageUploadPending,
+    error: imageUploadError,
+  } = usePostImage();
   const [dimensions, setDimensions] = useState({
     length: '',
     width: '',
@@ -152,31 +159,15 @@ export default function CreatePostPage() {
     }
 
     try {
-      const uploadId = `listingimg-${Date.now()}`;
-      const folder = `listingimages/${uploadId}`;
+      const folder = listingId.current
+        ? `listings/${listingId.current}`
+        : `listings`;
 
       const uploadedImages: { url: string; publicId: string }[] = [];
 
       for (const file of imageFiles) {
-        const form = new FormData();
-        form.append('file', file);
-        form.append('folder', folder);
-
-        const res = await fetch(`${API_BASE}/images/upload`, {
-          method: 'POST',
-          credentials: 'include',
-          body: form,
-        });
-
-        const contentType = res.headers.get('content-type') ?? '';
-        if (!contentType.includes('application/json')) {
-          throw new Error(`Image upload failed (${res.status})`);
-        }
-        const data = await res.json();
-        if (!res.ok || !data.success) {
-          throw new Error(data.message ?? 'Image upload failed');
-        }
-        uploadedImages.push(data.data);
+        const res = await postImage(file, folder);
+        uploadedImages.push(res.data);
       }
 
       alert(`Images uploaded successfully!`);
@@ -189,7 +180,7 @@ export default function CreatePostPage() {
   const handleSubmitDraft = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await postResource({
+    const listingResponse = await postResource({
       title,
       desc,
       price,
@@ -197,6 +188,8 @@ export default function CreatePostPage() {
       materialProperty,
       condition,
     });
+
+    listingId.current = listingResponse.data;
 
     window.alert(`${title} has been saved as a new draft.`);
   };
@@ -209,7 +202,13 @@ export default function CreatePostPage() {
           <div className={styles.backLink}>Back</div>
         </Link>
 
-        <form className={styles.form} onSubmit={handleSubmitDraft}>
+        <form
+          className={styles.form}
+          onSubmit={async (e) => {
+            await handleSubmitDraft(e);
+            handleUploadImages(e);
+          }}
+        >
           <div className={styles.title}>
             <h2>List an item</h2>
           </div>
