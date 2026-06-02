@@ -50,6 +50,7 @@ input[type='number']::-webkit-outer-spin-button {
   padding: calc(96px + 32px) 48px 72px;
   color: var(--black);
   gap: 80px;
+  position: relative;
 }
 
 .pageContainer {

@@ -7,6 +7,7 @@ import styles from './page.module.scss';
 import CreatePostDropdown from './_components/CreatePostDropdown/CreatePostDropdown';
 import usePost from '@/app/_hooks/usePost';
 import usePostImage from '@/app/_hooks/usePostImage';
+import Preview from './_components/Preview/Preview';
 
 const API_BASE = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8080';
 
@@ -89,6 +90,7 @@ function DimensionField({
 
 export default function CreatePostPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   // Image state — keep both raw Files (for upload) and blob URLs (for preview)
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -380,12 +382,35 @@ export default function CreatePostPage() {
             <button type="submit" className={styles.draftButton}>
               Save as draft
             </button>
-            <button type="button" className={styles.previewButton}>
+            <button
+              type="button"
+              className={styles.previewButton}
+              onClick={() => {
+                setShowPreview(true);
+                window.scrollTo({
+                  top: 0,
+                  left: 0,
+                  behavior: 'auto', // 'auto' ensures an instant jump instead of smooth scrolling
+                });
+              }}
+            >
               See Preview
             </button>
           </div>
         </form>
       </div>
+      {showPreview && (
+        <Preview
+          setShowPreview={setShowPreview}
+          title={title}
+          desc={desc}
+          category={category}
+          materialProperty={materialProperty}
+          condition={condition}
+          dimensions={dimensions}
+          price={price}
+        />
+      )}
     </main>
   );
 }
