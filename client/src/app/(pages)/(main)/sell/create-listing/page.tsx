@@ -409,6 +409,8 @@ export default function CreatePostPage() {
           setShowPreview={setShowPreview}
           title={title}
           previewUrls={previewUrls}
+          imageFiles={imageFiles}
+          uploadedImages={uploadedImages}
           desc={desc}
           category={category}
           materialProperty={materialProperty}

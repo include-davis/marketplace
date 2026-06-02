@@ -1,8 +1,10 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, RefObject, SetStateAction, useRef } from 'react';
 import CreatePostDropdown from '../CreatePostDropdown/CreatePostDropdown';
 import styles from './Preview.module.scss';
 import CreateStaticPostDropdown from '../CreateStaticPostDropdown/CreateStaticPostDropdown';
 import Image from 'next/image';
+import usePost from '@/app/_hooks/usePost';
+import usePostImage from '@/app/_hooks/usePostImage';
 
 function TextField({
   label,
@@ -81,6 +83,8 @@ export default function Preview({
   setShowPreview,
   title,
   previewUrls,
+  imageFiles,
+  uploadedImages,
   desc,
   category,
   materialProperty,
@@ -91,6 +95,8 @@ export default function Preview({
   setShowPreview: Dispatch<SetStateAction<boolean>>;
   title: string;
   previewUrls: string[];
+  imageFiles: File[];
+  uploadedImages: RefObject<string[]>;
   desc: string;
   category: string;
   materialProperty: string;
@@ -98,17 +104,88 @@ export default function Preview({
   dimensions: { length: string; width: string; height: string };
   price: string;
 }) {
+  const { postResource, pending, error } = usePost('/listings');
+  const {
+    postImage,
+    pending: imageUploadPending,
+    error: imageUploadError,
+  } = usePostImage();
+  const listingId = useRef<string | null>(null);
+
+  const handleUploadImages = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (imageFiles.length === 0) {
+      alert('Please add at least one image before previewing.');
+      return;
+    }
+
+    try {
+      const folder = listingId.current
+        ? `listings/${listingId.current}`
+        : `listings`;
+
+      const newUploadedImages = [];
+
+      for (const file of imageFiles) {
+        const res = await postImage(file, folder);
+        newUploadedImages.push(res.data.url);
+      }
+
+      uploadedImages.current = newUploadedImages;
+    } catch (err) {
+      console.error('Submit error:', err);
+      alert(err instanceof Error ? err.message : 'Something went wrong');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const listingResponse = await postResource({
+      title,
+      desc,
+      price,
+      category,
+      materialProperty,
+      condition,
+      images: [],
+      status: 'active',
+    });
+
+    listingId.current = listingResponse.data;
+  };
+
+  const handleAddImages = async () => {
+    if (!listingId.current) {
+      throw new Error('Invalid listing ID. Could not add images');
+    }
+    const addImageResponse = await postResource(
+      { images: uploadedImages.current },
+      `${listingId.current}/images`,
+    );
+
+    alert(`Listing ${title} has successfully been saved.`);
+  };
+
   return (
     <div className={styles.preview}>
       <div className={styles.previewBackground} />
       <div className={styles.previewPanelContainer}>
-        <div className={styles.previewPanel}>
+        <form
+          className={styles.previewPanel}
+          onSubmit={async (e) => {
+            await handleSubmit(e);
+            await handleUploadImages(e);
+            handleAddImages();
+          }}
+        >
           <div className={styles.title}>
             <h2>List an item</h2>
           </div>
           <div className={styles.images}>
             {previewUrls.map((src, index) => (
-              <div className={styles.imageContainer}>
+              <div className={styles.imageContainer} key={src}>
                 <Image
                   src={src}
                   alt={`Upload ${index + 1}`}
@@ -193,7 +270,7 @@ export default function Preview({
               Post
             </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   );
