@@ -51,11 +51,12 @@ export default function ChatWindow({
 
       {/* Messages Area */}
       <div className={styles.messagesArea}>
-        {messages.map((msg) => (
+        {messages.map((msg, idx) => (
           <MessageBubble
             key={msg._id?.toString()}
             message={msg}
             isOwn={msg.senderId.toString() === currentUserId}
+            isLast={idx === messages.length - 1}
             avatarUrl={
               msg.senderId.toString() === currentUserId ? otherUserAvatar : null
             }

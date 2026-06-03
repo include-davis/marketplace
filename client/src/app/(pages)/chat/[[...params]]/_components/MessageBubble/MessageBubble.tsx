@@ -7,10 +7,12 @@ import type { Message } from "@/../../server/models/Message"
 export default function MessageBubble({
   message,
   isOwn,
+  isLast,
   avatarUrl,
 }: {
   message: Message;
   isOwn: boolean;
+  isLast: boolean;
   avatarUrl?: string | null;
 }) {
   return (
@@ -48,7 +50,7 @@ export default function MessageBubble({
           {message.message}
         </div>
 
-        {isOwn && <span className={styles.deliveredText}>Delivered</span>}
+        {(isOwn && isLast) && <span className={styles.deliveredText}>Delivered</span>}
       </div>
     </div>
   );

@@ -41,6 +41,7 @@ export class MessagesService {
     message: string,
     image?: string | null,
   ): Promise<Message> {
+    console.log("create message with", conversationId, senderId, message)
     try {
       const db = this.client.db(this.dbName);
       const collection = db.collection<Message>(this.collectionName);

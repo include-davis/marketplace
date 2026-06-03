@@ -18,7 +18,8 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export default function ChatPage() {
   const params = useParams();
-  const conversationId = params.conversationId as string;
+  const paramArray = params.params;
+  const conversationId = paramArray ? paramArray[0] : null;
   const socketRef = useRef<Socket | null>(null);
   const fetchedMessages = useRef<boolean>(false);
   const { user } = useAuth();
@@ -74,6 +75,8 @@ export default function ChatPage() {
   const handleSend = useCallback(
     (data: { text: string; createdAt: string }) => {
       if (!socketRef.current || !userId) return;
+
+      console.log("sending message", conversationId, userId, data.text)
 
       socketRef.current.emit('send_message', {
         conversationId,
