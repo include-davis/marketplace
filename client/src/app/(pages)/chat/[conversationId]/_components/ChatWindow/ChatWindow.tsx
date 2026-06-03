@@ -5,7 +5,7 @@ import Image from 'next/image';
 import styles from './ChatWindow.module.scss';
 import MessageBubble from '../MessageBubble/MessageBubble';
 import MessageInput from '../MessageInput/MessageInput';
-import type { Message } from '@/types/messaging';
+import type { Message } from "@/../../server/models/Message"
 
 export default function ChatWindow({
   messages,
@@ -51,10 +51,10 @@ export default function ChatWindow({
       <div className={styles.messagesArea}>
         {messages.map((msg) => (
           <MessageBubble
-            key={msg.id}
+            key={msg._id?.toString()}
             message={msg}
-            isOwn={msg.senderId === currentUserId}
-            avatarUrl={msg.senderId !== currentUserId ? otherUserAvatar : null}
+            isOwn={msg.senderId.toString() === currentUserId}
+            avatarUrl={msg.senderId.toString() === currentUserId ? otherUserAvatar : null}
           />
         ))}
         <div ref={messagesEndRef} />

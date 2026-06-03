@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import styles from './MessageBubble.module.scss';
-import type { Message } from '@/types/messaging';
+import type { Message } from "@/../../server/models/Message"
 
 export default function MessageBubble({
   message,
@@ -45,7 +45,7 @@ export default function MessageBubble({
         <div
           className={`${styles.bubble} ${isOwn ? styles.own : styles.other}`}
         >
-          {message.text}
+          {message.message}
         </div>
 
         {isOwn && <span className={styles.deliveredText}>Delivered</span>}

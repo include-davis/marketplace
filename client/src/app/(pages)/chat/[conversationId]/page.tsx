@@ -5,73 +5,45 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
 import ChatWindow from './_components/ChatWindow/ChatWindow';
-import type { Message, ServerMessage } from '@/types/messaging';
 import Navbar from '@/app/_components/Navbar/Navbar';
 import ConversationGrid from '../_components/ConversationGrid/ConversationGrid';
 import Link from 'next/link';
 import Image from 'next/image';
 import LeftArrow from '@/../public/leftArrow.svg';
+import useFetch from '@/app/_hooks/useFetch';
+import { useAuth } from '@/app/_context/AuthContext';
+import { Message } from '@/../../server/models/Message';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
-
-function toUIMessage(msg: ServerMessage): Message {
-  return {
-    id: msg._id,
-    text: msg.message,
-    senderId: msg.senderId,
-    createdAt: msg.createdAt,
-    image: msg.image,
-  };
-}
 
 export default function ChatPage() {
   const params = useParams();
   const router = useRouter();
   const conversationId = params.conversationId as string;
-
-  const [messages, setMessages] = useState<Message[]>([]);
   const [connected, setConnected] = useState(false);
   const socketRef = useRef<Socket | null>(null);
+  const fetchedMessages = useRef<boolean>(false);
+  const { user } = useAuth();
+  const userId = user?._id;
 
-  // Store localStorage values in state to avoid hydration mismatch
-  const [currentUserId, setCurrentUserId] = useState('');
-  const [receiverId, setReceiverIds] = useState('');
-  const [token, setToken] = useState('');
-  const [productName, setProductName] = useState('Product Name');
-  const [productImage, setProductImage] = useState<string | null>(null);
-  const [otherUserAvatar, setOtherUserAvatar] = useState<string | null>(null);
+  const {
+    result,
+    error,
+    loading,
+  }: {
+    result?: { messages: Message[] };
+    error?: string;
+    loading: boolean;
+  } = useFetch(`/messages/${conversationId}`);
 
-  // Initialize localStorage values after hydration
-  useEffect(() => {
-    setCurrentUserId(localStorage.getItem('userId') || '');
-    setReceiverIds(JSON.parse(localStorage.getItem('receiverIds') || '[]'));
-    setToken(localStorage.getItem('token') || '');
-    setProductName(localStorage.getItem('chatProductName') || 'Product Name');
-    setProductImage(localStorage.getItem('chatProductImage') || null);
-    setOtherUserAvatar(localStorage.getItem('chatOtherUserAvatar') || null);
-  }, []);
+  const [messages, setMessages] = useState<Message[] | []>([]);
 
   useEffect(() => {
-    if (!conversationId || !token) return;
-
-    // Fetch message history
-    const fetchMessages = async () => {
-      try {
-        const res = await fetch(`${API_URL}/messages/${conversationId}`, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        });
-        if (res.ok) {
-          const data = await res.json();
-          const serverMessages: ServerMessage[] = data.messages || data;
-          setMessages(serverMessages.map(toUIMessage));
-        }
-      } catch (err) {
-        console.error('Failed to fetch messages:', err);
-      }
-    };
-
-    fetchMessages();
-
+    if (!fetchedMessages.current && result) {
+      const newMessages = [...result?.messages, ...messages];
+      setMessages(newMessages);
+      fetchedMessages.current = true;
+    }
     // Connect Socket.IO
     const socket = io(API_URL, {
       transports: ['websocket', 'polling'],
@@ -83,10 +55,10 @@ export default function ChatPage() {
       socket.emit('join_room', conversationId);
     });
 
-    socket.on('receive_message', (msg: ServerMessage) => {
+    socket.on('receive_message', (msg: Message) => {
       setMessages((prev) => {
-        if (prev.some((m) => m.id === msg._id)) return prev;
-        return [...prev, toUIMessage(msg)];
+        if (prev.some((m) => m._id === msg._id)) return prev;
+        return [...prev, msg];
       });
     });
 
@@ -102,21 +74,25 @@ export default function ChatPage() {
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [conversationId, token]);
+  }, [conversationId, result]);
 
   const handleSend = useCallback(
     (data: { text: string; createdAt: string }) => {
-      if (!socketRef.current || !currentUserId) return;
+      if (!socketRef.current || !userId) return;
 
       socketRef.current.emit('send_message', {
         conversationId,
-        senderId: currentUserId,
+        senderId: userId,
         message: data.text,
         image: null,
       });
     },
-    [conversationId, currentUserId, receiverId],
+    [conversationId, userId],
   );
+
+  if (loading) return <div>Loading messages...</div>;
+  if (error || messages === undefined || messages === null)
+    return <div>Failed to load messages.</div>;
 
   return (
     <div className={styles.page}>
@@ -131,11 +107,11 @@ export default function ChatPage() {
         <ConversationGrid />
         <ChatWindow
           messages={messages}
-          currentUserId={currentUserId}
+          currentUserId={userId?.toString() || ''}
           onSend={handleSend}
-          productName={productName}
-          productImage={productImage}
-          otherUserAvatar={otherUserAvatar}
+          productName={'product name'}
+          // productImage={productImage}
+          // otherUserAvatar={otherUserAvatar}
         />
       </div>
     </div>

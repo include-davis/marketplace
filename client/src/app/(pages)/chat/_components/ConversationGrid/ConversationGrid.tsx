@@ -20,8 +20,6 @@ export default function ConversationGrid() {
   if (fetchConversationsError || !conversations)
     return <div>Error fetching conversations.</div>;
 
-  console.log('conversations', conversations);
-
   return (
     <div className={styles['message-list']}>
       {conversations.map((convo) => (

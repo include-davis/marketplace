@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import type { Application } from 'express';
-import { MessagesController } from '../controllers/messagesController.ts';
-import { MessagesService } from '../services/messagesService.ts';
+import { MessagesController } from '../controllers/messagesController';
+import { MessagesService } from '../services/messagesService';
 
 export function createMessagesRouter(app: Application): Router {
   const router = Router();
