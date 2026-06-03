@@ -28,6 +28,7 @@ const MOCK_LISTING = {
     '/mock/listings/view_mock3.jpg',
   ],
   status: 'active',
+  conversationId: '6a1cb4142dde3ed69cbbe8ee',
 };
 
 export default function Listing() {
@@ -95,7 +96,12 @@ export default function Listing() {
               <h3>${listing.price}</h3>
             </div>
           </div>
-          <button className={styles.messageButton}>Message Seller</button>
+          <Link
+            className={styles.messageButton}
+            href={`/chat/${listing.conversationId}`}
+          >
+            Message Seller
+          </Link>
         </div>
       </div>
     </div>
