@@ -58,13 +58,18 @@ export default function Navbar() {
           aria-label="Account menu"
           id="account-menu-toggle"
         >
-          <Image
-            src="/Navbar/userIcon.svg"
-            alt="Menu"
-            width={100}
-            height={100}
-            className={styles.accountIcon}
-          />
+          <div className={styles.iconWrapper}>
+            <Image
+              src={
+                isAuthenticated
+                  ? '/mock/naomi_notion.png'
+                  : '/Navbar/userIcon.svg'
+              }
+              alt="Menu"
+              width={56}
+              height={56}
+            />
+          </div>
           <Image
             src="/Navbar/chevron.svg"
             alt="Menu"

@@ -32,7 +32,8 @@ export default function MessageBox({
     >
       <div className={styles.userIconWrapper}>
         <Image
-          src="/Navbar/userIcon.svg"
+          // src="/Navbar/userIcon.svg"
+          src="/mock/naomi_linkedin.jpeg"
           alt="avatar"
           className={styles.avatar}
           width={54}

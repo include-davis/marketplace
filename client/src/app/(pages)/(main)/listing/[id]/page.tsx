@@ -48,8 +48,9 @@ export default function Listing() {
               <button
                 className={styles.wheelImageWrapper}
                 onClick={() => setImageIdx(idx)}
+                key={src}
               >
-                <Image src={src} alt={src} key={src} height={144} width={144} />
+                <Image src={src} alt={src} height={144} width={144} />
               </button>
             ))}
           </div>

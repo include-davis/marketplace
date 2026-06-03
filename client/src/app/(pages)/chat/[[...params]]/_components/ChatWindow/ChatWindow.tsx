@@ -58,7 +58,8 @@ export default function ChatWindow({
             isOwn={msg.senderId.toString() === currentUserId}
             isLast={idx === messages.length - 1}
             avatarUrl={
-              msg.senderId.toString() === currentUserId ? otherUserAvatar : null
+              // msg.senderId.toString() === currentUserId ? otherUserAvatar : null
+              "/mock/naomi_linkedin.jpeg"
             }
           />
         ))}
