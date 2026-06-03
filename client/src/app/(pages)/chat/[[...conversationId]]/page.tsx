@@ -100,14 +100,14 @@ export default function ChatPage() {
       </div>
       <div className={styles.pageContent}>
         <ConversationGrid />
-        <ChatWindow
+        {conversationId && <ChatWindow
           messages={messages}
           currentUserId={userId?.toString() || ''}
           onSend={handleSend}
           // productName={'product name'}
           // productImage={productImage}
           // otherUserAvatar={otherUserAvatar}
-        />
+        />}
       </div>
     </div>
   );
