@@ -18,13 +18,11 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
 
 export default function ChatPage() {
   const params = useParams();
-  const router = useRouter();
   const conversationId = params.conversationId as string;
-  const [connected, setConnected] = useState(false);
   const socketRef = useRef<Socket | null>(null);
   const fetchedMessages = useRef<boolean>(false);
   const { user } = useAuth();
-  const userId = user?._id;
+  const userId = user?.id; // TODO: Fix type error
 
   const {
     result,
@@ -51,7 +49,6 @@ export default function ChatPage() {
     socketRef.current = socket;
 
     socket.on('connect', () => {
-      setConnected(true);
       socket.emit('join_room', conversationId);
     });
 
@@ -64,10 +61,6 @@ export default function ChatPage() {
 
     socket.on('error', (err: { message: string }) => {
       console.error('Socket error:', err.message);
-    });
-
-    socket.on('disconnect', () => {
-      setConnected(false);
     });
 
     return () => {
