@@ -99,7 +99,7 @@ export default function ChatPage() {
         </Link>
       </div>
       <div className={styles.pageContent}>
-        <ConversationGrid />
+        <ConversationGrid messages={messages}/>
         {conversationId && <ChatWindow
           messages={messages}
           currentUserId={userId?.toString() || ''}
