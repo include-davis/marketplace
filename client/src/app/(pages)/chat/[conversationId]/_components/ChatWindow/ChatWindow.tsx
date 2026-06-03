@@ -5,13 +5,13 @@ import Image from 'next/image';
 import styles from './ChatWindow.module.scss';
 import MessageBubble from '../MessageBubble/MessageBubble';
 import MessageInput from '../MessageInput/MessageInput';
-import type { Message } from "@/../../server/models/Message"
+import type { Message } from '@/../../server/models/Message';
 
 export default function ChatWindow({
   messages,
   currentUserId,
   onSend,
-  productName = 'Product Name',
+  productName,
   productImage,
   otherUserAvatar,
 }: {
@@ -32,11 +32,13 @@ export default function ChatWindow({
     <div className={styles.chatPage}>
       {/* Header */}
       <div className={styles.header}>
-        <span className={styles.productName}>{productName}</span>
+        {productName && (
+          <span className={styles.productName}>{productName}</span>
+        )}
       </div>
 
       {/* Product Image */}
-      {productImage && (
+      {productImage && productName && (
         <div className={styles.productImageWrapper}>
           <Image
             src={productImage}
@@ -54,7 +56,9 @@ export default function ChatWindow({
             key={msg._id?.toString()}
             message={msg}
             isOwn={msg.senderId.toString() === currentUserId}
-            avatarUrl={msg.senderId.toString() === currentUserId ? otherUserAvatar : null}
+            avatarUrl={
+              msg.senderId.toString() === currentUserId ? otherUserAvatar : null
+            }
           />
         ))}
         <div ref={messagesEndRef} />

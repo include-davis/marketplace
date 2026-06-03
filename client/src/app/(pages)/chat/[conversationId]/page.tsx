@@ -109,7 +109,7 @@ export default function ChatPage() {
           messages={messages}
           currentUserId={userId?.toString() || ''}
           onSend={handleSend}
-          productName={'product name'}
+          // productName={'product name'}
           // productImage={productImage}
           // otherUserAvatar={otherUserAvatar}
         />
