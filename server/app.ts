@@ -64,9 +64,6 @@ async function setupClient() {
   app.locals.client = client;
   const messagesService = new MessagesService(client);
 
-  // Mount REST routes after DB client is ready
-  app.use('/messages', createMessagesRouter(app));
-
   // Wire Socket.IO handlers with DB access
   setupSocketHandlers(messagesService);
 

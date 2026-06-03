@@ -3,13 +3,16 @@ import Image from 'next/image';
 import { User } from '../../../../../../../server/models/User';
 import styles from './MessageBox.module.scss';
 import useFetch from '@/app/_hooks/useFetch';
+import Link from 'next/link';
 
 export default function MessageBox({
   otherUserId,
   conversationId,
+  lastSent,
 }: {
   otherUserId: string;
   conversationId: string;
+  lastSent?: string;
 }) {
   const {
     result: user,
@@ -22,7 +25,11 @@ export default function MessageBox({
   const username = user.email;
 
   return (
-    <div className={styles.messageBox} data-id={conversationId}>
+    <Link
+      className={styles.messageBox}
+      data-id={conversationId}
+      href={`/chat/${conversationId}`}
+    >
       <div className={styles.userIconWrapper}>
         <Image
           src="/Navbar/userIcon.svg"
@@ -36,8 +43,8 @@ export default function MessageBox({
       <div className={styles.content}>
         <span className={styles.username}>{username}</span>
 
-        <p className={styles.message}>{'placeholder (last sent message)'}</p>
+        <p className={styles.message}>{lastSent}</p>
       </div>
-    </div>
+    </Link>
   );
 }
