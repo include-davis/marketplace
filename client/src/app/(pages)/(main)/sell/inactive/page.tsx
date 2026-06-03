@@ -2,6 +2,7 @@ import Image from 'next/image';
 import styles from './page.module.scss';
 import RightArrow from '@/../public/rightArrow.svg';
 import Listings from '../_components/Listings/Listings';
+import MOCK_LISTINGS_INACTIVE from '@/mocks/mock_listings_inactive.json';
 
 export default function Inactive() {
   return (
@@ -11,7 +12,7 @@ export default function Inactive() {
         <Image src={RightArrow} alt=">" />
         <span>Inactive Listings</span>
       </div>
-      <Listings view="inactive" />
+      <Listings view="inactive" listings={MOCK_LISTINGS_INACTIVE} />
     </div>
   );
 }

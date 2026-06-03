@@ -1,0 +1,14 @@
+[
+  {
+    "_id": "32423",
+    "userId": "jfklasjklfsda",
+    "title": "Listing 4",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock4.jpg"]
+  }
+]

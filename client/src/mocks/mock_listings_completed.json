@@ -1,0 +1,14 @@
+[
+  {
+    "_id": "1412",
+    "userId": "jfklasjklfsda",
+    "title": "2kg box of Type C nails",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock7.jpg"]
+  }
+]

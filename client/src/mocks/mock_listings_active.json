@@ -1,0 +1,38 @@
+[
+  {
+    "_id": "1321321",
+    "userId": "jfklasjklfsda",
+    "title": "Large coils",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 2,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock1.jpg"]
+  },
+  {
+    "_id": "432432432",
+    "userId": "jfklasjklfsda",
+    "title": "Plumbing snakes",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock2.jpg"]
+  },
+  {
+    "_id": "555555",
+    "userId": "jfklasjklfsda",
+    "title": "various parts",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock3.jpg"]
+  }
+]

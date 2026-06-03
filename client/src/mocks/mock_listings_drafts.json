@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "654645",
+    "userId": "jfklasjklfsda",
+    "title": "wip listing",
+    "desc": "Listing description",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock5.jpg"]
+  },
+  {
+    "_id": "232",
+    "userId": "jfklasjklfsda",
+    "title": "extra parts 2024",
+    "desc": "",
+    "price": 150,
+    "category": "Electrical Components",
+    "stock": 1,
+    "createdAt": "2026-06-01T19:39:48.776Z",
+    "updatedAt": "2026-06-01T19:39:48.776Z",
+    "images": ["/mock/listings/listings_mock6.jpg"]
+  }
+]
