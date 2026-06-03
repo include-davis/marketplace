@@ -32,7 +32,9 @@ export default function ChatPage() {
     result?: { messages: Message[] };
     error?: string;
     loading: boolean;
-  } = useFetch(`/messages/${conversationId}`);
+  } = conversationId
+    ? useFetch(`/messages/${conversationId}`)
+    : { loading: false };
 
   const [messages, setMessages] = useState<Message[] | []>([]);
 
